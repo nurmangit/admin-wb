@@ -1,0 +1,88 @@
+@extends('layouts/contentNavbarLayout')
+
+@section('title', ' Transporter Rate - Forms')
+
+@section('content')
+<h4 class="py-3 mb-4"><span class="text-muted fw-light">Forms /</span> Transporter Rate</h4>
+
+<div class="row">
+  <div class="col-xl">
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Transporter Rate Details</h5>
+      </div>
+      <div class="card-body">
+        <form action="{{ route('master-data.transporter-rate.store') }}" method="POST">
+          @csrf
+          <div class="mb-3">
+            <label class="form-label" for="area_uuid">Area <span class="text-danger">*</span></label>
+            <select class="form-select @error('area_uuid') is-invalid @enderror" id="area_uuid" name="area_uuid" required>
+              @foreach ($areas as $area)
+              <option value="{{$area->uuid}}" {{ old('area_uuid') == '$area->uuid' ? 'selected' : '' }}>{{$area->name}}({{$area->code}}) - {{$area->region->name}}({{$area->region->code}})</option>
+              @endforeach
+            </select>
+            @error('status')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <div class="mb-3">
+                <label class="form-label" for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Name" required value="{{ old('name') }}" />
+                @error('name')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="mb-3">
+                <label class="form-label" for="charge">Charge</label>
+                <input type="text" class="form-control" id="charge" name="charge" placeholder="Charge" required value="{{ old('charge') }}" />
+                @error('charge')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="mb-3">
+                <label class="form-label" for="rate">Rate</label>
+                <input type="text" class="form-control" id="rate" name="rate" placeholder="Rate" required value="{{ old('rate') }}" />
+                @error('rate')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-3">
+              <div class="mb-3">
+                <label class="form-label" for="start_date">Start Date</label>
+                <input type="datetime-local" class="form-control" id="start_date" name="start_date" placeholder="Start Date" required value="{{ old('start_date') }}" />
+                @error('start_date')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="mb-3">
+                <label class="form-label" for="end_date">End Date</label>
+                <input type="datetime-local" class="form-control" id="end_date" name="end_date" placeholder="End Date" required value="{{ old('end_date') }}" />
+                @error('end_date')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+@endsection

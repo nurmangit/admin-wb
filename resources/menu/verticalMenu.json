@@ -1,0 +1,98 @@
+{
+  "menu": [
+    {
+      "url": "/",
+      "name": "Dashboards",
+      "icon": "menu-icon tf-icons bx bx-home-circle",
+      "slug": "dashboard",
+      "badge": [
+        "danger",
+        "5"
+      ],
+      "submenu": [
+        {
+          "url": "/",
+          "name": "Analytics",
+          "slug": "dashboard-analytics"
+        }
+      ]
+    },
+    {
+      "name": "Master Data",
+      "icon": "menu-icon tf-icons bx bx-layout",
+      "slug": "master-data",
+      "submenu": [
+        {
+          "url": "master-data/vehicle",
+          "name": "Vehicle",
+          "slug": "master-data.vehicle.list"
+        },
+        {
+          "url": "master-data/vehicle-type",
+          "name": "Vehicle Type",
+          "slug": "master-data.vehicle-type.list"
+        },
+        {
+          "url": "master-data/transporter",
+          "name": "Transporter",
+          "slug": "master-data.transporter.list"
+        },
+        {
+          "url": "master-data/transporter-rate",
+          "name": "Transporter Rate",
+          "slug": "master-data.transporter-rate.list"
+        },
+        {
+          "url": "master-data/region",
+          "name": "Region",
+          "slug": "master-data.region.list"
+        },
+        {
+          "url": "master-data/area",
+          "name": "Area",
+          "slug": "master-data.area.list"
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "icon": "menu-icon tf-icons bx bx bx-dock-top",
+      "slug": "transaction",
+      "submenu": [
+        {
+          "url": "transaction/weight-bridge/receiving-material",
+          "name": "Receiving Material",
+          "slug": "transaction.weight-bridge.receiving-material"
+        },
+        {
+          "url": "transaction/weight-bridge/finish-good",
+          "name": "Finish Good",
+          "slug": "transaction.weight-bridge.finish-good"
+        },
+        {
+          "url": "transaction/weight-bridge/data",
+          "name": "Data",
+          "slug": "transaction.weight-bridge.data"
+        },
+        {
+          "url": "transaction/weight-bridge/approval",
+          "name": "Approval",
+          "slug": "transaction.weight-bridge.approval.list"
+        }
+      ]
+    },
+    {
+      "name": "Authentications",
+      "icon": "menu-icon tf-icons bx bx-lock-open-alt",
+      "slug": "auth",
+      "submenu": [
+        {
+          "url": "auth/login-basic",
+          "name": "Login",
+          "slug": "auth-login-basic",
+          "target": "_blank"
+        }
+      ]
+    }
+  ]
+}

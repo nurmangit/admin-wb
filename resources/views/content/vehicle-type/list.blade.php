@@ -1,0 +1,69 @@
+@extends('layouts/contentNavbarLayout')
+
+@section('title', 'Vehicle Type - List')
+
+@section('content')
+<div class="d-flex mt-4 justify-content-between">
+  <h4 class="py-2 mb-2">
+    <span class="text-muted fw-light">Vehicle Type /</span> List
+  </h4>
+  <div>
+    <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-info mb-4 fw-bold">Import Data</a>
+    <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-success mb-4 fw-bold">Export Data</a>
+    <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-primary mb-4 fw-bold">Add New Vehicle Type</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="table-responsive text-nowrap p-4">
+    <table id="vehicleTypeTable" class="table table-hover">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Code</th>
+          <th>Tolerance</th>
+          <th>Weight Standart</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach ($vehicle_types as $vehicle_type)
+        <tr>
+          <td>{{ $vehicle_type->name }}</td>
+          <td>{{ $vehicle_type->code }}</td>
+          <td>{{ $vehicle_type->tolerance }}</td>
+          <td>{{ $vehicle_type->weight_standart }}</td>
+          <td>
+            <div class="d-flex">
+              <a href="{{ route('master-data.vehicle-type.edit', $vehicle_type->uuid) }}" class="btn btn-sm btn-info" style="margin-right: 5px;">edit</a>
+              <form action="{{ route('master-data.vehicle-type.delete', $vehicle_type->uuid) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this type of vehicle?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-sm btn-danger">delete
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
+  </div>
+</div>
+@endsection
+
+@section('page-script')
+<script>
+  $(document).ready(function() {
+    $('#vehicleTypeTable').DataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true
+    });
+  });
+</script>
+@endsection
