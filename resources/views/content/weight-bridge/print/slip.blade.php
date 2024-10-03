@@ -104,13 +104,13 @@
         </tr>
     </table>
 
-    <table style="width: 100%;font-size:8px;">
+    <table style="width: 100%;font-size:7px;">
         <tr>
             <td style="width: 70%;">Petugas Timbangan</td>
             <td>Pengemudi</td>
         </tr>
     </table>
-    <table style="width: 100%; font-size:8px;">
+    <table style="width: 100%; font-size:7px;">
         <tr>
             <td style="width: 70%;">&nbsp;</td>
             <td>&nbsp;</td>
