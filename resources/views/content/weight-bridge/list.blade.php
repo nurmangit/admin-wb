@@ -37,7 +37,7 @@
               <td><span class="badge text-secondary bg-label-{{($raw_material->status == 'RM-OUT') ? 'success' : ($raw_material->status == 'RM-IN' ? 'warning' : 'danger')}} me-1">{{$raw_material->status}}</span></td>
               <td>
                 <div class="d-flex">
-                  <a href="{{route('transaction.weight-bridge.view',$raw_material->uuid)}}" target="_blank" class="btn btn-sm btn-info">view</a>
+                  <a href="{{route('transaction.weight-bridge.view',$raw_material->uuid)}}" class="btn btn-sm btn-info">view</a>
                 </div>
               </td>
             </tr>
@@ -70,7 +70,7 @@
               <td><span class="badge text-secondary bg-label-{{($finish_good->status == 'FG-OUT') ? 'success' : ($finish_good->status == 'FG-IN' ? 'warning' : 'danger')}} me-1">{{$finish_good->status}}</span></td>
               <td>
                 <div class="d-flex">
-                  <a href="{{route('transaction.weight-bridge.view',$finish_good->uuid)}}" target="_blank" class="btn btn-sm btn-info">view</a>
+                  <a href="{{route('transaction.weight-bridge.view',$finish_good->uuid)}}" class="btn btn-sm btn-info">view</a>
                 </div>
               </td>
             </tr>

@@ -172,8 +172,10 @@
     $('#weight-out').on('input', function() {
       var weightIn = $('#weight-in').val();
       var weightOut = $(this).val();
+      var weightStandart = $('#weight-standart').val();
       if (weightOut - weightIn >= 0) {
         $('#weight-netto').val(weightOut - weightIn);
+        $('#difference').val(weightOut - weightIn - weightStandart);
       } else {
         $('#weight-netto').val('');
       }

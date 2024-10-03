@@ -111,7 +111,7 @@
               <!-- Difference -->
               <div class="mb-3">
                 <label class="form-label" for="difference">Difference</label>
-                <input disabled type="text" class="form-control" id="difference" value="{{$weight_bridge->difference}}" placeholder="Enter Difference" disabled />
+                <input disabled type="text" class="form-control" id="difference" value="{{($weight_bridge->netto - $weight_bridge->vehicle->vehicle_type->tolerance)}}" placeholder="Enter Difference" disabled />
               </div>
             </div>
           </div>

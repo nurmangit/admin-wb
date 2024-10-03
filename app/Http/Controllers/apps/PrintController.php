@@ -48,6 +48,6 @@ class PrintController extends Controller
     $pdf->setPaper([0, 0, 226.77, 283.46]); // Custom size in points (60mm x 75mm)
 
     // Output the PDF for download or inline view
-    return $pdf->stream('weighbridge_slip.pdf'); // or ->download('weighbridge_slip.pdf') for direct download
+    return $pdf->stream("slip_$slip->slip_no.pdf"); // or ->download('weighbridge_slip.pdf') for direct download
   }
 }
