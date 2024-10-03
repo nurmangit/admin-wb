@@ -133,6 +133,8 @@ class WeightBridgeController extends Controller
       $weightNetto = $validated['weight_out'] - $weightBridge->weight_in;
       $tolerance = $weightBridge->vehicle->vehicle_type->tolerance;
       $difference = ($weightNetto - $tolerance) - $weightStandart;
+      $weightBridge->difference = $difference;
+      $weightBridge->update();
       if (($weightNetto < $weightStandart) || ($weightNetto > $weightStandart + $tolerance)) {
         $weightBridgeApproval = WeightBridgeApproval::create(
           [
@@ -140,7 +142,6 @@ class WeightBridgeController extends Controller
           ]
         );
         $weightBridge->status = 'WAITING FOR APPROVAL';
-        $weightBridge->difference = $difference;
         $weightBridge->update();
         return redirect()->route('transaction.weight-bridge.finish-good')->with('warning', 'Weight OUT need approval.');
       }
