@@ -38,7 +38,7 @@ class WeightBridge extends Model
 
 	public function vehicle()
 	{
-		return $this->belongsTo(Vehicle::class, 'vehicle_uuid');
+		return $this->belongsTo(Vehicle::class, 'vehicle_uuid', 'uuid');
 	}
 
 	protected static function boot()

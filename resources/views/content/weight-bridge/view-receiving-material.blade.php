@@ -101,7 +101,7 @@
           </div>
           <div class="d-flex justify-content-end">
             <!-- Submit Button -->
-            <button type="button" class="btn btn-primary fw-bold">PRINT</button>
+            <a type="button" href="{{route('transaction.weight-bridge.printSlip',$weight_bridge->uuid)}}" target="_blank" class="btn btn-primary fw-bold">PRINT</a>
           </div>
         </form>
       </div>

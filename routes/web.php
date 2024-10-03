@@ -3,6 +3,7 @@
 use App\Http\Controllers\apps\ApprovalController;
 use App\Http\Controllers\apps\Area;
 use App\Http\Controllers\apps\AreaController;
+use App\Http\Controllers\apps\PrintController;
 use App\Http\Controllers\apps\Region;
 use App\Http\Controllers\apps\RegionController;
 use App\Http\Controllers\apps\Transporter;
@@ -129,6 +130,7 @@ Route::prefix('transaction')->name('transaction.')->group(function () {
         Route::post('/approval/reject/{approvalUuid}', [ApprovalController::class, 'reject'])->name('approval.reject');
         Route::post('/weight-in', [WeightBridgeController::class, 'weightIn'])->name('weightIn');
         Route::post('/weight-out', [WeightBridgeController::class, 'weightOut'])->name('weightOut');
+        route::get('/print/{uuid}/slip', [PrintController::class, 'generateSlipPDF'])->name('printSlip');
     });
 });
 // layout
