@@ -85,21 +85,21 @@
 
     <table class="table">
         <tr>
-            <td style="width: 35%;">Masuk (KG):</td>
+            <td style="width: 40%;">Masuk (KG):</td>
             <td style="width: 15%;">{{ $weight_in }}</td>
-            <td style="width: 25%;">Time In:</td>
+            <td style="width: 20%;">Time In:</td>
             <td style="width: 25%;">{{ $weight_in_time }}</td>
         </tr>
         <tr>
-            <td style="width: 35%;">Keluar (KG):</td>
+            <td style="width: 40%;">Keluar (KG):</td>
             <td style="width: 15%;">{{ $weight_out }}</td>
-            <td style="width: 25%;">Date Out:</td>
+            <td style="width: 20%;">Date Out:</td>
             <td style="width: 25%;">{{ $weight_out_date }}</td>
         </tr>
         <tr>
-            <td style="width: 35%;">Netto (KG):</td>
+            <td style="width: 40%;">Netto (KG):</td>
             <td style="width: 15%;">{{ $weight_netto }}</td>
-            <td style="width: 25%;">Time Out:</td>
+            <td style="width: 20%;">Time Out:</td>
             <td style="width: 25%;">{{ $weight_out_time }}</td>
         </tr>
     </table>
