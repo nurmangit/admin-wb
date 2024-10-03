@@ -63,7 +63,7 @@
             <td>Doc No:</td>
             <td>{{ $slip_no }}</td>
             <td>Date:</th>
-            <td>{{ $weight_in_time }}</th>
+            <td>{{ $weight_in_date }}</th>
         </tr>
         <tr>
             <td>No Polisi (Transporter):</td>
