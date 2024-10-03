@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Vehicle
@@ -33,6 +34,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Vehicle extends Model
 {
+	use SoftDeletes;
 	protected $table = 'vehicles';
 	protected $primaryKey = 'uuid';
 	public $incrementing = false;
@@ -64,12 +66,12 @@ class Vehicle extends Model
 		return $this->belongsTo(Transporter::class, 'transporter_uuid');
 	}
 
-    protected static function boot()
-    {
-        parent::boot();
-        
-        static::creating(function ($model) {
-            $model->uuid = \Illuminate\Support\Str::uuid();
-        });
-    }
+	protected static function boot()
+	{
+		parent::boot();
+
+		static::creating(function ($model) {
+			$model->uuid = \Illuminate\Support\Str::uuid();
+		});
+	}
 }

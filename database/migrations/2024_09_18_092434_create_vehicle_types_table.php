@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('weight_standart');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

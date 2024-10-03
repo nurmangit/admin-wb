@@ -8,9 +8,11 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class WeightBridgeApproval extends Model
 {
+	use SoftDeletes;
 	protected $table = 'weight_bridge_approvals';
 	protected $primaryKey = 'uuid';
 	public $incrementing = false;

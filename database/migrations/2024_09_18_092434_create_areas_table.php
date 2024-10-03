@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('areas', function (Blueprint $table) {
-            
-$table->string('uuid')->primary();
-$table->string('name');
-$table->string('code');
-$table->string('region_uuid');
+
+            $table->string('uuid')->primary();
+            $table->string('name');
+            $table->string('code');
+            $table->string('region_uuid');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -12,12 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('regions', function (Blueprint $table) {
-            
-$table->string('uuid')->primary();
-$table->string('name');
-$table->string('code');
+
+            $table->string('uuid')->primary();
+            $table->string('name');
+            $table->string('code');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
