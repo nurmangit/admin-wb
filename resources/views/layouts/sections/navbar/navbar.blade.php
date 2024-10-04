@@ -72,10 +72,13 @@ $navbarDetached = ($navbarDetached ?? '');
                 <div class="dropdown-divider"></div>
               </li>
               <li>
-                <a class="dropdown-item" href="javascript:void(0);">
+                <a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                   <i class='bx bx-power-off me-2'></i>
                   <span class="align-middle">Log Out</span>
                 </a>
+                <form id="logout-form" action="{{ route('auth.logout') }}" method="POST" style="display: none;">
+                  @csrf
+                </form>
               </li>
             </ul>
           </li>

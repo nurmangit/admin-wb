@@ -10,5 +10,14 @@ class Permission extends SpatiePermission
 {
     use HasFactory;
     use HasUuids;
-    protected $primaryKey = 'uuid';
+    protected $primaryKey = 'id';
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->id = \Illuminate\Support\Str::uuid();
+        });
+    }
 }

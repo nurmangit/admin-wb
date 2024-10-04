@@ -90,3 +90,11 @@ $container = ($container ?? 'container-xxl');
   </div>
   <!-- / Layout wrapper -->
   @endsection
+
+  @section('page-script')
+  @if ($errors->any())
+  <script>
+    alert('Errors:\n{{ implode("\\n", $errors->all()) }}');
+  </script>
+  @endif
+  @endsection

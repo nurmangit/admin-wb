@@ -31,8 +31,8 @@
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
+        @foreach($approvals as $approval)
         <tr>
-          @foreach($approvals as $approval)
           <td>{{$approval->weight_bridge->po_do}}</td>
           <td>{{$approval->weight_bridge->vehicle->register_number ?? '-'}}</td>
           <td>{{$approval->weight_bridge->weight_netto}} KG</td>

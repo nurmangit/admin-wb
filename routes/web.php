@@ -9,6 +9,7 @@ use App\Http\Controllers\apps\RegionController;
 use App\Http\Controllers\apps\Transporter;
 use App\Http\Controllers\apps\TransporterController;
 use App\Http\Controllers\apps\TransporterRateController;
+use App\Http\Controllers\apps\UserController;
 use App\Http\Controllers\apps\VehicleController;
 use App\Http\Controllers\apps\VehicleType;
 use App\Http\Controllers\apps\VehicleTypeController;
@@ -59,10 +60,10 @@ use App\Http\Controllers\form_layouts\HorizontalForm;
 use App\Http\Controllers\tables\Basic as TablesBasic;
 
 // Main Page Route
-Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');
+Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics')->middleware('auth');
 
 // Master Data Route
-Route::prefix('master-data')->name('master-data.')->group(function () {
+Route::prefix('master-data')->name('master-data.')->middleware('auth')->group(function () {
     Route::prefix('/vehicle')->name('vehicle.')->group(function () {
         Route::get('/', [VehicleController::class, 'index'])->name('list');
         Route::get('/view', [VehicleController::class, 'index'])->name('view');
@@ -120,7 +121,8 @@ Route::prefix('master-data')->name('master-data.')->group(function () {
         Route::post('/update/{uuid}', [RegionController::class, 'update'])->name('update');
     });
 });
-Route::prefix('transaction')->name('transaction.')->group(function () {
+
+Route::prefix('transaction')->name('transaction.')->middleware('auth')->group(function () {
     Route::prefix('/weight-bridge')->name('weight-bridge.')->group(function () {
         Route::get('/data', [WeightBridgeController::class, 'index'])->name('data');
         Route::get('/view/{weightBridgeUuid}', [WeightBridgeController::class, 'view'])->name('view');
@@ -135,8 +137,24 @@ Route::prefix('transaction')->name('transaction.')->group(function () {
     });
 });
 
+Route::prefix('account')->name('account.')->middleware('auth')->group(function () {
+    Route::prefix('user')->name('user.')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('list');
+        Route::get('/create', [UserController::class, 'create'])->name('create');
+        Route::post('/store', [UserController::class, 'store'])->name('store');
+        Route::get('/{uuid}/edit', [UserController::class, 'edit'])->name('edit');
+        Route::put('/{uuid}/update', [UserController::class, 'update'])->name('update');
+        Route::delete('/{uuid}/delete', [UserController::class, 'delete'])->name('delete');
+        Route::get('/{uuid}', [UserController::class, 'view'])->name('view');
+    });
+});
+
 // pages
-Route::get('/account', [AccountSettingsAccount::class, 'index'])->name('pages-account-settings-account');
+Route::get('/account', [AccountSettingsAccount::class, 'index'])->name('pages-account-settings-account')->middleware('auth');
 
 // authentication
-Route::get('/auth/login', [AuthController::class, 'index'])->name('login');
+Route::middleware('guest')->group(function () {
+    Route::get('/auth/login', [AuthController::class, 'index'])->name('login');
+});
+route::post('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout')->middleware('auth');
+Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');

@@ -21,6 +21,9 @@ class DatabaseSeeder extends Seeder
             AreaSeeder::class,
             TransporterSeeder::class,
             SeedersTransporterRateSeeder::class,
+            RoleSeeder::class,
+            PermissionSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

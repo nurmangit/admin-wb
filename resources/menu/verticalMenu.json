@@ -56,7 +56,7 @@
     },
     {
       "name": "Transactions",
-      "icon": "menu-icon tf-icons bx bx bx-dock-top",
+      "icon": "menu-icon tf-icons bx bx bx-file-blank",
       "slug": "transaction",
       "submenu": [
         {
@@ -78,6 +78,18 @@
           "url": "transaction/weight-bridge/approval",
           "name": "Approval",
           "slug": "transaction.weight-bridge.approval.list"
+        }
+      ]
+    },
+    {
+      "name": "Accounts",
+      "icon": "menu-icon tf-icons bx bx bx-user",
+      "slug": "account",
+      "submenu": [
+        {
+          "url": "account/user",
+          "name": "User",
+          "slug": "account.user.list"
         }
       ]
     }
