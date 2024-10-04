@@ -80,19 +80,6 @@
           "slug": "transaction.weight-bridge.approval.list"
         }
       ]
-    },
-    {
-      "name": "Authentications",
-      "icon": "menu-icon tf-icons bx bx-lock-open-alt",
-      "slug": "auth",
-      "submenu": [
-        {
-          "url": "auth/login-basic",
-          "name": "Login",
-          "slug": "auth-login-basic",
-          "target": "_blank"
-        }
-      ]
     }
   ]
 }
