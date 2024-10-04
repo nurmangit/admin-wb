@@ -65,87 +65,85 @@ Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics')->middl
 // Master Data Route
 Route::prefix('master-data')->name('master-data.')->middleware('auth')->group(function () {
     Route::prefix('/vehicle')->name('vehicle.')->group(function () {
-        Route::get('/', [VehicleController::class, 'index'])->name('list');
-        Route::get('/view', [VehicleController::class, 'index'])->name('view');
-        Route::get('/create', [VehicleController::class, 'create'])->name('create');
-        Route::post('/store', [VehicleController::class, 'store'])->name('store');
-        Route::delete('/delete/{uuid}', [VehicleController::class, 'delete'])->name('delete');
-        Route::get('/edit/{uuid}', [VehicleController::class, 'edit'])->name('edit');
-        Route::post('/update/{uuid}', [VehicleController::class, 'update'])->name('update');
-
+        Route::get('/', [VehicleController::class, 'index'])->middleware('can:view vehicle')->name('list');
+        Route::get('/view', [VehicleController::class, 'index'])->middleware('can:view vehicle')->name('view');
+        Route::get('/create', [VehicleController::class, 'create'])->middleware('can:create vehicle')->name('create');
+        Route::post('/store', [VehicleController::class, 'store'])->middleware('can:create vehicle')->name('store');
+        Route::delete('/delete/{uuid}', [VehicleController::class, 'delete'])->middleware('can:delete vehicle')->name('delete');
+        Route::get('/edit/{uuid}', [VehicleController::class, 'edit'])->middleware('can:edit vehicle')->name('edit');
+        Route::post('/update/{uuid}', [VehicleController::class, 'update'])->middleware('can:edit vehicle')->name('update');
         Route::get('/get-vehicle-details', [VehicleController::class, 'getVehicleDetails'])->name('details');
     });
     Route::prefix('/vehicle-type')->name('vehicle-type.')->group(function () {
-        Route::get('/', [VehicleTypeController::class, 'index'])->name('list');
-        Route::get('/view', [VehicleTypeController::class, 'index'])->name('view');
-        Route::get('/create', [VehicleTypeController::class, 'create'])->name('create');
-        Route::post('/store', [VehicleTypeController::class, 'store'])->name('store');
-        Route::delete('/delete/{uuid}', [VehicleTypeController::class, 'delete'])->name('delete');
-        Route::get('/edit/{uuid}', [VehicleTypeController::class, 'edit'])->name('edit');
-        Route::post('/update/{uuid}', [VehicleTypeController::class, 'update'])->name('update');
+        Route::get('/', [VehicleTypeController::class, 'index'])->middleware('can:view vehicle_type')->name('list');
+        Route::get('/view', [VehicleTypeController::class, 'index'])->middleware('can:view vehicle_type')->name('view');
+        Route::get('/create', [VehicleTypeController::class, 'create'])->middleware('can:create vehicle_type')->name('create');
+        Route::post('/store', [VehicleTypeController::class, 'store'])->middleware('can:create vehicle_type')->name('store');
+        Route::delete('/delete/{uuid}', [VehicleTypeController::class, 'delete'])->middleware('can:delete vehicle_type')->name('delete');
+        Route::get('/edit/{uuid}', [VehicleTypeController::class, 'edit'])->middleware('can:edit vehicle_type')->name('edit');
+        Route::post('/update/{uuid}', [VehicleTypeController::class, 'update'])->middleware('can:edit vehicle_type')->name('update');
     });
     Route::prefix('/transporter')->name('transporter.')->group(function () {
-        Route::get('/', [TransporterController::class, 'index'])->name('list');
-        Route::get('/view', [TransporterController::class, 'index'])->name('view');
-        Route::get('/create', [TransporterController::class, 'create'])->name('create');
-        Route::post('/store', [TransporterController::class, 'store'])->name('store');
-        Route::delete('/delete/{uuid}', [TransporterController::class, 'delete'])->name('delete');
-        Route::get('/edit/{uuid}', [TransporterController::class, 'edit'])->name('edit');
-        Route::post('/update/{uuid}', [TransporterController::class, 'update'])->name('update');
+        Route::get('/', [TransporterController::class, 'index'])->middleware('can:view transporter')->name('list');
+        Route::get('/view', [TransporterController::class, 'index'])->middleware('can:view transporter')->name('view');
+        Route::get('/create', [TransporterController::class, 'create'])->middleware('can:create transporter')->name('create');
+        Route::post('/store', [TransporterController::class, 'store'])->middleware('can:create transporter')->name('store');
+        Route::delete('/delete/{uuid}', [TransporterController::class, 'delete'])->middleware('can:delete transporter')->name('delete');
+        Route::get('/edit/{uuid}', [TransporterController::class, 'edit'])->middleware('can:edit transporter')->name('edit');
+        Route::post('/update/{uuid}', [TransporterController::class, 'update'])->middleware('can:edit transporter')->name('update');
     });
     Route::prefix('/transporter-rate')->name('transporter-rate.')->group(function () {
-        Route::get('/', [TransporterRateController::class, 'index'])->name('list');
-        Route::get('/view', [TransporterRateController::class, 'index'])->name('view');
-        Route::get('/create', [TransporterRateController::class, 'create'])->name('create');
-        Route::post('/store', [TransporterRateController::class, 'store'])->name('store');
-        Route::delete('/delete/{uuid}', [TransporterRateController::class, 'delete'])->name('delete');
-        Route::get('/edit/{uuid}', [TransporterRateController::class, 'edit'])->name('edit');
-        Route::post('/update/{uuid}', [TransporterRateController::class, 'update'])->name('update');
+        Route::get('/', [TransporterRateController::class, 'index'])->middleware('can:view transporter_rate')->name('list');
+        Route::get('/view', [TransporterRateController::class, 'index'])->middleware('can:view transporter_rate')->name('view');
+        Route::get('/create', [TransporterRateController::class, 'create'])->middleware('can:create transporter_rate')->name('create');
+        Route::post('/store', [TransporterRateController::class, 'store'])->middleware('can:create transporter_rate')->name('store');
+        Route::delete('/delete/{uuid}', [TransporterRateController::class, 'delete'])->middleware('can:delete transporter_rate')->name('delete');
+        Route::get('/edit/{uuid}', [TransporterRateController::class, 'edit'])->middleware('can:edit transporter_rate')->name('edit');
+        Route::post('/update/{uuid}', [TransporterRateController::class, 'update'])->middleware('can:edit transporter_rate')->name('update');
     });
     Route::prefix('/area')->name('area.')->group(function () {
-        Route::get('/', [AreaController::class, 'index'])->name('list');
-        Route::get('/view', [AreaController::class, 'index'])->name('view');
-        Route::get('/create', [AreaController::class, 'create'])->name('create');
-        Route::post('/store', [AreaController::class, 'store'])->name('store');
-        Route::delete('/delete/{uuid}', [AreaController::class, 'delete'])->name('delete');
-        Route::get('/edit/{uuid}', [AreaController::class, 'edit'])->name('edit');
-        Route::post('/update/{uuid}', [AreaController::class, 'update'])->name('update');
+        Route::get('/', [AreaController::class, 'index'])->middleware('can:view area')->name('list');
+        Route::get('/view', [AreaController::class, 'index'])->middleware('can:view area')->name('view');
+        Route::get('/create', [AreaController::class, 'create'])->middleware('can:create area')->name('create');
+        Route::post('/store', [AreaController::class, 'store'])->middleware('can:create area')->name('store');
+        Route::delete('/delete/{uuid}', [AreaController::class, 'delete'])->middleware('can:delete area')->name('delete');
+        Route::get('/edit/{uuid}', [AreaController::class, 'edit'])->middleware('can:edit area')->name('edit');
+        Route::post('/update/{uuid}', [AreaController::class, 'update'])->middleware('can:edit area')->name('update');
     });
     Route::prefix('/region')->name('region.')->group(function () {
-        Route::get('/', [RegionController::class, 'index'])->name('list');
-        Route::get('/view', [RegionController::class, 'index'])->name('view');
-        Route::get('/create', [RegionController::class, 'create'])->name('create');
-        Route::post('/store', [RegionController::class, 'store'])->name('store');
-        Route::delete('/delete/{uuid}', [RegionController::class, 'delete'])->name('delete');
-        Route::get('/edit/{uuid}', [RegionController::class, 'edit'])->name('edit');
-        Route::post('/update/{uuid}', [RegionController::class, 'update'])->name('update');
+        Route::get('/', [RegionController::class, 'index'])->middleware('can:view area')->name('list');
+        Route::get('/view', [RegionController::class, 'index'])->middleware('can:view area')->name('view');
+        Route::get('/create', [RegionController::class, 'create'])->middleware('can:create area')->name('create');
+        Route::post('/store', [RegionController::class, 'store'])->middleware('can:create area')->name('store');
+        Route::delete('/delete/{uuid}', [RegionController::class, 'delete'])->middleware('can:delete area')->name('delete');
+        Route::get('/edit/{uuid}', [RegionController::class, 'edit'])->middleware('can:edit area')->name('edit');
+        Route::post('/update/{uuid}', [RegionController::class, 'update'])->middleware('can:edit area')->name('update');
     });
 });
 
 Route::prefix('transaction')->name('transaction.')->middleware('auth')->group(function () {
     Route::prefix('/weight-bridge')->name('weight-bridge.')->group(function () {
-        Route::get('/data', [WeightBridgeController::class, 'index'])->name('data');
-        Route::get('/view/{weightBridgeUuid}', [WeightBridgeController::class, 'view'])->name('view');
+        Route::get('/data', [WeightBridgeController::class, 'index'])->middleware('can:view data_wb')->name('data');
+        Route::get('/view/{weightBridgeUuid}', [WeightBridgeController::class, 'view'])->middleware('can:view data_wb')->name('view');
         Route::get('/receiving-material', [WeightBridgeController::class, 'receivingMaterial'])->name('receiving-material');
         Route::get('/finish-good', [WeightBridgeController::class, 'finishGood'])->name('finish-good');
-        Route::get('/approval', [ApprovalController::class, 'index'])->name('approval.list');
-        Route::post('/approval/approve/{approvalUuid}', [ApprovalController::class, 'approve'])->name('approval.approve');
-        Route::post('/approval/reject/{approvalUuid}', [ApprovalController::class, 'reject'])->name('approval.reject');
-        Route::post('/weight-in', [WeightBridgeController::class, 'weightIn'])->name('weightIn');
-        Route::post('/weight-out', [WeightBridgeController::class, 'weightOut'])->name('weightOut');
-        route::get('/print/{uuid}/slip', [PrintController::class, 'generateSlipPDF'])->name('printSlip');
+        Route::get('/approval', [ApprovalController::class, 'index'])->middleware('can:view approval')->name('approval.list');
+        Route::post('/approval/approve/{approvalUuid}', [ApprovalController::class, 'approve'])->middleware('can:approve')->name('approval.approve');
+        Route::post('/approval/reject/{approvalUuid}', [ApprovalController::class, 'reject'])->middleware('can:reject')->name('approval.reject');
+        Route::post('/weight-in', [WeightBridgeController::class, 'weightIn'])->middleware('can:weight_in')->name('weightIn');
+        Route::post('/weight-out', [WeightBridgeController::class, 'weightOut'])->middleware('can:weight_out')->name('weightOut');
+        route::get('/print/{uuid}/slip', [PrintController::class, 'generateSlipPDF'])->middleware('can:print_rw')->name('printSlip');
     });
 });
 
 Route::prefix('account')->name('account.')->middleware('auth')->group(function () {
     Route::prefix('user')->name('user.')->group(function () {
-        Route::get('/', [UserController::class, 'index'])->name('list');
-        Route::get('/create', [UserController::class, 'create'])->name('create');
-        Route::post('/store', [UserController::class, 'store'])->name('store');
-        Route::get('/{uuid}/edit', [UserController::class, 'edit'])->name('edit');
-        Route::put('/{uuid}/update', [UserController::class, 'update'])->name('update');
-        Route::delete('/{uuid}/delete', [UserController::class, 'delete'])->name('delete');
-        Route::get('/{uuid}', [UserController::class, 'view'])->name('view');
+        Route::get('/', [UserController::class, 'index'])->middleware('can:view user')->name('list');
+        Route::get('/create', [UserController::class, 'create'])->middleware('can:create user')->name('create');
+        Route::post('/store', [UserController::class, 'store'])->middleware('can:create user')->name('store');
+        Route::get('/{uuid}/edit', [UserController::class, 'edit'])->middleware('can:edit user')->name('edit');
+        Route::put('/{uuid}/update', [UserController::class, 'update'])->middleware('can:edit user')->name('update');
+        Route::delete('/{uuid}/delete', [UserController::class, 'delete'])->middleware('can:delete user')->name('delete');
     });
 });
 
