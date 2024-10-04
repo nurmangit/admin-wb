@@ -63,6 +63,8 @@ class PermissionSeeder extends Seeder
             'can weight_in_fg',
             'can weight_in_out',
             'can print_fg',
+            'can approve',
+            'can reject',
             'create role',
         ];
 

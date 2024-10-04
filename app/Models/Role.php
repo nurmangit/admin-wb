@@ -10,14 +10,16 @@ class Role extends SpatieRole
 {
     use HasFactory;
     use HasUuids;
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'uuid';
+    protected $keyType = 'string';
+    public $incrementing = false;
 
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($model) {
-            $model->id = \Illuminate\Support\Str::uuid();
+            $model->uuid = \Illuminate\Support\Str::uuid();
         });
     }
 }

@@ -8,10 +8,19 @@
     <span class="text-muted fw-light">Vehicle /</span> List
   </h4>
   <div>
+    @can('import vehicle')
     <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-info mb-4 fw-bold">Import Data</a>
+    @endcan
+
+    @can('export vehicle')
     <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-success mb-4 fw-bold">Export Data</a>
-    <a href="{{route('master-data.vehicle.create')}}" class="btn btn-primary mb-4 fw-bold">Add New Vehicle</a>
+    @endcan
+
+    @can('create vehicle')
+    <a href="{{ route('master-data.vehicle.create') }}" class="btn btn-primary mb-4 fw-bold">Add New Vehicle</a>
+    @endcan
   </div>
+
 </div>
 
 <!-- Hoverable Table rows -->
