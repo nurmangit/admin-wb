@@ -126,8 +126,8 @@ Route::prefix('transaction')->name('transaction.')->middleware('auth')->group(fu
     Route::prefix('/weight-bridge')->name('weight-bridge.')->group(function () {
         Route::get('/data', [WeightBridgeController::class, 'index'])->middleware('can:view data_wb')->name('data');
         Route::get('/view/{weightBridgeUuid}', [WeightBridgeController::class, 'view'])->middleware('can:view data_wb')->name('view');
-        Route::get('/receiving-material', [WeightBridgeController::class, 'receivingMaterial'])->name('receiving-material');
-        Route::get('/finish-good', [WeightBridgeController::class, 'finishGood'])->name('finish-good');
+        Route::get('/receiving-material', [WeightBridgeController::class, 'receivingMaterial'])->name('receiving-material')->middleware('can:view receiving_material');
+        Route::get('/finish-good', [WeightBridgeController::class, 'finishGood'])->name('finish-good')->middleware('can:view finish_good');
         Route::get('/approval', [ApprovalController::class, 'index'])->middleware('can:view approval')->name('approval.list');
         Route::post('/approval/approve/{approvalUuid}', [ApprovalController::class, 'approve'])->middleware('can:approve')->name('approval.approve');
         Route::post('/approval/reject/{approvalUuid}', [ApprovalController::class, 'reject'])->middleware('can:reject')->name('approval.reject');

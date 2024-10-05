@@ -57,6 +57,8 @@ class PermissionSeeder extends Seeder
             'view transporter_rate',
             'export transporter_rate',
             'import transporter_rate',
+            'view receiving_material',
+            'view finish_good',
             'weight_in',
             'weight_out',
             'print_rw',
