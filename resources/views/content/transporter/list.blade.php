@@ -8,9 +8,15 @@
     <span class="text-muted fw-light">Transporter /</span> List
   </h4>
   <div>
+    @can('import transporter')
     <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-info mb-4 fw-bold">Import Data</a>
+    @endcan
+    @can('export transporter')
     <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-success mb-4 fw-bold">Export Data</a>
+    @endcan
+    @can('create transporter')
     <a href="{{ route('master-data.transporter.create') }}" class="btn btn-primary mb-4 fw-bold">Add New Transporter</a>
+    @endcan
   </div>
 </div>
 
@@ -34,13 +40,17 @@
           <td>{{ $transporter->address }}</td>
           <td>
             <div class="d-flex">
+              @can('edit transporter')
               <a href="{{ route('master-data.transporter.edit', $transporter->uuid) }}" class="btn btn-sm btn-info" style="margin-right: 5px;">edit</a>
+              @endcan
+              @can('delete transporter')
               <form action="{{ route('master-data.transporter.delete', $transporter->uuid) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this type of vehicle?');">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-sm btn-danger">delete
                 </button>
               </form>
+              @endcan
             </div>
           </td>
         </tr>

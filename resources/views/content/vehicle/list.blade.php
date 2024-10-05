@@ -52,7 +52,10 @@
           </td>
           <td>
             <div class="d-flex">
+              @can('edit vehicle')
               <a href="{{ route('master-data.vehicle.edit', $vehicle->uuid) }}" class="btn btn-sm btn-info" style="margin-right: 5px;">edit</a>
+              @endcan
+              @can('delete vehicle')
               <form action="{{ route('master-data.vehicle.delete', $vehicle->uuid) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this type of vehicle?');">
                 @csrf
                 @method('DELETE')
@@ -60,6 +63,7 @@
                   delete
                 </button>
               </form>
+              @endcan
             </div>
           </td>
         </tr>

@@ -8,9 +8,15 @@
     <span class="text-muted fw-light">Area /</span> List
   </h4>
   <div>
+    @can('export area')
     <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-info mb-4 fw-bold">Import Data</a>
+    @endcan
+    @can('import area')
     <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-success mb-4 fw-bold">Export Data</a>
+    @endcan
+    @can('create area')
     <a href="{{ route('master-data.area.create') }}" class="btn btn-primary mb-4 fw-bold">Add New Area</a>
+    @endcan
   </div>
 </div>
 
@@ -34,7 +40,10 @@
           <td>{{ $area->region->name }}</td>
           <td>
             <div class="d-flex">
+              @can('edit area')
               <a href="{{ route('master-data.area.edit', $area->uuid) }}" class="btn btn-sm btn-info" style="margin-right: 5px;">edit</i></a>
+              @endcan
+              @can('delete area')
               <form action="{{ route('master-data.area.delete', $area->uuid) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this type of vehicle?');">
                 @csrf
                 @method('DELETE')
@@ -42,6 +51,7 @@
                   delete
                 </button>
               </form>
+              @endcan
             </div>
           </td>
         </tr>

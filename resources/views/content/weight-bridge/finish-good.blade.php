@@ -124,8 +124,12 @@
           </div>
           <div class="d-flex justify-content-end">
             <!-- Submit Button -->
+            @can('weight_in')
             <button type="button" style="margin-right: 10px;" id="weightInBtn" class="btn btn-success fw-bold">WEIGHT IN</button>
+            @endcan
+            @can('weight_out')
             <button type="button" style="margin-right: 10px;" id="weightOutBtn" class="btn btn-info fw-bold">WEIGHT OUT</button>
+            @endcan
             <button type="button" class="btn btn-primary fw-bold">PRINT</button>
           </div>
         </form>

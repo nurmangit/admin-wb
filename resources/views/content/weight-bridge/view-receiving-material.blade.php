@@ -101,7 +101,9 @@
           </div>
           <div class="d-flex justify-content-end">
             <!-- Submit Button -->
+            @can('print_rw')
             <a type="button" href="{{route('transaction.weight-bridge.printSlip',$weight_bridge->uuid)}}" target="_blank" class="btn btn-primary fw-bold">PRINT</a>
+            @endcan
           </div>
         </form>
       </div>

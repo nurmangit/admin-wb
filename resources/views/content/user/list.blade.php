@@ -8,9 +8,16 @@
     <span class="text-muted fw-light">User /</span> List
   </h4>
   <div>
+
+    @can('import user')
     <a href="{{ route('account.user.create') }}" class="btn btn-info mb-4 fw-bold">Import Data</a>
+    @endcan
+    @can('export user')
     <a href="{{ route('account.user.create') }}" class="btn btn-success mb-4 fw-bold">Export Data</a>
+    @endcan
+    @can('create user')
     <a href="{{ route('account.user.create') }}" class="btn btn-primary mb-4 fw-bold">Add New User</a>
+    @endcan
   </div>
 </div>
 
@@ -35,12 +42,16 @@
           <td>{{ $user->created_at }}</td>
           <td>
             <div class="d-flex">
+              @can('edit user')
               <a href="{{ route('account.user.edit', $user->uuid) }}" class="btn btn-sm btn-info" style="margin-right: 5px;">edit</a>
+              @endcan
+              @can('delete user')
               <form action="{{ route('account.user.delete', $user->uuid) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-sm btn-danger">delete</button>
               </form>
+              @endcan
             </div>
           </td>
         </tr>

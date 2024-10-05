@@ -52,10 +52,11 @@ class GroupController extends Controller
     {
         $role = Role::findOrFail($uuid);
         $role->name = strtoupper($request->get('name'));
+        $role->syncPermissions([]);
         $role->update();
         $permissions = $request->except(['name', '_token', '_method']);
         foreach ($permissions as $key => $value) {
-            $permission = Permission::findByName(str_replace('_', ' ', $key));
+            $permission = Permission::findByName($this->replaceFirstUnderscore($key));
             if ($permission) {
                 $permission->assignRole($role);
                 $permission->update();
@@ -65,6 +66,22 @@ class GroupController extends Controller
             'account.group.edit',
             ['uuid' => $uuid]
         )->with('success', 'Group updated successfully');
+    }
+
+    private function replaceFirstUnderscore($string)
+    {
+        if (in_array($string, ['weight_in', 'weight_out', 'print_rw', 'print_fg'])) {
+            return $string;
+        }
+        $firstUnderscorePos = strpos($string, '_');
+
+        if ($firstUnderscorePos !== false) {
+            return substr($string, 0, $firstUnderscorePos) .
+                ' ' .
+                substr($string, $firstUnderscorePos + 1);
+        }
+
+        return $string; // return the original string if no underscore is found
     }
 
     public function delete($uuid)

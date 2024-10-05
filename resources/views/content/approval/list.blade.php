@@ -46,16 +46,20 @@
             <div class="d-flex">
               <a href="{{route('transaction.weight-bridge.view',$approval->weight_bridge->uuid)}}" target="_blank" class="btn btn-sm btn-info" style="margin-right: 0.2rem;">view</a>
               @if($approval->action_date == null)
+              @can('approve')
               <form action="{{ route('transaction.weight-bridge.approval.approve', $approval->uuid) }}" method="POST" onsubmit="return confirm('Are you sure you want to approve weight out of this slip No?');">
                 @csrf
                 @method('POST')
                 <button type="submit" class="btn btn-sm btn-success" style="margin-right: 0.2rem;">Approve</button>
               </form>
+              @endcan
+              @can('reject')
               <form action="{{ route('transaction.weight-bridge.approval.reject', $approval->uuid) }}" method="POST" onsubmit="return confirm('Are you sure you want to reject weight out of this slip No?');">
                 @csrf
                 @method('POST')
                 <button type="submit" class="btn btn-sm btn-danger" style="margin-right: 0.2rem;">Reject</button>
               </form>
+              @endcan
               @endif
             </div>
           </td>

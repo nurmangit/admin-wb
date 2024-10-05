@@ -8,9 +8,10 @@
     <span class="text-muted fw-light">Group /</span> List
   </h4>
   <div>
-    <a href="{{ route('account.group.create') }}" class="btn btn-info mb-4 fw-bold">Import Data</a>
-    <a href="{{ route('account.group.create') }}" class="btn btn-success mb-4 fw-bold">Export Data</a>
+    @can('create group')
     <a href="{{ route('account.group.create') }}" class="btn btn-primary mb-4 fw-bold">Add New Group</a>
+    @endcan
+
   </div>
 </div>
 
@@ -37,7 +38,9 @@
           <td>{{ $role->updated_by }}</td>
           <td>
             <div class="d-flex">
+              @can('edit group')
               <a href="{{ route('account.group.edit', $role->uuid) }}" class="btn btn-sm btn-info" style="margin-right: 5px;">edit</a>
+              @endcan
             </div>
           </td>
         </tr>
