@@ -56,7 +56,8 @@ class UserController extends Controller
     }
 
     $role = Role::findById($validated['group']); // Get the role
-    $user->assignRole($role);
+    $user->roles()->detach(); // Remove existing roles
+    $user->assignRole($role); // Assign the new role
     $user->update();
 
     $validated['is_active'] = $request->has('is_active') ? true : false;
