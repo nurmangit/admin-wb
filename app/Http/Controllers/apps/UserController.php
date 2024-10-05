@@ -5,6 +5,7 @@ namespace App\Http\Controllers\apps;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Models\Role;
 use App\Models\User;
 
 class UserController extends Controller
@@ -30,8 +31,15 @@ class UserController extends Controller
 
   public function edit($uuid)
   {
+    $user = User::with('roles')->findOrFail($uuid);
+    $user_role = null;
+    foreach ($user->roles as $role) {
+      $user_role = $role;
+    }
     return view('content.user.edit', [
-      "user" => User::findOrFail($uuid)
+      "user" => $user,
+      "roles" => Role::get(),
+      "user_role" => $user_role,
     ]);
   }
 
@@ -46,6 +54,10 @@ class UserController extends Controller
     } else {
       unset($validated['password']); // Remove password from the validated array if not provided
     }
+
+    $role = Role::findById($validated['group']); // Get the role
+    $user->assignRole($role);
+    $user->update();
 
     $validated['is_active'] = $request->has('is_active') ? true : false;
 

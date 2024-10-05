@@ -19,6 +19,7 @@ class UserUpdateRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $uuid . ',uuid',
             'password' => 'nullable|string|min:8|confirmed',
+            'group' => 'nullable|uuid|exists:roles,uuid',
         ];
     }
 
