@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('weight_out_by')->nullable();
             $table->string('remark')->nullable();
             $table->string('status')->nullable();
-
+            $table->auditableWithDeletes();
             $table->timestamps();
             $table->softDeletes();
         });

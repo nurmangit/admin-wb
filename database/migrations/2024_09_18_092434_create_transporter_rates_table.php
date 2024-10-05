@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('charge');
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();
+            $table->auditableWithDeletes();
             $table->timestamps();
             $table->softDeletes();
         });

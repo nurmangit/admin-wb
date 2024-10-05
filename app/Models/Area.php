@@ -6,10 +6,12 @@
 
 namespace App\Models;
 
+use App\Traits\Auditable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Yajra\Auditable\AuditableWithDeletesTrait;
 
 /**
  * Class Area
@@ -28,7 +30,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Area extends Model
 {
-	use SoftDeletes;
+	use SoftDeletes, AuditableWithDeletesTrait, Auditable;
 	protected $table = 'areas';
 	protected $primaryKey = 'uuid';
 	public $incrementing = false;

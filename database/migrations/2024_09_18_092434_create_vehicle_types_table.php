@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('code');
             $table->string('tolerance');
             $table->string('weight_standart');
-
+            $table->auditableWithDeletes();
             $table->timestamps();
             $table->softDeletes();
         });

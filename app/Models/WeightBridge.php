@@ -6,13 +6,15 @@
 
 namespace App\Models;
 
+use App\Traits\Auditable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Yajra\Auditable\AuditableWithDeletesTrait;
 
 class WeightBridge extends Model
 {
-	use SoftDeletes;
+	use SoftDeletes, AuditableWithDeletesTrait, Auditable;
 	protected $table = 'weight_bridges';
 	protected $primaryKey = 'uuid';
 	public $incrementing = false;

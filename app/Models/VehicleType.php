@@ -6,10 +6,12 @@
 
 namespace App\Models;
 
+use App\Traits\Auditable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Yajra\Auditable\AuditableWithDeletesTrait;
 
 /**
  * Class VehicleType
@@ -27,7 +29,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class VehicleType extends Model
 {
-	use SoftDeletes;
+	use SoftDeletes, AuditableWithDeletesTrait, Auditable;
 	protected $table = 'vehicle_types';
 	protected $primaryKey = 'uuid';
 	public $incrementing = false;

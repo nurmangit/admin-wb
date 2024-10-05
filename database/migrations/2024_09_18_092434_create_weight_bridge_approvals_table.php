@@ -20,7 +20,7 @@ return new class extends Migration
             $table->boolean('is_approve')->nullable();
             $table->boolean('is_reject')->nullable();
             $table->boolean('is_active')->default(true);
-
+            $table->auditableWithDeletes();
             $table->timestamps();
             $table->softDeletes();
         });

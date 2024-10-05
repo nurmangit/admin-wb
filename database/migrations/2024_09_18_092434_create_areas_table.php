@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('code');
             $table->string('region_uuid');
-
+            $table->auditableWithDeletes();
             $table->timestamps();
             $table->softDeletes();
         });

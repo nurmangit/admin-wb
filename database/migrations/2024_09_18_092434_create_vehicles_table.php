@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('transporter_rate_uuid');
             $table->string('transporter_uuid');
             $table->string('ownership');
-
+            $table->auditableWithDeletes();
             $table->timestamps();
             $table->softDeletes();
         });
