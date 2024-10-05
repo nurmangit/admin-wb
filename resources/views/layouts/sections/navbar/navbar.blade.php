@@ -53,8 +53,8 @@ $navbarDetached = ($navbarDetached ?? '');
                       </div>
                     </div>
                     <div class="flex-grow-1">
-                      <span class="fw-medium d-block">John Doe</span>
-                      <small class="text-muted">Admin</small>
+                      <span class="fw-medium d-block">{{auth()->user()->name}}</span>
+                      <small class="text-muted">{{auth()->user()->roles()->first()->name}}</small>
                     </div>
                   </div>
                 </a>
@@ -63,7 +63,7 @@ $navbarDetached = ($navbarDetached ?? '');
                 <div class="dropdown-divider"></div>
               </li>
               <li>
-                <a class="dropdown-item" href="{{ route('pages-account-settings-account') }}">
+                <a class="dropdown-item" href="{{ route('account.profile') }}">
                   <i class="bx bx-user me-2"></i>
                   <span class="align-middle">My Profile</span>
                 </a>

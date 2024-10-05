@@ -153,10 +153,9 @@ Route::prefix('account')->name('account.')->middleware('auth')->group(function (
         Route::get('/{uuid}/edit', [GroupController::class, 'edit'])->middleware('can:edit group')->name('edit');
         Route::put('/{uuid}/update', [GroupController::class, 'update'])->middleware('can:edit group')->name('update');
     });
+    Route::get('/profile', [AccountSettingsAccount::class, 'index'])->name('profile')->middleware('auth');
+    Route::put('/profile/update', [AccountSettingsAccount::class, 'update'])->name('profile.update')->middleware('auth');
 });
-
-// pages
-Route::get('/account', [AccountSettingsAccount::class, 'index'])->name('pages-account-settings-account')->middleware('auth');
 
 // authentication
 Route::middleware('guest')->group(function () {
