@@ -3,6 +3,7 @@
 use App\Http\Controllers\apps\ApprovalController;
 use App\Http\Controllers\apps\Area;
 use App\Http\Controllers\apps\AreaController;
+use App\Http\Controllers\apps\GroupController;
 use App\Http\Controllers\apps\PrintController;
 use App\Http\Controllers\apps\Region;
 use App\Http\Controllers\apps\RegionController;
@@ -144,6 +145,13 @@ Route::prefix('account')->name('account.')->middleware('auth')->group(function (
         Route::get('/{uuid}/edit', [UserController::class, 'edit'])->middleware('can:edit user')->name('edit');
         Route::put('/{uuid}/update', [UserController::class, 'update'])->middleware('can:edit user')->name('update');
         Route::delete('/{uuid}/delete', [UserController::class, 'delete'])->middleware('can:delete user')->name('delete');
+    });
+    Route::prefix('group')->name('group.')->group(function () {
+        Route::get('/', [GroupController::class, 'index'])->middleware('can:view group')->name('list');
+        Route::get('/create', [GroupController::class, 'create'])->middleware('can:create group')->name('create');
+        Route::post('/store', [GroupController::class, 'store'])->middleware('can:create group')->name('store');
+        Route::get('/{uuid}/edit', [GroupController::class, 'edit'])->middleware('can:edit group')->name('edit');
+        Route::put('/{uuid}/update', [GroupController::class, 'update'])->middleware('can:edit group')->name('update');
     });
 });
 

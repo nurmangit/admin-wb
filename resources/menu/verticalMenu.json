@@ -90,6 +90,11 @@
           "url": "account/user",
           "name": "User",
           "slug": "account.user.list"
+        },
+        {
+          "url": "account/group",
+          "name": "Group",
+          "slug": "account.group.list"
         }
       ]
     }
