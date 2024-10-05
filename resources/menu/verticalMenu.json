@@ -12,7 +12,7 @@
       "submenu": [
         {
           "url": "/",
-          "name": "Analytics",
+          "name": "Home",
           "slug": "dashboard-analytics"
         }
       ]
@@ -44,7 +44,7 @@
           "url": "master-data/transporter-rate",
           "name": "Transporter Rate",
           "slug": "master-data.transporter-rate.list",
-          "permission": "view transporter_list"
+          "permission": "view transporter_rate"
         },
         {
           "url": "master-data/region",
