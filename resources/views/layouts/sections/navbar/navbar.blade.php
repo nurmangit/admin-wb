@@ -54,7 +54,7 @@ $navbarDetached = ($navbarDetached ?? '');
                     </div>
                     <div class="flex-grow-1">
                       <span class="fw-medium d-block">{{auth()->user()->name}}</span>
-                      <small class="text-muted">{{auth()->user()->roles()->first()->name}}</small>
+                      <small class="text-muted">{{auth()->user()->roles()->first()?->name}}</small>
                     </div>
                   </div>
                 </a>

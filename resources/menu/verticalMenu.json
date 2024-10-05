@@ -5,10 +5,6 @@
       "name": "Dashboards",
       "icon": "menu-icon tf-icons bx bx-home-circle",
       "slug": "dashboard",
-      "badge": [
-        "danger",
-        "5"
-      ],
       "submenu": [
         {
           "url": "/",

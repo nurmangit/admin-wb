@@ -316,14 +316,16 @@
               <div class="avatar flex-shrink-0">
                 <i class='bx bxs-file-blank text-warning' style="font-size: 2rem;"></i>
               </div>
+              @can('view approval')
               <div class="dropdown">
                 <button class="btn p-0" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="bx bx-dots-vertical-rounded"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                  <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                  <a class="dropdown-item" href="{{route('transaction.weight-bridge.approval.list')}}">View More</a>
                 </div>
               </div>
+              @endcan
             </div>
             <span>Total Waiting Approval</span>
             <h3 class="card-title text-nowrap mb-1 mt-2">{{$waiting_approval}}</h3>
@@ -337,14 +339,16 @@
               <div class="avatar flex-shrink-0">
                 <i class='bx bxs-file-blank text-success' style="font-size: 2rem;"></i>
               </div>
+              @can('view approval')
               <div class="dropdown">
                 <button class="btn p-0" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="bx bx-dots-vertical-rounded"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                  <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                  <a class="dropdown-item" href="{{route('transaction.weight-bridge.approval.list')}}">View More</a>
                 </div>
               </div>
+              @endcan
             </div>
             <span>Total Approved</span>
             <h3 class="card-title text-nowrap mb-1 mt-2">{{$total_approved}}</h3>
@@ -358,14 +362,16 @@
               <div class="avatar flex-shrink-0">
                 <i class='bx bxs-file-blank text-danger' style="font-size: 2rem;"></i>
               </div>
+              @can('view approval')
               <div class="dropdown">
                 <button class="btn p-0" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="bx bx-dots-vertical-rounded"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                  <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                  <a class="dropdown-item" href="{{route('transaction.weight-bridge.approval.list')}}">View More</a>
                 </div>
               </div>
+              @endcan
             </div>
             <span>Total Rejected</span>
             <h3 class="card-title text-nowrap mb-1 mt-2">{{$total_rejected}}</h3>
@@ -395,14 +401,16 @@
               <div class="avatar flex-shrink-0">
                 <i class='bx bxs-truck text-primary' style="font-size: 2rem;"></i>
               </div>
+              @can('view vehicle')
               <div class="dropdown">
                 <button class="btn p-0" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="bx bx-dots-vertical-rounded"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                  <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                  <a class="dropdown-item" href="{{route('master-data.vehicle.list')}}">View More</a>
                 </div>
               </div>
+              @endcan
             </div>
             <span>Total Vehicles</span>
             <h3 class="card-title text-nowrap mb-1 mt-2">{{$total_vehicle}}</h3>
@@ -416,14 +424,16 @@
               <div class="avatar flex-shrink-0">
                 <i class='bx bxs-dashboard text-info' style="font-size: 2rem;"></i>
               </div>
+              @can('view transporter')
               <div class="dropdown">
                 <button class="btn p-0" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="bx bx-dots-vertical-rounded"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                  <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                  <a class="dropdown-item" href="{{route('master-data.transporter.list')}}">View More</a>
                 </div>
               </div>
+              @endcan
             </div>
             <span>Total Transporter</span>
             <h3 class="card-title text-nowrap mb-1 mt-2">{{$total_transporter}}</h3>
@@ -437,14 +447,16 @@
               <div class="avatar flex-shrink-0">
                 <i class='bx bxs-map-alt text-primary' style="font-size: 2rem;"></i>
               </div>
+              @can('view transporter')
               <div class="dropdown">
                 <button class="btn p-0" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="bx bx-dots-vertical-rounded"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                  <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                  <a class="dropdown-item" href="{{route('master-data.area.list')}}">View More</a>
                 </div>
               </div>
+              @endcan
             </div>
             <span>Total Area</span>
             <h3 class="card-title text-nowrap mb-1 mt-2">{{$total_area}}</h3>
@@ -458,14 +470,16 @@
               <div class="avatar flex-shrink-0">
                 <i class='bx bxs-map-alt text-info' style="font-size: 2rem;"></i>
               </div>
+              @can('view region')
               <div class="dropdown">
                 <button class="btn p-0" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="bx bx-dots-vertical-rounded"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                  <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                  <a class="dropdown-item" href="{{route('master-data.region.list')}}">View More</a>
                 </div>
               </div>
+              @endcan
             </div>
             <span>Total Region</span>
             <h3 class="card-title text-nowrap mb-1 mt-2">{{$total_region}}</h3>

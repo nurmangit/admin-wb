@@ -102,7 +102,7 @@ class GroupController extends Controller
         );
         $permissions = $request->except(['name', '_token']);
         foreach ($permissions as $key => $value) {
-            $permission = Permission::findByName(str_replace('_', ' ', $key));
+            $permission = Permission::findByName($this->replaceFirstUnderscore($key));
             if ($permission) {
                 $permission->assignRole($role);
                 $permission->update();
