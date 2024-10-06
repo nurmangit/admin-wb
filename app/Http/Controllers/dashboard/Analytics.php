@@ -24,20 +24,20 @@ class Analytics extends Controller
 
     $weightOutByDates = WeightBridge::select(
       DB::raw('DATE(arrival_date) as date'),
-      DB::raw('count(*) as total_weight_out'),
+      DB::raw('count(*) as total_weight_out')
     )
       ->whereMonth('arrival_date', $currentMonth)
       ->whereYear('arrival_date', $currentYear)
       ->whereNotNull('weight_out')
       ->groupBy('date')
-      ->get()?->toArray();
+      ->get()
+      ->toArray();
 
     $weightOut = [];
     $weightOutDate = [];
+
     foreach ($weightOutByDates as $weightOutByDate) {
       $weightOut[] = $weightOutByDate['total_weight_out'];
-    }
-    foreach ($weightOutByDates as $weightOutByDate) {
       $weightOutDate[] = $weightOutByDate['date'];
     }
     return view(
