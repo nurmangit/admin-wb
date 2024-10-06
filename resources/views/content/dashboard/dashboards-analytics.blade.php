@@ -28,12 +28,12 @@
       totalRevenueChartOptions = {
         series: [{
             name: 'WEIGHT IN',
-            data: [18, 7, 15, 29, 18, 12, 9, 18, 7, 15, 29, 18, 12, 9, 9]
+            data: {!!json_encode($weight_out) !!}
           },
           {
             name: 'WEIGHT OUT',
-            data: [-13, -18, -9, -14, -5, -17, -15, -13, -18, -9, -14, -5, -17, -15, -1]
-          }
+            data: {!!json_encode($weight_out) !!}
+          },
         ],
         chart: {
           height: 300,
@@ -89,7 +89,7 @@
           }
         },
         xaxis: {
-          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+          categories: {!!json_encode($weight_out_date) !!},
           labels: {
             style: {
               fontSize: '13px',
