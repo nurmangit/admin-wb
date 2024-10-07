@@ -71,6 +71,7 @@ class PermissionSeeder extends Seeder
             'view group',
             'create group',
             'edit group',
+            'view log',
         ];
 
         $role = Role::findByName('SUPER_ADMIN'); // Get the role

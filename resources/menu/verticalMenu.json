@@ -105,6 +105,19 @@
           "permission": "view group"
         }
       ]
+    },
+    {
+      "name": "Settings",
+      "icon": "menu-icon tf-icons bx bx bx-cog",
+      "slug": "setting",
+      "submenu": [
+        {
+          "url": "setting/log",
+          "name": "Log",
+          "slug": "setting.log.list",
+          "permission": "view log"
+        }
+      ]
     }
   ]
 }

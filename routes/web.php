@@ -4,6 +4,7 @@ use App\Http\Controllers\apps\ApprovalController;
 use App\Http\Controllers\apps\Area;
 use App\Http\Controllers\apps\AreaController;
 use App\Http\Controllers\apps\GroupController;
+use App\Http\Controllers\apps\LogController;
 use App\Http\Controllers\apps\PrintController;
 use App\Http\Controllers\apps\Region;
 use App\Http\Controllers\apps\RegionController;
@@ -155,6 +156,11 @@ Route::prefix('account')->name('account.')->middleware('auth')->group(function (
     });
     Route::get('/profile', [AccountSettingsAccount::class, 'index'])->name('profile')->middleware('auth');
     Route::put('/profile/update', [AccountSettingsAccount::class, 'update'])->name('profile.update')->middleware('auth');
+});
+
+Route::prefix('setting')->name('setting.')->middleware('auth')->group(function () {
+    Route::get('/log', [LogController::class, 'index'])->name('log.list')->middleware('can:view log');
+    Route::get('/log/{uuid}', [LogController::class, 'view'])->name('log.view')->middleware('can:view log');
 });
 
 // authentication

@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AuditLog extends Model
 {
-    use SoftDeletes;
     protected $table = 'audit_logs';
     protected $primaryKey = 'uuid';
     public $incrementing = false;
@@ -19,8 +18,6 @@ class AuditLog extends Model
         'user_uuid',
         'properties',
         'host',
-        'old_values',
-        'new_values',
     ];
 
     protected $casts = [
@@ -28,6 +25,11 @@ class AuditLog extends Model
         'old_values' => 'array',
         'new_values' => 'array',
     ];
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'uuid', 'user_uuid');
+    }
 
     protected static function boot()
     {
