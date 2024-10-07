@@ -59,7 +59,7 @@
   }
 
   .json__key {
-    color: white;
+    color: grey;
     display: inline;
 
     &::after {
@@ -72,11 +72,11 @@
   }
 
   .json__value--string {
-    color: #5bff5b;
+    color: green;
   }
 
   .json__value--number {
-    color: #5bff5b;
+    color: green;
   }
 
   .json__value--boolean {
@@ -98,9 +98,7 @@
     <p><strong>Subject Type:</strong> {{ $log->subject_type }}</p>
     <p><strong>Host:</strong> {{ $log->host }}</p>
     <p><strong>Properties:</strong></p>
-    <div class="card bg-dark">
-      <pre><code class="target"></code></pre>
-    </div>
+    <pre><code class="target"></code></pre>
   </div>
 </div>
 @endsection
