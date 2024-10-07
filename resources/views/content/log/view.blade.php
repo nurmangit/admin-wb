@@ -18,7 +18,7 @@
     display: block;
     margin-top: 10px;
     padding-left: 20px;
-    user-select: none;
+    user-select: block;
   }
 
   .json__item--collapsible {
@@ -54,12 +54,12 @@
     display: none;
 
     &:checked~.json__item {
-      display: block;
+      display: none;
     }
   }
 
   .json__key {
-    color: darkblue;
+    color: white;
     display: inline;
 
     &::after {
@@ -72,11 +72,11 @@
   }
 
   .json__value--string {
-    color: green;
+    color: #5bff5b;
   }
 
   .json__value--number {
-    color: blue;
+    color: #5bff5b;
   }
 
   .json__value--boolean {
@@ -98,7 +98,9 @@
     <p><strong>Subject Type:</strong> {{ $log->subject_type }}</p>
     <p><strong>Host:</strong> {{ $log->host }}</p>
     <p><strong>Properties:</strong></p>
-    <p class="target"></p>
+    <div class="card bg-dark">
+      <pre><code class="target"></code></pre>
+    </div>
   </div>
 </div>
 @endsection
@@ -110,7 +112,7 @@
     var TEMPLATES = {
       item: '<div class="json__item"><div class="json__key">%KEY%</div><div class="json__value json__value--%TYPE%">%VALUE%</div></div>',
       itemCollapsible: '<label class="json__item json__item--collapsible"><input type="checkbox" class="json__toggle"/><div class="json__key">%KEY%</div><div class="json__value json__value--type-%TYPE%">%VALUE%</div>%CHILDREN%</label>',
-      itemCollapsibleOpen: '<label class="json__item json__item--collapsible"><input type="checkbox" checked class="json__toggle"/><div class="json__key">%KEY%</div><div class="json__value json__value--type-%TYPE%">%VALUE%</div>%CHILDREN%</label>'
+      itemCollapsibleOpen: '<label class="json__item json__item--collapsible"><input type="checkbox" class="json__toggle"/><div class="json__key">%KEY%</div><div class="json__value json__value--type-%TYPE%">%VALUE%</div>%CHILDREN%</label>'
     };
 
     function createItem(key, value, type) {
