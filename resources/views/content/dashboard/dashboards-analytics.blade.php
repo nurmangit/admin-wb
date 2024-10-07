@@ -385,7 +385,7 @@
     <div class="card">
       <div class="row row-bordered g-0">
         <div class="col-md-12">
-          <h5 class="card-header m-0 me-2 pb-3">Weighbridge</h5>
+          <h5 class="card-header m-0 me-2 pb-3">Weighbridge - {{$current_month}}</h5>
           <div id="weighBridge" class="px-2"></div>
         </div>
       </div>

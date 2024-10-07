@@ -21,7 +21,7 @@ class Analytics extends Controller
 
     $currentMonth = Carbon::now()->month;
     $currentYear = Carbon::now()->year;
-
+    $currentMonthString = Carbon::now()->format('F');
     $weightData = WeightBridge::select(
       DB::raw('DATE(arrival_date) as date'),
       DB::raw('count(CASE WHEN weight_out IS NOT NULL THEN 1 END) as total_weight_out'),
@@ -40,7 +40,7 @@ class Analytics extends Controller
     foreach ($weightData as $data) {
       $weightOut[] = $data['total_weight_out'];
       $weightIn[] = $data['total_weight_out'] ? $data['total_weight_out'] + $data['total_weight_in'] : $data['total_weight_in'];
-      $arrivalDate[] = $data['date'];
+      $arrivalDate[] = Carbon::parse($data['date'])->format('d');
     }
     return view(
       'content.dashboard.dashboards-analytics',
@@ -55,7 +55,8 @@ class Analytics extends Controller
         'total_rejected' => WeightBridgeApproval::where('is_reject', true)->get()->count(),
         'weight_out' => $weightOut,
         'weight_in' => $weightIn,
-        'weight_out_date' => $arrivalDate
+        'weight_out_date' => $arrivalDate,
+        'current_month' => $currentMonthString
       ]
     );
   }
