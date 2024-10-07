@@ -28,7 +28,7 @@
       totalRevenueChartOptions = {
         series: [{
             name: 'WEIGHT IN',
-            data: {!!json_encode($weight_out) !!}
+            data: {!!json_encode($weight_in) !!}
           },
           {
             name: 'WEIGHT OUT',

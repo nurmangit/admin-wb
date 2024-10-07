@@ -22,23 +22,25 @@ class Analytics extends Controller
     $currentMonth = Carbon::now()->month;
     $currentYear = Carbon::now()->year;
 
-    $weightOutByDates = WeightBridge::select(
+    $weightData = WeightBridge::select(
       DB::raw('DATE(arrival_date) as date'),
-      DB::raw('count(*) as total_weight_out')
+      DB::raw('count(CASE WHEN weight_out IS NOT NULL THEN 1 END) as total_weight_out'),
+      DB::raw('count(CASE WHEN weight_in IS NOT NULL AND weight_out IS NULL THEN 1 END) as total_weight_in')
     )
       ->whereMonth('arrival_date', $currentMonth)
       ->whereYear('arrival_date', $currentYear)
-      ->whereNotNull('weight_out')
       ->groupBy('date')
       ->get()
       ->toArray();
 
     $weightOut = [];
-    $weightOutDate = [];
+    $weightIn = [];
+    $arrivalDate = [];
 
-    foreach ($weightOutByDates as $weightOutByDate) {
-      $weightOut[] = $weightOutByDate['total_weight_out'];
-      $weightOutDate[] = $weightOutByDate['date'];
+    foreach ($weightData as $data) {
+      $weightOut[] = $data['total_weight_out'];
+      $weightIn[] = $data['total_weight_out'] ? $data['total_weight_out'] + $data['total_weight_in'] : $data['total_weight_in'];
+      $arrivalDate[] = $data['date'];
     }
     return view(
       'content.dashboard.dashboards-analytics',
@@ -52,7 +54,8 @@ class Analytics extends Controller
         'total_approved' => WeightBridgeApproval::where('is_approve', true)->get()->count(),
         'total_rejected' => WeightBridgeApproval::where('is_reject', true)->get()->count(),
         'weight_out' => $weightOut,
-        'weight_out_date' => $weightOutDate
+        'weight_in' => $weightIn,
+        'weight_out_date' => $arrivalDate
       ]
     );
   }
