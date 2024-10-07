@@ -55,6 +55,9 @@ class WeightBridgeController extends Controller
 
     $vehicle = Vehicle::where('register_number', $validated['vehicle_no'])->where('status', 'active')->first();
 
+    if (!$vehicle) {
+      return redirect()->route('transaction.weight-bridge.finish-good')->with('error', 'Weight IN failed. Details: Vehicle No:' . $validated['vehicle_no'] . ' not active.');
+    }
     $isApprovalExist = WeightBridge::where('vehicle_uuid', $vehicle->uuid)->where('status', 'WAITING FOR APPROVAL')->orderBy('created_at', 'DESC')->first();
 
     if ($isApprovalExist) {
