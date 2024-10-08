@@ -107,7 +107,7 @@ class WeightBridgeController extends Controller
       $device->current_weight = 0;
       $device->previous_weight = 0;
       $device->status = 'unstable';
-      $device->used_at = Carbon::now();
+      $device->used_at = $currentDateTime;
       $device->save();
     } catch (\Throwable $th) {
       if ($validated['weighing_type'] == 'rm') {
@@ -165,7 +165,7 @@ class WeightBridgeController extends Controller
       $device->current_weight = 0;
       $device->previous_weight = 0;
       $device->status = 'unstable';
-      $device->used_at = Carbon::now();
+      $device->used_at = $currentDateTime;
       $device->save();
       $weightBridge->update();
     } catch (\Throwable $th) {
