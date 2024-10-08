@@ -60,10 +60,8 @@ class WeightBridgeController extends Controller
     }
     $isApprovalExist = WeightBridge::where('vehicle_uuid', $vehicle->uuid)->where('status', 'WAITING FOR APPROVAL')->orderBy('created_at', 'DESC')->first();
 
-    $otherProcess = null;
-    if ($validated['weighing_type'] == 'fg') {
-      $otherProcess = WeightBridge::where('vehicle_uuid', $vehicle->uuid)->where('status', strtoupper(($validated['weighing_type'] == 'fg' ? 'rm' : 'fg')) . '-IN')->orderBy('created_at', 'DESC')->first();
-    }
+    $status = strtoupper(($validated['weighing_type'] == 'fg' ? 'rm' : 'fg')) . '-IN';
+    $otherProcess = WeightBridge::where('vehicle_uuid', $vehicle->uuid)->where('status', $status)->orderBy('created_at', 'DESC')->first();
 
     if ($isApprovalExist) {
       if ($validated['weighing_type'] == 'fg') {
@@ -75,9 +73,9 @@ class WeightBridgeController extends Controller
 
     if ($otherProcess) {
       if ($validated['weighing_type'] == 'fg') {
-        return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight IN failed. Detail: Other process not finished with Slip no: ' . $isApprovalExist->slip_no);
+        return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight IN failed. Detail: Other process not finished Vehicle no: ' . $otherProcess->vehicle->register_number);
       } else {
-        return redirect()->route('transaction.weight-bridge.finish-good')->with('error', 'Weight IN failed. Detail: Other process not finished with Slip No: ' . $isApprovalExist->slip_no);
+        return redirect()->route('transaction.weight-bridge.finish-good')->with('error', 'Weight IN failed. Detail: Other process not finished with Vehicle No: ' . $otherProcess->vehicle->register_number);
       }
     }
     $slipNo = Generator::generateSlipNo(strtoupper($validated['weighing_type']));
