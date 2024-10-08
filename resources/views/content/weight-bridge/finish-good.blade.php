@@ -62,6 +62,8 @@
               <div class="mb-3">
                 <label class="form-label" for="weight-in">Weight In</label>
                 <input type="number" class="form-control  @error('weight_in') is-invalid @enderror" name="weight_in" id="weight-in" placeholder="Enter weight in" />
+                <div class="invalid-feedback" id="weight-in-feedback-invalid"></div>
+                <div class="valid-feedback" id="weight-in-feedback-valid"></div>
                 @error('weight_in')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -70,6 +72,8 @@
               <div class="mb-3">
                 <label class="form-label" for="weight-out">Weight Out</label>
                 <input type="number" class="form-control  @error('weight_out') is-invalid @enderror" name="weight_out" id="weight-out" placeholder="Enter weight out" />
+                <div class="invalid-feedback" id="weight-out-feedback-invalid"></div>
+                <div class="valid-feedback" id="weight-out-feedback-valid"></div>
                 @error('weight_out')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -143,6 +147,37 @@
 @section('page-script')
 <script>
   $(document).ready(function() {
+
+    function fetchDeviceDetails(type) {
+      $.ajax({
+        url: "{{ route('device.detail') }}", // The URL to the controller method
+        method: "GET", // HTTP method
+        success: function(response) {
+          // Assuming your response has a 'data' field with 'current_weight' and 'status'
+          if (response.status === "success") {
+            // Update the value of the input field with the current weight
+            $(`#weight-${type}`).val(response.data.current_weight);
+            if (response.data.status == 'stable') {
+              $(`#weight-${type}-feedback-valid`).text('Weight Stable');
+              $(`#weight-${type}`).addClass('is-valid');
+              $(`#weight-${type}`).removeClass('is-invalid');
+            } else {
+              $(`#weight-${type}-feedback-invalid`).text('Weight Unstable');
+              $(`#weight-${type}`).removeClass('is-valid');
+              $(`#weight-${type}`).addClass('is-invalid');
+            }
+          } else {
+            // Handle failure (optional)
+            $(`#weight-${type}`).val('');
+            console.error(response.message || "Failed to fetch data");
+          }
+        },
+        error: function(error) {
+          // Handle error (optional)
+          console.error("Error fetching device details:", error);
+        }
+      });
+    }
 
     // Get current time in UTC and apply offset for Indonesia (UTC+7)
     var now = new Date();
@@ -225,7 +260,15 @@
                 $('#weight-in').attr('disabled', true);
                 $('#weight-out').attr('disabled', false);
                 $('#weightOutBtn').attr('disabled', false);
+                // Call the fetch function every 1 second
+                setInterval(function() {
+                  fetchDeviceDetails('out');
+                }, 1000);
               } else {
+                // Call the fetch function every 1 second
+                setInterval(function() {
+                  fetchDeviceDetails('in');
+                }, 1000);
                 $('#weightOutBtn').attr('disabled', true);
                 $('#weight-out').attr('disabled', true)
               }

@@ -154,6 +154,19 @@ class WeightBridgeController extends Controller
       if ($validated['weighing_type'] == 'fg') {
         $weightBridge->po_do = $validated['po_do'];
       }
+
+      // Get the secret from the environment variable
+      $secret = env('DEVICE_SECRET');
+      // Find the device using the secret, or fail if not found
+      $device = Device::where('secret', $secret)->first();
+      if (!$device) {
+        throw 'Device not found!';
+      }
+      $device->current_weight = 0;
+      $device->previous_weight = 0;
+      $device->status = 'unstable';
+      $device->used_at = Carbon::now();
+      $device->save();
       $weightBridge->update();
     } catch (\Throwable $th) {
       if ($validated['weighing_type'] == 'rm') {
