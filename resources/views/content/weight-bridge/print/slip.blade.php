@@ -66,7 +66,7 @@
             <td>{{ $weight_in_date }}</td>
         </tr>
         <tr>
-            <td>No Polisi (Transporter):</td>
+            <td>No Polisi / Transporter:</td>
             <td colspan="3">{{ $vehicle_no }} / {{ $transporter_name }}</td>
         </tr>
         <tr>

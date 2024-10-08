@@ -137,6 +137,7 @@
           if (response.status === "success") {
             // Update the value of the input field with the current weight
             $(`#weight-${type}`).val(response.data.current_weight);
+            $(`#weight-${type}`).trigger('input');
             if (response.data.status == 'stable') {
               $(`#weight-${type}-feedback-valid`).text('Weight Stable');
               $(`#weight-${type}`).addClass('is-valid');
