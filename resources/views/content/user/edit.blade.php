@@ -40,13 +40,6 @@
           </div>
 
           <div class="mb-3">
-            <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="is_active" name="is_active" {{ old('is_active', $user->is_active) ? 'checked' : '' }}>
-              <label class="form-check-label" for="is_active">Is Active</label>
-            </div>
-          </div>
-
-          <div class="mb-3">
             <label class="form-label" for="group">Group <span class="text-danger">*</span></label>
             <select class="form-select @error('group') is-invalid @enderror" id="group" name="group" required>
               <option value="">-- Select Group --</option>
@@ -59,6 +52,12 @@
             @enderror
           </div>
 
+          <div class="mb-3">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="is_active" name="is_active" {{ old('is_active', $user->is_active) ? 'checked' : '' }}>
+              <label class="form-check-label" for="is_active">Is Active</label>
+            </div>
+          </div>
           <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">Save</button>
           </div>

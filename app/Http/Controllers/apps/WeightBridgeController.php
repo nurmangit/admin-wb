@@ -60,11 +60,24 @@ class WeightBridgeController extends Controller
     }
     $isApprovalExist = WeightBridge::where('vehicle_uuid', $vehicle->uuid)->where('status', 'WAITING FOR APPROVAL')->orderBy('created_at', 'DESC')->first();
 
+    $otherProcess = null;
+    if ($validated['weighing_type'] == 'fg') {
+      $otherProcess = WeightBridge::where('vehicle_uuid', $vehicle->uuid)->where('status', strtoupper(($validated['weighing_type'] == 'fg' ? 'rm' : 'fg')) . '-IN')->orderBy('created_at', 'DESC')->first();
+    }
+
     if ($isApprovalExist) {
       if ($validated['weighing_type'] == 'fg') {
         return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight IN failed. Detail: Waiting for approval with Slip no: ' . $isApprovalExist->slip_no);
       } else {
         return redirect()->route('transaction.weight-bridge.finish-good')->with('error', 'Weight IN failed. Detail: Waiting for approval with Slip No: ' . $isApprovalExist->slip_no);
+      }
+    }
+
+    if ($otherProcess) {
+      if ($validated['weighing_type'] == 'fg') {
+        return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight IN failed. Detail: Other process not finished with Slip no: ' . $isApprovalExist->slip_no);
+      } else {
+        return redirect()->route('transaction.weight-bridge.finish-good')->with('error', 'Weight IN failed. Detail: Other process not finished with Slip No: ' . $isApprovalExist->slip_no);
       }
     }
     $slipNo = Generator::generateSlipNo(strtoupper($validated['weighing_type']));
@@ -117,7 +130,14 @@ class WeightBridgeController extends Controller
       $weightBridge->weight_out = $validated['weight_out'];
       $weightBridge->weight_out_date = $currentDateTime;
       $weightBridge->weight_out_by = 'admin';
-      $weightBridge->weight_netto = $validated['weight_out'] - $weightBridge->weight_in;
+      if ($validated['weighing_type'] == 'rm') {
+        if ($validated['weight_out'] > $weightBridge->weight_in) {
+          return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight OUT failed. Detail: Weight OUT should less than Weight IN');
+        }
+        $weightBridge->weight_netto = $weightBridge->weight_in - $validated['weight_out'];
+      } else {
+        $weightBridge->weight_netto = $validated['weight_out'] - $weightBridge->weight_in;
+      }
       $weightBridge->status = strtoupper($validated['weighing_type']) . '-OUT';
       if ($validated['weighing_type'] == 'fg') {
         $weightBridge->po_do = $validated['po_do'];

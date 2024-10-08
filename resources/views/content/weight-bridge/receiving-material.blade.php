@@ -70,6 +70,7 @@
               <div class="mb-3">
                 <label class="form-label" for="weight-out">Weight Out</label>
                 <input type="number" class="form-control  @error('weight_out') is-invalid @enderror" name="weight_out" id="weight-out" placeholder="Enter weight out" />
+                <div class="invalid-feedback" id="weight-out-feedback"></div>
                 @error('weight_out')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -156,10 +157,13 @@
     $('#weight-out').on('input', function() {
       var weightIn = $('#weight-in').val();
       var weightOut = $(this).val();
-      if (weightOut - weightIn >= 0) {
-        $('#weight-netto').val(weightOut - weightIn);
+      if (weightIn - weightOut >= 0) {
+        $('#weight-out').removeClass('is-invalid')
+        $('#weight-netto').val(weightIn - weightOut);
       } else {
         $('#weight-netto').val('');
+        $('#weight-out').addClass('is-invalid')
+        $('#weight-out-feedback').text('Weight OUT should less than Weight IN')
       }
     });
 
