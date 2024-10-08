@@ -72,7 +72,7 @@ class WeightBridgeController extends Controller
     }
 
     if ($otherProcess) {
-      if ($validated['weighing_type'] == 'fg') {
+      if ($validated['weighing_type'] == 'rm') {
         return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight IN failed. Detail: Other process not finished Vehicle no: ' . $otherProcess->vehicle->register_number);
       } else {
         return redirect()->route('transaction.weight-bridge.finish-good')->with('error', 'Weight IN failed. Detail: Other process not finished with Vehicle No: ' . $otherProcess->vehicle->register_number);
