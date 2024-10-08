@@ -5,10 +5,12 @@ namespace App\Http\Controllers\apps;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\WeightInRequest;
 use App\Http\Requests\WeightOutRequest;
+use App\Models\Device;
 use App\Models\Vehicle;
 use App\Models\WeightBridge;
 use App\Models\WeightBridgeApproval;
 use App\Utils\Generator;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 
@@ -64,7 +66,7 @@ class WeightBridgeController extends Controller
     $otherProcess = WeightBridge::where('vehicle_uuid', $vehicle->uuid)->where('status', $status)->orderBy('created_at', 'DESC')->first();
 
     if ($isApprovalExist) {
-      if ($validated['weighing_type'] == 'fg') {
+      if ($validated['weighing_type'] == 'rm') {
         return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight IN failed. Detail: Waiting for approval with Slip no: ' . $isApprovalExist->slip_no);
       } else {
         return redirect()->route('transaction.weight-bridge.finish-good')->with('error', 'Weight IN failed. Detail: Waiting for approval with Slip No: ' . $isApprovalExist->slip_no);
@@ -81,6 +83,13 @@ class WeightBridgeController extends Controller
     $slipNo = Generator::generateSlipNo(strtoupper($validated['weighing_type']));
     $currentDateTime = new DateTime();
     try {
+      // Get the secret from the environment variable
+      $secret = env('DEVICE_SECRET');
+      // Find the device using the secret, or fail if not found
+      $device = Device::where('secret', $secret)->first();
+      if (!$device) {
+        throw 'Device not found!';
+      }
       $weightBridge = WeightBridge::create(
         [
           'slip_no' => $slipNo,
@@ -95,6 +104,11 @@ class WeightBridgeController extends Controller
           'status' => strtoupper($validated['weighing_type']) . "-IN"
         ]
       );
+      $device->current_weight = 0;
+      $device->previous_weight = 0;
+      $device->status = 'unstable';
+      $device->used_at = Carbon::now();
+      $device->save();
     } catch (\Throwable $th) {
       if ($validated['weighing_type'] == 'rm') {
         return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight IN failed. Detail:' . $th->getMessage());

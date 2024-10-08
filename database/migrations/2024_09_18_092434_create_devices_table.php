@@ -16,7 +16,11 @@ return new class extends Migration
             $table->string('uuid')->primary();
             $table->string('name');
             $table->string('secret');
-            $table->auditableWithDeletes();
+            $table->integer('current_weight');
+            $table->integer('previous_weight');
+            $table->integer('tolerance');
+            $table->string('status');
+            $table->dateTime('used_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

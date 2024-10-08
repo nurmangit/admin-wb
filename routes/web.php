@@ -3,6 +3,7 @@
 use App\Http\Controllers\apps\ApprovalController;
 use App\Http\Controllers\apps\Area;
 use App\Http\Controllers\apps\AreaController;
+use App\Http\Controllers\apps\DeviceController;
 use App\Http\Controllers\apps\GroupController;
 use App\Http\Controllers\apps\LogController;
 use App\Http\Controllers\apps\PrintController;
@@ -63,6 +64,7 @@ use App\Http\Controllers\tables\Basic as TablesBasic;
 
 // Main Page Route
 Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics')->middleware('auth');
+Route::get('/device', [DeviceController::class, 'detail'])->name('device.detail')->middleware('auth');
 
 // Master Data Route
 Route::prefix('master-data')->name('master-data.')->middleware('auth')->group(function () {

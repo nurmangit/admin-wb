@@ -59,6 +59,7 @@
           <div class="mb-3">
             <label class="form-label" for="vehicle_type_uuid">Vehicle Type <span class="text-danger">*</span></label>
             <select class="form-select @error('vehicle_type_uuid') is-invalid @enderror" id="vehicle_type_uuid" name="vehicle_type_uuid" required>
+              <option value=""> -- Select --</option>
               @foreach ($vehicleTypes as $vehicleType)
               <option value="{{$vehicleType->uuid}}" {{ old('vehicleType_uuid') == '$vehicleType->uuid' ? 'selected' : '' }}>{{$vehicleType->code}} - {{$vehicleType->name}}</option>
               @endforeach
@@ -79,6 +80,7 @@
           <div class="mb-3">
             <label class="form-label" for="transporter_uuid">Transporter <span class="text-danger">*</span></label>
             <select class="form-select @error('transporter_uuid') is-invalid @enderror" id="transporter_uuid" name="transporter_uuid" required>
+              <option value=""> -- Select --</option>
               @foreach ($transporters as $transporter)
               <option value="{{$transporter->uuid}}" {{ old('trans$transporter_uuid') == '$transporter->uuid' ? 'selected' : '' }}>{{$transporter->code}} - {{$transporter->name}}</option>
               @endforeach
@@ -91,6 +93,7 @@
           <div class="mb-3">
             <label class="form-label" for="transporter_rate_uuid">Transporter Rate <span class="text-danger">*</span></label>
             <select class="form-select @error('transporter_rate_uuid') is-invalid @enderror" id="transporter_rate_uuid" name="transporter_rate_uuid" required>
+              <option value=""> -- Select --</option>
               @foreach ($transporterRates as $transporterRate)
               <option value="{{$transporterRate->uuid}}" {{ old('trans$transporterRate_uuid') == '$transporterRate->uuid' ? 'selected' : '' }}>{{$transporterRate->name}} - Charge {{$transporterRate->charge}} - Rate {{$transporterRate->rate}} - Area {{$transporterRate->area->name}} - Region {{$transporterRate->area->region->name}} </option>
               @endforeach
@@ -103,6 +106,7 @@
           <div class="mb-3">
             <label class="form-label" for="ownership">Ownership <span class="text-danger">*</span></label>
             <select class="form-select @error('ownership') is-invalid @enderror" id="ownership" name="ownership" required>
+              <option value=""> -- Select --</option>
               <option value="own" {{ old('ownership') == 'own' ? 'selected' : '' }}>Own</option>
               <option value="transporter" {{ old('ownership') == 'transporter' ? 'selected' : '' }}>Transporter</option>
             </select>
