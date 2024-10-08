@@ -10,7 +10,7 @@
     <div class="card mb-4">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Finish Good Details</h5>
-        <button class="btn btn-{{($weight_bridge->status == 'FG-OUT' ? 'success':'warning')}} btn-sm fw-bold">{{$weight_bridge->status}}</button>
+        <button class="btn btn-{{($weight_bridge->status == 'FG-OUT' ? 'success':($weight_bridge->status == 'REJECTED' ? 'danger' : 'warning'))}} btn-sm fw-bold">{{$weight_bridge->status}}</button>
       </div>
       <div class="card-body">
         <form id="weighbridgeForm">
@@ -117,7 +117,9 @@
           </div>
           <div class="d-flex justify-content-end">
             <!-- Submit Button -->
+            @if($weight_bridge->status == 'FG-IN' or $weight_bridge->status == 'FG-OUT')
             <button type="button" class="btn btn-primary fw-bold">PRINT</button>
+            @endif
           </div>
         </form>
       </div>
