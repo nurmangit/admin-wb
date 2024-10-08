@@ -222,6 +222,8 @@
       }
     });
 
+    // Variable to store interval ID
+    var fetchInterval;
     $('#vehicle-no').on('input', function() {
       var vehicleNo = $(this).val();
       // When vehicle number has 5 characters, make the request
@@ -240,10 +242,15 @@
               $('#tolerance').val('');
               $('#transporter-name').val('');
               $('#weight-bridge-slip-no').val('');
-              $('#weight-in').val('');
-              $('#weight-in').attr('disabled', true);
-              $('#weight-out').attr('disabled', true);
+              $('#weight-in').val('').removeClass('is-invalid').attr('disabled', true);
+              $('#weight-out').val('').removeClass('is-invalid').attr('disabled', true);
+              $('#weight-in-feedback-invalid').text('');
+              $('#weight-out-feedback-invalid').text('');
               $('#weightInBtn').attr('disabled', true);
+              // Stop the interval if it's running
+              if (fetchInterval) {
+                clearInterval(fetchInterval);
+              }
             } else {
               $('#weightInBtn').attr('disabled', false);
               $('#vehicle-no').removeClass('is-invalid');
@@ -262,14 +269,14 @@
                 $('#weight-out').attr('disabled', false);
                 $('#weightOutBtn').attr('disabled', false);
                 // Call the fetch function every 1 second
-                setInterval(function() {
+                fetchInterval = setInterval(function() {
                   fetchDeviceDetails('out');
-                }, 1000);
+                }, 2000);
               } else {
                 // Call the fetch function every 1 second
-                setInterval(function() {
+                fetchInterval = setInterval(function() {
                   fetchDeviceDetails('in');
-                }, 1000);
+                }, 2000);
                 $('#weightOutBtn').attr('disabled', true);
                 $('#weight-out').attr('disabled', true)
               }
