@@ -17,8 +17,8 @@ class Generator
         $date = Carbon::now()->format('ymd');
 
         // Get the latest slip number with today's date and increment sequence
-        $latestSlip = \App\Models\WeightBridge::where('slip_no', 'like', "$type$date%")
-            ->orderBy('slip_no', 'desc')
+        $latestSlip = \App\Models\WeightBridge::where('Character01', 'like', "$type$date%")
+            ->orderBy('Character01', 'desc')
             ->first();
 
         // Extract the sequence number and increment it

@@ -18,8 +18,8 @@ class WeightBridgeController extends Controller
 {
   public function index()
   {
-    $weightBridgeRawMaterial = WeightBridge::where('weight_type', 'rm')->get();
-    $weightBridgeFinishGood = WeightBridge::where('weight_type', 'fg')->get();
+    $weightBridgeRawMaterial = WeightBridge::where('ShortChar01', 'rm')->get();
+    $weightBridgeFinishGood = WeightBridge::where('ShortChar01', 'fg')->get();
     return view(
       'content.weight-bridge.list',
       [
@@ -55,15 +55,15 @@ class WeightBridgeController extends Controller
   {
     $validated = $request->validated();
 
-    $vehicle = Vehicle::where('register_number', $validated['vehicle_no'])->where('status', 'active')->first();
+    $vehicle = Vehicle::where('Character01', $validated['vehicle_no'])->where('ShortChar02', 'active')->first();
 
     if (!$vehicle) {
       return redirect()->route('transaction.weight-bridge.finish-good')->with('error', 'Weight IN failed. Details: Vehicle No:' . $validated['vehicle_no'] . ' not active.');
     }
-    $isApprovalExist = WeightBridge::where('vehicle_uuid', $vehicle->uuid)->where('status', 'WAITING FOR APPROVAL')->orderBy('created_at', 'DESC')->first();
+    $isApprovalExist = WeightBridge::where('Key2', $vehicle->uuid)->where('ShortChar01', 'WAITING FOR APPROVAL')->orderBy('Date04', 'DESC')->first();
 
     $status = strtoupper(($validated['weighing_type'] == 'fg' ? 'rm' : 'fg')) . '-IN';
-    $otherProcess = WeightBridge::where('vehicle_uuid', $vehicle->uuid)->where('status', $status)->orderBy('created_at', 'DESC')->first();
+    $otherProcess = WeightBridge::where('Key2', $vehicle->uuid)->where('ShortChar01', $status)->orderBy('Date04', 'DESC')->first();
 
     if ($isApprovalExist) {
       if ($validated['weighing_type'] == 'rm') {
@@ -86,7 +86,7 @@ class WeightBridgeController extends Controller
       // Get the secret from the environment variable
       $secret = env('DEVICE_SECRET');
       // Find the device using the secret, or fail if not found
-      $device = Device::where('secret', $secret)->first();
+      $device = Device::where('Character02', $secret)->first();
       if (!$device) {
         throw 'Device not found!';
       }
@@ -98,10 +98,10 @@ class WeightBridgeController extends Controller
           'vehicle_uuid' => $vehicle->uuid,
           'weight_in' => $validated['weight_in'],
           'weight_in_date' => $currentDateTime,
-          'weight_standart' => $vehicle->weight_standart,
+          'weight_standart' => $vehicle->vehicle_type->weight_standart,
           'weight_in_by' => 'admin',
-          'remark' => $validated['remark'],
-          'status' => strtoupper($validated['weighing_type']) . "-IN"
+          'remark' => $validated['remark'] ?? '',
+          'status' => strtoupper($validated['weighing_type']) . "-IN",
         ]
       );
       $device->current_weight = 0;
@@ -127,8 +127,8 @@ class WeightBridgeController extends Controller
   {
     $validated = $request->validated();
 
-    $vehicle = Vehicle::where('register_number', $validated['vehicle_no'])->where('status', 'active')->first();
-    $weightBridge = WeightBridge::where('vehicle_uuid', $vehicle->uuid)->where('status', strtoupper($validated['weighing_type']) . '-IN')->first();
+    $vehicle = Vehicle::where('Character01', $validated['vehicle_no'])->where('ShortChar02', 'active')->first();
+    $weightBridge = WeightBridge::where('Key2', $vehicle->uuid)->where('ShortChar02', strtoupper($validated['weighing_type']) . '-IN')->first();
     if (!$weightBridge) {
       if ($validated['weighing_type'] == 'rm') {
         return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight OUT failed. Detail: Weight IN data not found!.');
@@ -158,7 +158,7 @@ class WeightBridgeController extends Controller
       // Get the secret from the environment variable
       $secret = env('DEVICE_SECRET');
       // Find the device using the secret, or fail if not found
-      $device = Device::where('secret', $secret)->first();
+      $device = Device::where('Character02', $secret)->first();
       if (!$device) {
         throw 'Device not found!';
       }

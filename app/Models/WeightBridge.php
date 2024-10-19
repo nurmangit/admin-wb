@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use App\Traits\Auditable;
+use App\Traits\DynamicAttributeMapper;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,10 +15,13 @@ use Yajra\Auditable\AuditableWithDeletesTrait;
 
 class WeightBridge extends Model
 {
-	use SoftDeletes, AuditableWithDeletesTrait, Auditable;
-	protected $table = 'weight_bridges';
-	protected $primaryKey = 'uuid';
+	use SoftDeletes, AuditableWithDeletesTrait, Auditable, DynamicAttributeMapper;
+	protected $table = 'Ice.UD100';
+	protected $primaryKey = 'Key1';
 	public $incrementing = false;
+	const CREATED_AT = 'Date04';
+	const UPDATED_AT = 'Date05';
+	public $timestamps = false;
 
 	protected $fillable = [
 		'slip_no',
@@ -40,13 +44,44 @@ class WeightBridge extends Model
 
 	public function vehicle()
 	{
-		return $this->belongsTo(Vehicle::class, 'vehicle_uuid', 'uuid');
+		return $this->belongsTo(Vehicle::class, 'Key2', 'Key1');
+	}
+
+	// Override the SoftDeletes deleted_at column to Date04
+	public function getDeletedAtColumn()
+	{
+		return 'Date06';  // Use your custom soft delete column
 	}
 
 	protected static function boot()
 	{
 		parent::boot();
 
+		static::setAttributeMapping([
+			'uuid' => 'Key1',
+			'slip_no' => 'Character01',
+			'weight_in_by' => 'Character04',
+			'weight_out_by' => 'Character05',
+			'arrival_date' => 'Date01',
+			'weight_type' => 'ShortChar01',
+			'vehicle_uuid' => 'Key2',
+			'weight_in' => 'Number01',
+			'weight_in_date' => 'Character06',
+			'weight_out' => 'Number02',
+			'weight_out_date' => 'Character07',
+			'weight_netto' => 'Number03',
+			'weight_standart' => 'Number04',
+			'po_do' => 'Character02',
+			'status' => 'ShortChar02',
+			'difference' => 'Number05',
+			'remark' => 'Character03',
+			'created_at' => 'Date04',
+			'updated_at' => 'Date05',
+			'deleted_at' => 'Date06',
+			'created_by' => 'Key3',
+			'updated_by' => 'Key4',
+			'deleted_by' => 'Key5',
+		]);
 		static::creating(function ($model) {
 			$model->uuid = \Illuminate\Support\Str::uuid();
 		});

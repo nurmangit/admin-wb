@@ -25,7 +25,7 @@ class WeightOutRequest extends FormRequest
     {
         return [
             'weight_out' => 'required|max:10',
-            'vehicle_no' => 'required|string|exists:vehicles,register_number',
+            'vehicle_no' => 'required|string',
             'remark' => 'nullable|string|max:255',
             'po_do' => 'nullable|string|max:255|required_if:weighing_type,fg',
             'weighing_type' => 'required|in:rm,fg',

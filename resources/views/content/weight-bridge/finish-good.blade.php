@@ -123,6 +123,7 @@
               <div class="mb-3">
                 <label class="form-label" for="difference">Difference</label>
                 <input disabled type="number" class="form-control" id="difference" placeholder="Enter Difference" />
+                <div class="invalid-feedback">This Weight Difference Need Approval</div>
               </div>
             </div>
           </div>
@@ -217,6 +218,11 @@
       if (weightOut - weightIn >= 0) {
         $('#weight-netto').val(weightOut - weightIn);
         $('#difference').val((weightOut - weightIn - tolerance) - weightStandart);
+        if (((weightOut - weightIn - tolerance) > weightStandart) || ((weightOut - weightIn - tolerance) < weightStandart)) {
+          $('#difference').addClass('is-invalid');
+        } else {
+          $('#difference').removeClass('is-invalid');
+        }
       } else {
         $('#weight-netto').val('');
       }

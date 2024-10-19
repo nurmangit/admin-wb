@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ModelHasRole;
 use App\Models\Role;
 use Illuminate\Database\Seeder;
 use App\Models\User;
@@ -20,10 +21,17 @@ class UserSeeder extends Seeder
             'email' => 'super-admin-wb@gmail.com',
             'password' => Hash::make('rahasialah'), // Hashed password
             'is_active' => true, // Optional if you have this field
+            'created_by' => 'System',
+            'updated_by' => 'System',
         ]);
 
         $role = Role::findByName('SUPER_ADMIN'); // Get the role
+        $modelHasRole = ModelHasRole::create([
+            'role_uuid' => $role->role_uuid,
+            'model_type' => 'App\Models\User',
+            'model_uuid' => $user->uuid,
+        ]);
         $user->assignRole($role);
-        $user->update();
+        $user->save();
     }
 }

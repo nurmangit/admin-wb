@@ -3,13 +3,15 @@
 
 namespace App\Models;
 
+use App\Traits\DynamicAttributeMapper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AuditLog extends Model
 {
-    protected $table = 'audit_logs';
-    protected $primaryKey = 'uuid';
+    use DynamicAttributeMapper;
+    protected $table = 'Ice.UD04';
+    protected $primaryKey = 'Key1';
     public $incrementing = false;
     protected $fillable = [
         'description',
@@ -28,13 +30,24 @@ class AuditLog extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class, 'uuid', 'user_uuid');
+        return $this->hasOne(User::class, 'Key1', 'Key3');
     }
 
     protected static function boot()
     {
         parent::boot();
 
+        static::setAttributeMapping([
+            'uuid' => 'Key1',
+            'description' => 'Character01',
+            'subject_uuid' => 'Key2',
+            'subject_type' => 'Character02',
+            'user_uuid' => 'Key3',
+            'properties' => 'Character03',
+            'host' => 'Character04',
+            'created_at' => 'Date01',
+            'updated_at' => 'Date02',
+        ]);
         static::creating(function ($model) {
             $model->uuid = \Illuminate\Support\Str::uuid();
         });

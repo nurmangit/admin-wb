@@ -33,7 +33,12 @@ class RegionSeeder extends Seeder
         ];
 
         foreach ($regions as $region) {
-            Region::create($region);
+            $isExist = Region::where('ShortChar01', $region['code'])->exists();
+            if (!$isExist) {
+                $region['created_by'] = 'System';
+                $region['updated_by'] = 'System';
+                Region::create($region);
+            }
         }
     }
 }

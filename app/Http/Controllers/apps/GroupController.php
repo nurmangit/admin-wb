@@ -5,6 +5,7 @@ namespace App\Http\Controllers\apps;
 use App\Http\Controllers\Controller;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Models\RoleHasPermission;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
@@ -58,8 +59,10 @@ class GroupController extends Controller
         foreach ($permissions as $key => $value) {
             $permission = Permission::findByName($this->replaceFirstUnderscore($key));
             if ($permission) {
-                $permission->assignRole($role);
-                $permission->update();
+                $roleHasPermission = RoleHasPermission::create([
+                    'role_uuid' => $role->uuid,
+                    'permission_uuid' => $permission->uuid,
+                ]);
             }
         }
         return redirect()->route(
@@ -104,8 +107,10 @@ class GroupController extends Controller
         foreach ($permissions as $key => $value) {
             $permission = Permission::findByName($this->replaceFirstUnderscore($key));
             if ($permission) {
-                $permission->assignRole($role);
-                $permission->update();
+                $roleHasPermission = RoleHasPermission::create([
+                    'role_uuid' => $role->uuid,
+                    'permission_uuid' => $permission->uuid,
+                ]);
             }
         }
         return redirect()->route('account.group.list')->with('success', 'Group created successfully');

@@ -21,12 +21,10 @@ class DeviceController extends Controller
     $secret = $request->header('secret');
 
     // Find the device using the secret, or fail if not found
-    $device = Device::where('secret', $secret)->first();
-
+    $device = Device::where('Character02', $secret)->first();
     if (!$device) {
       // Return error response if device not found
       return response()->json(
-        
         [
           "status" => "failed",
           "message" => "Device not found!"
@@ -46,6 +44,7 @@ class DeviceController extends Controller
       $device->status = 'unstable';
     }
 
+    $device->updated_at = Carbon::now();
     // Save the updated device information
     $device->save();
 
@@ -65,7 +64,7 @@ class DeviceController extends Controller
     $secret = env('DEVICE_SECRET');
 
     // Find the device using the secret, or fail if not found
-    $device = Device::where('secret', $secret)->first();
+    $device = Device::where('Character02', $secret)->first();
 
     if (!$device) {
       // Return error response if device not found

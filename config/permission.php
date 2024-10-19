@@ -30,7 +30,7 @@ return [
         'role' => Role::class,
 
     ],
-
+    'guards' => ['web'],
     'table_names' => [
 
         /*
@@ -39,7 +39,7 @@ return [
          * default value but you may easily change it to any table you like.
          */
 
-        'roles' => 'roles',
+        'roles' => 'Ice.UD03',
 
         /*
          * When using the "HasPermissions" trait from this package, we need to know which
@@ -47,7 +47,7 @@ return [
          * default value but you may easily change it to any table you like.
          */
 
-        'permissions' => 'permissions',
+        'permissions' => 'Ice.UD02',
 
         /*
          * When using the "HasPermissions" trait from this package, we need to know which
@@ -55,7 +55,7 @@ return [
          * basic default value but you may easily change it to any table you like.
          */
 
-        'model_has_permissions' => 'model_has_permissions',
+        'model_has_permissions' => 'Ice.UD07',
 
         /*
          * When using the "HasRoles" trait from this package, we need to know which
@@ -63,7 +63,7 @@ return [
          * basic default value but you may easily change it to any table you like.
          */
 
-        'model_has_roles' => 'model_has_roles',
+        'model_has_roles' => 'Ice.UD08',
 
         /*
          * When using the "HasRoles" trait from this package, we need to know which
@@ -71,15 +71,15 @@ return [
          * basic default value but you may easily change it to any table you like.
          */
 
-        'role_has_permissions' => 'role_has_permissions',
+        'role_has_permissions' => 'Ice.UD06',
     ],
 
     'column_names' => [
         /*
          * Change this if you want to name the related pivots other than defaults
          */
-        'role_pivot_key' => 'role_uuid', //default 'role_id',
-        'permission_pivot_key' => 'permission_uuid', //default 'permission_id',
+        'role_pivot_key' => 'Key2', //default 'role_id',
+        'permission_pivot_key' => 'Key1', //default 'permission_id',
 
         /*
          * Change this if you want to name the related model primary key other than
@@ -89,7 +89,7 @@ return [
          * that case, name this `model_uuid`.
          */
 
-        'model_morph_key' => 'model_uuid',
+        'model_morph_key' => 'Key2',
 
         /*
          * Change this if you want to use the teams feature and your related model's

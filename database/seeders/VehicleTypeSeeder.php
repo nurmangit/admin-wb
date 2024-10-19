@@ -47,7 +47,12 @@ class VehicleTypeSeeder extends Seeder
         ];
 
         foreach ($vehicleTypes as $vehicleType) {
-            VehicleType::create($vehicleType);
+            $isExist = VehicleType::where('ShortChar01', $vehicleType['code'])->exists();
+            if (!$isExist) {
+                $vehicleType['created_by'] = 'System';
+                $vehicleType['updated_by'] = 'System';
+                VehicleType::create($vehicleType);
+            }
         }
     }
 }

@@ -23,13 +23,13 @@ class Analytics extends Controller
     $currentYear = Carbon::now()->year;
     $currentMonthString = Carbon::now()->format('F');
     $weightData = WeightBridge::select(
-      DB::raw('DATE(arrival_date) as date'),
-      DB::raw('count(CASE WHEN weight_out IS NOT NULL THEN 1 END) as total_weight_out'),
-      DB::raw('count(CASE WHEN weight_in IS NOT NULL AND weight_out IS NULL THEN 1 END) as total_weight_in')
+      DB::raw("CONVERT(DATE, Date01) as date_weight"),
+      DB::raw('count(CASE WHEN Number02 IS NOT NULL THEN 1 END) as total_weight_out'),
+      DB::raw('count(CASE WHEN Number01 IS NOT NULL AND Number02 IS NULL THEN 1 END) as total_weight_in')
     )
-      ->whereMonth('arrival_date', $currentMonth)
-      ->whereYear('arrival_date', $currentYear)
-      ->groupBy('date')
+      ->whereMonth('Date01', $currentMonth)
+      ->whereYear('Date01', $currentYear)
+      ->groupBy('Date01')
       ->get()
       ->toArray();
 
@@ -40,7 +40,7 @@ class Analytics extends Controller
     foreach ($weightData as $data) {
       $weightOut[] = $data['total_weight_out'];
       $weightIn[] = $data['total_weight_out'] ? $data['total_weight_out'] + $data['total_weight_in'] : $data['total_weight_in'];
-      $arrivalDate[] = Carbon::parse($data['date'])->format('d');
+      $arrivalDate[] = Carbon::parse($data['date_weight'])->format('d');
     }
     return view(
       'content.dashboard.dashboards-analytics',
@@ -50,9 +50,9 @@ class Analytics extends Controller
         'total_transporter' => Transporter::get()->count(),
         'total_area' => Area::get()->count(),
         'total_region' => Region::get()->count(),
-        'waiting_approval' => WeightBridgeApproval::whereNull('action_date')->get()->count(),
-        'total_approved' => WeightBridgeApproval::where('is_approve', true)->get()->count(),
-        'total_rejected' => WeightBridgeApproval::where('is_reject', true)->get()->count(),
+        'waiting_approval' => WeightBridgeApproval::whereNull('Date01')->get()->count(),
+        'total_approved' => WeightBridgeApproval::where('CheckBox01', true)->get()->count(),
+        'total_rejected' => WeightBridgeApproval::where('CheckBox02', true)->get()->count(),
         'weight_out' => $weightOut,
         'weight_in' => $weightIn,
         'weight_out_date' => $arrivalDate,

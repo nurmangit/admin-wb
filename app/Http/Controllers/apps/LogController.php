@@ -19,13 +19,13 @@ class LogController extends Controller
     return view(
       'content.log.list',
       [
-        'logs' => AuditLog::orderBy('created_at', 'DESC')->get(),
+        'logs' => AuditLog::orderBy('Date01', 'DESC')->get(),
       ]
     );
   }
   public function view($uuid)
   {
-    $log = AuditLog::where('uuid', $uuid)->firstOrFail();  // Fetch log by UUID
+    $log = AuditLog::where('Key1', $uuid)->firstOrFail();  // Fetch log by UUID
     return view('content.log.view', [
       'log' => $log
     ]);

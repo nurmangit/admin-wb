@@ -153,7 +153,13 @@ class TransporterSeeder extends Seeder
 
 
         foreach ($transporters as $transporter) {
-            Transporter::create($transporter);
+            $isExist = Transporter::where('ShortChar01', $transporter['code'])->exists();
+
+            if (!$isExist) {
+                $transporter['created_by'] = 'System';
+                $transporter['updated_by'] = 'System';
+                Transporter::create($transporter);
+            }
         }
     }
 }

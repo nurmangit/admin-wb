@@ -178,13 +178,14 @@ class AreaSeeder extends Seeder
         ];
         foreach ($areas as $area) {
             // Find the region UUID based on the region code
-            $region = Region::where('code', $area['region_code'])->first();
-
+            $region = Region::where('ShortChar01', $area['region_code'])->first();
             // Create the area entry with the associated region_uuid
             Area::create([
                 'name' => $area['name'],
                 'code' => $area['code'],
-                'region_uuid' => $region ? $region->uuid : null, // Link region UUID if found
+                'region_uuid' => $region ? $region->uuid : null, // Link region UUID if found,
+                'created_by' => 'System',
+                'updated_by' => 'System'
             ]);
         }
     }

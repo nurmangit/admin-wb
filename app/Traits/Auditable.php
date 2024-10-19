@@ -30,7 +30,7 @@ trait Auditable
             'description'  => $description,
             'subject_uuid'   => $model->uuid ?? null,
             'subject_type' => get_class($model) ?? null,
-            'user_uuid'      => auth()->user()->uuid ?? null,
+            'user_uuid'      => auth()->user()->uuid ?? 'System',
             'properties'   => json_encode([
                 'old' => $oldValues,
                 'new' => $newValues,

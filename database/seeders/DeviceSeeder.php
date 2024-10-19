@@ -20,6 +20,8 @@ class DeviceSeeder extends Seeder
             'previous_weight' => 0, // initialize with default previous weight
             'tolerance' => 10, // example tolerance value
             'status' => 'unstable', // default status
+            'created_by' => 'System',
+            'updated_by' => 'System'
         ]);
     }
 }

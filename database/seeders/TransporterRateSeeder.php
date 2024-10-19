@@ -7,6 +7,8 @@ use App\Models\Region;
 use Illuminate\Database\Seeder;
 use App\Models\TransporterRate;
 
+use function PHPSTORM_META\map;
+
 class TransporterRateSeeder extends Seeder
 {
     public function run()
@@ -22,15 +24,17 @@ class TransporterRateSeeder extends Seeder
             // Loop through the CSV rows
             while (($row = fgetcsv($handle, 2000, ',')) !== false) {
                 // Create the transporter rate entry
-                $area = Area::where('code', $row[1])->first();
+                $area = Area::where('ShortChar01', $row[1])->first();
                 if (!$area) {
                     continue;
                 }
                 TransporterRate::create([
                     'name'       => $row[0],
                     'area_uuid' => $area->uuid,
-                    'rate'       => $row[3],
-                    'charge'     => $row[4],
+                    'rate'       => (int)$row[3],
+                    'charge'     => (int)$row[4],
+                    'created_by'  => 'System',
+                    'updated_by' => 'System'
                 ]);
             }
 

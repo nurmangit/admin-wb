@@ -4,6 +4,7 @@ namespace App\Http\Controllers\apps;
 
 use App\Http\Controllers\Controller;
 use App\Models\WeightBridgeApproval;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class ApprovalController extends Controller
     return view(
       'content.approval.list',
       [
-        'approvals' => WeightBridgeApproval::orderBy('action_date', 'DESC')->get()
+        'approvals' => WeightBridgeApproval::orderBy('Character01', 'DESC')->get()
       ]
     );
   }
@@ -28,7 +29,7 @@ class ApprovalController extends Controller
   {
     $approval = WeightBridgeApproval::findOrFail($approvalUuid);
     $approval->is_approve = true;
-    $approval->action_date = new DateTime();
+    $approval->action_date = Carbon::now();
     $approval->action_by = 'admin';
 
     $weightBridge = $approval->weight_bridge;
@@ -42,7 +43,7 @@ class ApprovalController extends Controller
   {
     $approval = WeightBridgeApproval::findOrFail($approvalUuid);
     $approval->is_reject = true;
-    $approval->action_date = new DateTime();
+    $approval->action_date = Carbon::now();
     $approval->action_by = 'admin';
 
     $weightBridge = $approval->weight_bridge;

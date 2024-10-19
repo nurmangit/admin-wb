@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use App\Traits\Auditable;
+use App\Traits\DynamicAttributeMapper;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -30,11 +31,13 @@ use Yajra\Auditable\AuditableWithDeletesTrait;
  */
 class Area extends Model
 {
-	use SoftDeletes, AuditableWithDeletesTrait, Auditable;
-	protected $table = 'areas';
-	protected $primaryKey = 'uuid';
+	use SoftDeletes, AuditableWithDeletesTrait, Auditable, DynamicAttributeMapper;
+	protected $table = 'Ice.UD103A';
+	protected $primaryKey = 'Key1';
 	public $incrementing = false;
-
+	const CREATED_AT = 'Date01';
+	const UPDATED_AT = 'Date02';
+	public $timestamps = false;
 	protected $fillable = [
 		'name',
 		'code',
@@ -43,11 +46,11 @@ class Area extends Model
 
 	public function region()
 	{
-		return $this->belongsTo(Region::class, 'region_uuid');
+		return $this->belongsTo(Region::class, 'ChildKey1', 'Key1');
 	}
 	public function region_single()
 	{
-		return $this->hasOne(Region::class, 'uuid', 'region_uuid');
+		return $this->hasOne(Region::class, 'Key1', 'ChildKey1');
 	}
 
 	public function transporter_rates()
@@ -55,10 +58,28 @@ class Area extends Model
 		return $this->hasMany(TransporterRate::class, 'area_uuid');
 	}
 
+	// Override the SoftDeletes deleted_at column to Date04
+	public function getDeletedAtColumn()
+	{
+		return 'Date04';  // Use your custom soft delete column
+	}
+
 	protected static function boot()
 	{
 		parent::boot();
 
+		static::setAttributeMapping([
+			'uuid' => 'Key1',
+			'name' => 'Character01',
+			'code' => 'ShortChar01',
+			'region_uuid' => 'ChildKey1',
+			'created_at' => 'Date01',
+			'updated_at' => 'Date02',
+			'deleted_at' => 'Date03',
+			'created_by' => 'Key2',
+			'updated_by' => 'Key3',
+			'deleted_by' => 'Key4',
+		]);
 		static::creating(function ($model) {
 			$model->uuid = \Illuminate\Support\Str::uuid();
 		});

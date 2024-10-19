@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Permission;
 use App\Models\Role;
+use App\Models\RoleHasPermission;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -77,8 +78,12 @@ class PermissionSeeder extends Seeder
         $role = Role::findByName('SUPER_ADMIN'); // Get the role
         foreach ($permissions as $permission) {
             $permission = Permission::create(['name' => $permission]);
-            $permission->assignRole($role);
-            $permission->update();
+            $roleHasPermission = RoleHasPermission::create([
+                'role_uuid' => $role->uuid,
+                'permission_uuid' => $permission->uuid,
+            ]);
+            // $permission->assignRole($role);
+            // $permission->update();
         }
     }
 }

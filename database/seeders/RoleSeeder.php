@@ -14,6 +14,9 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        $role = Role::create(['name' => 'SUPER_ADMIN']);
+        try {
+            $role = Role::create(['name' => 'SUPER_ADMIN']);
+        } catch (\Throwable $th) {
+        }
     }
 }

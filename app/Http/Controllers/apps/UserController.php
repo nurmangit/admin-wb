@@ -5,8 +5,10 @@ namespace App\Http\Controllers\apps;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Models\ModelHasRole;
 use App\Models\Role;
 use App\Models\User;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -50,19 +52,36 @@ class UserController extends Controller
 
     // Only update the password if it's provided
     if ($request->filled('password')) {
-      $validated['password'] = bcrypt($validated['password']); // Hash the password
+      $validated['password'] = bcrypt($validated['password']);
+      $user->password = $validated['password']; // Hash the password
     } else {
       unset($validated['password']); // Remove password from the validated array if not provided
     }
 
     $role = Role::findById($validated['group']); // Get the role
     $user->roles()->detach(); // Remove existing roles
-    $user->assignRole($role); // Assign the new role
-    $user->update();
+    $modelHasRoleOld = ModelHasRole::where('Key2', $user->uuid)->first();
+    if ($modelHasRoleOld) {
+      $modelHasRoleOld->role_uuid = $role->uuid;
+      $modelHasRoleOld->save();
+    } else {
+      $modelHasRole = ModelHasRole::create([
+        'role_uuid' => $role->uuid,
+        'model_type' => 'App\Models\User',
+        'model_uuid' => $user->uuid,
+      ]);
+    }
+
+    $user->assignRole($role);
 
     $validated['is_active'] = $request->has('is_active') ? true : false;
 
-    $user->update($validated);
+    $validated['updated_at'] = Carbon::now();
+    $user->name = $validated['name'];
+    $user->email = $validated['email'];
+    $user->is_active = $validated['is_active'];
+    $user->updated_at = $validated['updated_at'];
+    $user->save();
 
     return redirect()->route('account.user.edit', ['uuid' => $uuid])
       ->with('success', 'User updated successfully');

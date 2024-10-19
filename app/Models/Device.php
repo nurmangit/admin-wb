@@ -7,31 +7,22 @@
 namespace App\Models;
 
 use App\Traits\Auditable;
+use App\Traits\DynamicAttributeMapper;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Yajra\Auditable\AuditableWithDeletesTrait;
 
-/**
- * Class Region
- * 
- * @property string $uuid
- * @property string $name
- * @property string $code
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * 
- * @property Collection|Area[] $areas
- *
- * @package App\Models
- */
 class Device extends Model
 {
-	use SoftDeletes;
-	protected $table = 'devices';
-	protected $primaryKey = 'uuid';
+	use DynamicAttributeMapper;
+	protected $table = 'Ice.UD05';
+	protected $primaryKey = 'Key1';
 	public $incrementing = false;
+	const CREATED_AT = 'Date02';
+	const UPDATED_AT = 'Date03';
+	public $timestamps = false;
 
 	protected $fillable = [
 		'name',
@@ -43,10 +34,31 @@ class Device extends Model
 		'used_at',
 	];
 
+	protected $casts = [
+		'updated_at' => 'date:Y-m-d',
+		'created_at' => 'date:Y-m-d',
+	];
+
 	protected static function boot()
 	{
 		parent::boot();
 
+		static::setAttributeMapping([
+			'uuid' => 'Key1',
+			'name' => 'Character01',
+			'secret' => 'Character02',
+			'status' => 'Character03',
+			'tolerance' => 'Number03',
+			'current_weight' => 'Number01',
+			'previous_weight' => 'Number02',
+			'used_at' => 'Date01',
+			'created_at' => 'Date02',
+			'updated_at' => 'Date03',
+			'deleted_at' => 'Date04',
+			'created_by' => 'Key1',
+			'updated_by' => 'Key2',
+			'deleted_by' => 'Key3',
+		]);
 		static::creating(function ($model) {
 			$model->uuid = \Illuminate\Support\Str::uuid();
 		});

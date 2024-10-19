@@ -26,7 +26,7 @@ class AreaStoreRequest extends FormRequest
         return [
             'name' => 'required|max:255',
             'code' => 'required|max:255',
-            'region_uuid' => 'required|uuid|exists:regions,uuid',
+            'region_uuid' => 'required|uuid',
         ];
     }
 }

@@ -83,7 +83,7 @@ class VehicleController extends Controller
   {
     $vehicleNo = $request->input('vehicle_no');
 
-    $vehicle = Vehicle::where('register_number', $vehicleNo)->first();
+    $vehicle = Vehicle::where('Character01', $vehicleNo)->first();
     if (!$vehicle) {
       return response()->json([
         "status" => "failed",
@@ -92,9 +92,9 @@ class VehicleController extends Controller
       ]);
     }
 
-    $weightBridge = WeightBridge::where('vehicle_uuid', $vehicle->uuid)->where('status', 'RM-IN')->first();
+    $weightBridge = WeightBridge::where('Key2', $vehicle->uuid)->where('ShortChar02', 'RM-IN')->first();
     if (!$weightBridge) {
-      $weightBridge = WeightBridge::where('vehicle_uuid', $vehicle->uuid)->where('status', 'FG-IN')->first();
+      $weightBridge = WeightBridge::where('Key2', $vehicle->uuid)->where('ShortChar02', 'FG-IN')->first();
     }
 
     // Fetch the vehicle details from the database or any other source
