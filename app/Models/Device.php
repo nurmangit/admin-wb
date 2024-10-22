@@ -37,6 +37,7 @@ class Device extends Model
 	protected $casts = [
 		'updated_at' => 'date:Y-m-d',
 		'created_at' => 'date:Y-m-d',
+		'current_weight' => 'integer',
 	];
 
 	protected static function boot()

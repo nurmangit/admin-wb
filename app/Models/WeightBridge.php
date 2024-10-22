@@ -23,6 +23,11 @@ class WeightBridge extends Model
 	const UPDATED_AT = 'Date05';
 	public $timestamps = false;
 
+	protected $casts = [
+		'weight_out' => 'integer',
+		'weight_in' => 'integer',
+	];
+
 	protected $fillable = [
 		'slip_no',
 		'arrival_date',

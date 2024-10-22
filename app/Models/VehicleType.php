@@ -45,6 +45,11 @@ class VehicleType extends Model
 		'weight_standart',
 	];
 
+	protected $casts = [
+		'tolerance' => 'integer',
+		'weight_standart' => 'integer',
+	];
+
 	public function vehicles()
 	{
 		return $this->hasMany(Vehicle::class, 'vehicle_type_uuid');
