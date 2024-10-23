@@ -65,7 +65,7 @@
                 <select class="form-select @error('vehicle_type_uuid') is-invalid @enderror" id="vehicle_type_uuid" name="vehicle_type_uuid" required>
                   <option value="">-- select --</option>
                   @foreach ($vehicleTypes as $vehicleType)
-                  <option value="{{$vehicleType->uuid}}" {{ $transporterRate->vehicle_type_uuid == $vehicleType->uuid ? 'selected' : '' }}>{{$vehicleType->code}} - {{$vehicleType->name}}</option>
+                  <option value="{{$vehicleType->uuid}}">{{$vehicleType->code}} - {{$vehicleType->name}}</option>
                   @endforeach
                 </select>
                 @error('vehicle_type_uuid')
