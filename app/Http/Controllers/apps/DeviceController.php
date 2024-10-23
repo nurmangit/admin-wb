@@ -84,7 +84,7 @@ class DeviceController extends Controller
         "status" => "success",
         "message" => "Device details retrieved!",
         "data" => [
-          "current_weight" => $device->current_weight,
+          "current_weight" => (int)$device->current_weight,
           "status" => $device->status
         ]
       ],
