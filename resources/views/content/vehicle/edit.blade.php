@@ -49,8 +49,11 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label" for="type">Type <span class="text-danger">*</span></label>
-            <input type="text" class="form-control @error('type') is-invalid @enderror" id="type" name="type" placeholder="Enter Type" value="{{ old('type',$vehicle->type) }}" required />
+            <label class="form-label" for="type">Type of Plat <span class="text-danger">*</span></label>
+            <select class="form-select @error('type') is-invalid @enderror" id="type" name="type" required>
+              <option value="kuning" {{ $vehicle->type == 'kuning' ? 'selected' : '' }}>Kuning</option>
+              <option value="putih" {{ $vehicle->type == 'putih' ? 'selected' : '' }}>Putih</option>
+            </select>
             @error('type')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
