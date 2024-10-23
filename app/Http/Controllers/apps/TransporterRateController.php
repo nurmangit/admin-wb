@@ -53,7 +53,6 @@ class TransporterRateController extends Controller
   {
     $transporterRate = TransporterRate::findOrFail($uuid);
     $validated = $request->validated();
-    dd($validated);
     $transporterRate->update($validated);
     return redirect()->route(
       'master-data.transporter-rate.edit',

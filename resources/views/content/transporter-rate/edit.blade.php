@@ -66,7 +66,7 @@
             <div class="col-3">
               <div class="mb-3">
                 <label class="form-label" for="start_date">Start Date</label>
-                <input type="datetime-local" class="form-control" id="start_date" name="start_date" placeholder="Start Date" required value="{{ old('start_date',$transporterRate->start_date) }}" />
+                <input type="date" class="form-control" id="start_date" name="start_date" placeholder="Start Date" required value="{{ old('start_date',$transporterRate->start_date) }}" />
                 @error('start_date')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -75,7 +75,7 @@
             <div class="col-3">
               <div class="mb-3">
                 <label class="form-label" for="end_date">End Date</label>
-                <input type="datetime-local" class="form-control" id="end_date" name="end_date" placeholder="End Date" required value="{{ old('end_date',$transporterRate->end_date) }}" />
+                <input type="date" class="form-control" id="end_date" name="end_date" placeholder="End Date" required value="{{ old('end_date',$transporterRate->end_date) }}" />
                 @error('end_date')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
