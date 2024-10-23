@@ -19,7 +19,7 @@
             <select class="form-select @error('area_uuid') is-invalid @enderror" id="area_uuid" name="area_uuid" required>
               <option value="">-- select --</option>
               @foreach ($areas as $area)
-              <option value="{{$area->uuid}}" {{ $transporterRate->uuid == $area->uuid ? 'selected' : '' }}>{{$area->code}} - {{$area->name}}</option>
+              <option value="{{$area->uuid}}" {{ $transporterRate->area_uuid == $area->uuid ? 'selected' : '' }}>{{$area->code}} - {{$area->name}}</option>
               @endforeach
             </select>
             @error('area_uuid')
@@ -32,7 +32,7 @@
             <select class="form-select @error('vehicle_type_uuid') is-invalid @enderror" id="vehicle_type_uuid" name="vehicle_type_uuid" required>
               <option value="">-- select --</option>
               @foreach ($vehicleTypes as $vehicleType)
-              <option value="{{$vehicleType->uuid}}" {{ $transporterRate->uuid == $vehicleType->uuid ? 'selected' : '' }}>{{$vehicleType->code}} - {{$vehicleType->name}}</option>
+              <option value="{{$vehicleType->uuid}}" {{ $transporterRate->vehicle_type_uuid == $vehicleType->uuid ? 'selected' : '' }}>{{$vehicleType->code}} - {{$vehicleType->name}}</option>
               @endforeach
             </select>
             @error('vehicle_type_uuid')
