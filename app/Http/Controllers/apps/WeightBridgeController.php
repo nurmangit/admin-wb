@@ -152,7 +152,7 @@ class WeightBridgeController extends Controller
       }
       $weightBridge->status = strtoupper($validated['weighing_type']) . '-OUT';
       if ($validated['weighing_type'] == 'fg') {
-        $weightBridge->po_do = $validated['po_do'];
+        $weightBridge->po_do = $validated['po_do'] ?? "";
       }
 
       // Get the secret from the environment variable
