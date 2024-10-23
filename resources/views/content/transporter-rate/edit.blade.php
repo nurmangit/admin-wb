@@ -28,7 +28,7 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label" for="vehicle_type_uuid">Area <span class="text-danger">*</span></label>
+            <label class="form-label" for="vehicle_type_uuid">Vehicle Type <span class="text-danger">*</span></label>
             <select class="form-select @error('vehicle_type_uuid') is-invalid @enderror" id="vehicle_type_uuid" name="vehicle_type_uuid" required>
               <option value="">-- select --</option>
               @foreach ($vehicleTypes as $vehicleType)
