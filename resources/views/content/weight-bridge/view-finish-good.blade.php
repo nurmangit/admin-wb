@@ -118,7 +118,7 @@
           <div class="d-flex justify-content-end">
             <!-- Submit Button -->
             @if($weight_bridge->status == 'FG-IN' or $weight_bridge->status == 'FG-OUT')
-            <button type="button" class="btn btn-primary fw-bold">PRINT</button>
+            <a href="{{route('transaction.weight-bridge.printSlip',$weight_bridge->uuid)}}" class="btn btn-primary fw-bold">PRINT</a>
             @endif
           </div>
         </form>
