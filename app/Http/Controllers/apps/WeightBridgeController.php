@@ -129,6 +129,16 @@ class WeightBridgeController extends Controller
 
     $vehicle = Vehicle::where('Character01', $validated['vehicle_no'])->where('ShortChar02', 'active')->first();
     $weightBridge = WeightBridge::where('Key2', $vehicle->uuid)->where('ShortChar02', strtoupper($validated['weighing_type']) . '-IN')->first();
+
+    $status = strtoupper(($validated['weighing_type'] == 'fg' ? 'rm' : 'fg')) . '-IN';
+    $otherProcess = WeightBridge::where('Key2', $vehicle->uuid)->where('ShortChar01', $status)->orderBy('Date04', 'DESC')->first();
+    if ($otherProcess) {
+      if ($validated['weighing_type'] == 'rm') {
+        return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight IN failed. Detail: Other process not finished Vehicle no: ' . $otherProcess->vehicle->register_number);
+      } else {
+        return redirect()->route('transaction.weight-bridge.finish-good')->with('error', 'Weight IN failed. Detail: Other process not finished with Vehicle No: ' . $otherProcess->vehicle->register_number);
+      }
+    }
     if (!$weightBridge) {
       if ($validated['weighing_type'] == 'rm') {
         return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight OUT failed. Detail: Weight IN data not found!.');
