@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TransporterRateStoreRequest;
 use App\Models\Area;
 use App\Models\TransporterRate;
+use App\Models\VehicleType;
 use Illuminate\Http\Request;
 
 class TransporterRateController extends Controller
@@ -31,6 +32,7 @@ class TransporterRateController extends Controller
       'content.transporter-rate.create',
       [
         'areas' => Area::get(),
+        "vehicleTypes" => VehicleType::get(),
       ]
     );
   }
@@ -41,6 +43,7 @@ class TransporterRateController extends Controller
       'content.transporter-rate.edit',
       [
         "transporterRate" => TransporterRate::findOrFail($uuid),
+        "vehicleTypes" => VehicleType::get(),
         'areas' => Area::get(),
       ]
     );

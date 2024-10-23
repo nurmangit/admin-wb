@@ -21,7 +21,19 @@
               <option value="{{$area->uuid}}" {{ old('area_uuid') == '$area->uuid' ? 'selected' : '' }}>{{$area->name}}({{$area->code}}) - {{$area->region->name}}({{$area->region->code}})</option>
               @endforeach
             </select>
-            @error('status')
+            @error('area_uuid')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="vehicle_type_uuid">Vehicle Type <span class="text-danger">*</span></label>
+            <select class="form-select @error('vehicle_type_uuid') is-invalid @enderror" id="vehicle_type_uuid" name="vehicle_type_uuid" required>
+              @foreach ($vehicleTypes as $vehicleType)
+              <option value="{{$vehicleType->uuid}}" {{ old('vehicle_type_uuid') == '$vehicleType->uuid' ? 'selected' : '' }}>{{$vehicleType->code}} - {{$vehicleType->name}}</option>
+              @endforeach
+            </select>
+            @error('vehicle_type_uuid')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
           </div>

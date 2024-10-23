@@ -51,6 +51,7 @@
           <div class="mb-3">
             <label class="form-label" for="type">Type of Plat <span class="text-danger">*</span></label>
             <select class="form-select @error('type') is-invalid @enderror" id="type" name="type" required>
+              <option value="">--Select--</option>
               <option value="kuning" {{ old('type') == 'kuning' ? 'selected' : '' }}>Kuning</option>
               <option value="putih" {{ old('type') == 'putih' ? 'selected' : '' }}>Putih</option>
             </select>
@@ -86,23 +87,6 @@
               <option value=""> -- Select --</option>
               @foreach ($transporters as $transporter)
               <option value="{{$transporter->uuid}}" {{ old('trans$transporter_uuid') == '$transporter->uuid' ? 'selected' : '' }}>{{$transporter->code}} - {{$transporter->name}}</option>
-              @endforeach
-            </select>
-            @error('status')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label" for="transporter_rate_uuid">Transporter Rate <span class="text-danger">*</span></label>
-            <select class="form-select @error('transporter_rate_uuid') is-invalid @enderror" id="transporter_rate_uuid" name="transporter_rate_uuid" required>
-              <option value=""> -- Select --</option>
-              @foreach ($transporterRates as $transporterRate)
-              <option value="{{$transporterRate->uuid}}" {{ old('trans$transporterRate_uuid') == '$transporterRate->uuid' ? 'selected' : '' }}>
-                {{$transporterRate->name}} - Charge
-                {{$transporterRate->charge}} - Rate {{$transporterRate->rate}} - Area
-                {{$transporterRate->area->name}} - Region {{$transporterRate->area->region->name}}
-              </option>
               @endforeach
             </select>
             @error('status')
