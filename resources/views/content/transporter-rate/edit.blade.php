@@ -59,15 +59,6 @@
                 @enderror
               </div>
             </div>
-            <div class="col-3">
-              <div class="mb-3">
-                <label class="form-label" for="rate">Rate</label>
-                <input type="text" class="form-control" id="rate" name="rate" placeholder="Rate" required value="{{ old('rate',$transporterRate->rate) }}" />
-                @error('rate')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-              </div>
-            </div>
           </div>
 
           <div class="row">
