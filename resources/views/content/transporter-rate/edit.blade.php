@@ -12,7 +12,7 @@
         <h5 class="mb-0">Transporter Rate Details</h5>
       </div>
       <div class="card-body">
-        <form action="{{ route('master-data.transporter-rate.edit',$transporterRate->uuid) }}" method="POST">
+        <form action="{{ route('master-data.transporter-rate.update',$transporterRate->uuid) }}" method="POST">
           @csrf
           <div class="mb-3">
             <label class="form-label" for="area_uuid">Area <span class="text-danger">*</span></label>

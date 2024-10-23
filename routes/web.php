@@ -60,7 +60,7 @@ Route::prefix('master-data')->name('master-data.')->middleware('auth')->group(fu
         Route::get('/create', [TransporterRateController::class, 'create'])->middleware('can:create transporter_rate')->name('create');
         Route::post('/store', [TransporterRateController::class, 'store'])->middleware('can:create transporter_rate')->name('store');
         Route::delete('/delete/{uuid}', [TransporterRateController::class, 'delete'])->middleware('can:delete transporter_rate')->name('delete');
-        Route::post('/edit/{uuid}', [TransporterRateController::class, 'edit'])->middleware('can:edit transporter_rate')->name('edit');
+        Route::get('/edit/{uuid}', [TransporterRateController::class, 'edit'])->middleware('can:edit transporter_rate')->name('edit');
         Route::post('/update/{uuid}', [TransporterRateController::class, 'update'])->middleware('can:edit transporter_rate')->name('update');
     });
     Route::prefix('/area')->name('area.')->group(function () {
