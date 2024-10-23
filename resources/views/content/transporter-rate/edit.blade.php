@@ -27,18 +27,7 @@
             @enderror
           </div>
 
-          <div class="mb-3">
-            <label class="form-label" for="vehicle_type_uuid">Vehicle Type <span class="text-danger">*</span></label>
-            <select class="form-select @error('vehicle_type_uuid') is-invalid @enderror" id="vehicle_type_uuid" name="vehicle_type_uuid" required>
-              <option value="">-- select --</option>
-              @foreach ($vehicleTypes as $vehicleType)
-              <option value="{{$vehicleType->uuid}}" {{ $transporterRate->vehicle_type_uuid == $vehicleType->uuid ? 'selected' : '' }}>{{$vehicleType->code}} - {{$vehicleType->name}}</option>
-              @endforeach
-            </select>
-            @error('vehicle_type_uuid')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
+
 
           <div class="row">
             <div class="col-6">
@@ -55,6 +44,20 @@
                 <label class="form-label" for="charge">Charge</label>
                 <input type="text" class="form-control" id="charge" name="charge" placeholder="Charge" required value="{{ old('charge',$transporterRate->charge) }}" />
                 @error('charge')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="mb-3">
+                <label class="form-label" for="vehicle_type_uuid">Vehicle Type <span class="text-danger">*</span></label>
+                <select class="form-select @error('vehicle_type_uuid') is-invalid @enderror" id="vehicle_type_uuid" name="vehicle_type_uuid" required>
+                  <option value="">-- select --</option>
+                  @foreach ($vehicleTypes as $vehicleType)
+                  <option value="{{$vehicleType->uuid}}" {{ $transporterRate->vehicle_type_uuid == $vehicleType->uuid ? 'selected' : '' }}>{{$vehicleType->code}} - {{$vehicleType->name}}</option>
+                  @endforeach
+                </select>
+                @error('vehicle_type_uuid')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
               </div>
@@ -81,7 +84,6 @@
               </div>
             </div>
           </div>
-
           <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">Save</button>
           </div>
