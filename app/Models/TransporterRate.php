@@ -42,10 +42,6 @@ class TransporterRate extends Model
 	const UPDATED_AT = 'Date04';
 	public $timestamps = false;
 
-	protected $casts = [
-		'start_date' => 'datetime',
-		'end_date' => 'datetime'
-	];
 
 	protected $fillable = [
 		'name',
@@ -96,9 +92,9 @@ class TransporterRate extends Model
 			'charge' => 'Number02',
 			'start_date' => 'Date01',
 			'end_date' => 'Date02',
-			'created_at' => 'Character02',
-			'updated_at' => 'Character03',
-			'deleted_at' => 'Character04',
+			'created_at' => 'Date03',
+			'updated_at' => 'Date04',
+			'deleted_at' => 'Date05',
 			'created_by' => 'Key4',
 			'updated_by' => 'Key5',
 			'deleted_by' => 'Key6',
