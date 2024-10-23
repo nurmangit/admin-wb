@@ -53,6 +53,14 @@
           </div>
 
           <div class="mb-3">
+            <label class="form-label" for="company">Company</label>
+            <input type="text" class="form-control" id="company" name="company" placeholder="Company" value="{{ old('company', $user->company) }}" />
+            @error('company')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
+          </div>
+
+          <div class="mb-3">
             <div class="form-check">
               <input type="checkbox" class="form-check-input" id="is_active" name="is_active" {{ old('is_active', $user->is_active) ? 'checked' : '' }}>
               <label class="form-check-label" for="is_active">Is Active</label>

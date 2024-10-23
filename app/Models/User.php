@@ -39,6 +39,7 @@ class User extends Authenticatable
         'email',
         'password',
         'is_active',
+        'company',
     ];
 
     /**
@@ -97,6 +98,7 @@ class User extends Authenticatable
             'created_by' => 'Key2',
             'updated_by' => 'Key3',
             'deleted_by' => 'Key4',
+            'company' => 'Company',
         ]);
         static::creating(function ($model) {
             $model->uuid = \Illuminate\Support\Str::uuid();
