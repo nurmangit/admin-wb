@@ -44,6 +44,7 @@ class WeightBridge extends Model
 		'weight_in_by',
 		'weight_out_by',
 		'remark',
+		'company',
 		'status'
 	];
 
@@ -86,9 +87,11 @@ class WeightBridge extends Model
 			'created_by' => 'Key3',
 			'updated_by' => 'Key4',
 			'deleted_by' => 'Key5',
+			'company' => 'Company',
 		]);
 		static::creating(function ($model) {
 			$model->uuid = \Illuminate\Support\Str::uuid();
+			$model->company = auth()->user()?->company;
 		});
 	}
 }
