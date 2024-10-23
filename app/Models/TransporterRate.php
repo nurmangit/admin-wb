@@ -38,6 +38,9 @@ class TransporterRate extends Model
 	protected $table = 'Ice.UD102A';
 	protected $primaryKey = 'Key1';
 	public $incrementing = false;
+	const CREATED_AT = 'Date03';
+	const UPDATED_AT = 'Date04';
+	public $timestamps = false;
 
 	protected $casts = [
 		'start_date' => 'datetime',
