@@ -110,6 +110,8 @@
             <td>Pengemudi</td>
         </tr>
     </table>
+
+    @if($weight_type == 'fg')
     <table style="width: 100%; font-size:7px;">
         <tr>
             <td style="width: 70%;">&nbsp;</td>
@@ -128,7 +130,7 @@
             <td>{{ $weight_netto }} KG</td>
         </tr>
     </table>
-
+    @endif
 </body>
 
 </html>
