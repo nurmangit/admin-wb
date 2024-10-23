@@ -50,7 +50,8 @@ class TransporterRate extends Model
 		'rate',
 		'charge',
 		'start_date',
-		'end_date'
+		'end_date',
+		'vehicle_type_uuid'
 	];
 
 	public function area()
