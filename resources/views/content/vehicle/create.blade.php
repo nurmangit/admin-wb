@@ -120,10 +120,6 @@
 @section('page-script')
 <script>
   $(document).ready(function() {
-    $('#transporter_rate_uuid').select2({
-      placeholder: 'Select a transporter rate',
-      allowClear: true
-    });
     $('#transporter_uuid').select2({
       placeholder: 'Select a transporter',
       allowClear: true

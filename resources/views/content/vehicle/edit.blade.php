@@ -114,3 +114,14 @@
 </div>
 
 @endsection
+
+@section('page-script')
+<script>
+  $(document).ready(function() {
+    $('#transporter_uuid').select2({
+      placeholder: 'Select a transporter',
+      allowClear: true
+    });
+  });
+</script>
+@endsection
