@@ -94,7 +94,11 @@
             <select class="form-select @error('transporter_uuid') is-invalid @enderror" id="transporter_uuid" name="transporter_uuid" required>
               <option value="">-- select --</option>
               @foreach ($transporters as $transporter)
-              <option value="{{$transporter->uuid}}" {{ $vehicle->transporter->uuid == $transporter->uuid ? 'selected' : '' }}>{{$transporter->code}} - {{$transporter->name}}</option>
+              <option value="{{$transporter->uuid}}" {{ $vehicle->transporter->uuid == $transporter->uuid ? 'selected' : '' }}>
+                {{$transporterRate->name}} - Charge
+                {{$transporterRate->charge}} - Rate {{$transporterRate->rate}} - Area
+                {{$transporterRate->area->name}} - Region {{$transporterRate->area->region->name}}
+              </option>
               @endforeach
             </select>
             @error('status')

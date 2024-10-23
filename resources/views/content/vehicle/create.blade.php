@@ -95,9 +95,10 @@
             <select class="form-select @error('transporter_rate_uuid') is-invalid @enderror" id="transporter_rate_uuid" name="transporter_rate_uuid" required>
               <option value=""> -- Select --</option>
               @foreach ($transporterRates as $transporterRate)
-              <option value="{{$transporterRate->uuid}}" {{ old('trans$transporterRate_uuid') == '$transporterRate->uuid' ? 'selected' : '' }}>{{$transporterRate->name}} - Charge {{$transporterRate->charge}} - Rate {{$transporterRate->rate}} - Area
-                {{$transporterRate->area->name}}
-                - Region {{$transporterRate->area->region->name}}
+              <option value="{{$transporterRate->uuid}}" {{ old('trans$transporterRate_uuid') == '$transporterRate->uuid' ? 'selected' : '' }}>
+                {{$transporterRate->name}} - Charge
+                {{$transporterRate->charge}} - Rate {{$transporterRate->rate}} - Area
+                {{$transporterRate->area->name}} - Region {{$transporterRate->area->region->name}}
               </option>
               @endforeach
             </select>
