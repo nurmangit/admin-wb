@@ -40,7 +40,7 @@ class Analytics extends Controller
     foreach ($weightData as $data) {
       $weightOut[] = $data['total_weight_out'];
       $weightIn[] = $data['total_weight_out'] ? $data['total_weight_out'] + $data['total_weight_in'] : $data['total_weight_in'];
-      $arrivalDate[] = Carbon::parse($data['date_weight'])?->format('d');
+      // $arrivalDate[] = Carbon::parse($data['date_weight'])?->format('d');
     }
     return view(
       'content.dashboard.dashboards-analytics',
