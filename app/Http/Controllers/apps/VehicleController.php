@@ -75,7 +75,7 @@ class VehicleController extends Controller
   public function store(VehicleStoreRequest $request)
   {
     $validated = $request->validated();
-    $isExist = Vehicle::where('Character01', $validated['register_number'])->isExists();
+    $isExist = Vehicle::where('Character01', $validated['register_number'])->exists();
     if ($isExist) {
       return redirect()->route(
         'master-data.vehicle.create',
