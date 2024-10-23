@@ -61,7 +61,7 @@ class TransporterRate extends Model
 
 	public function vehicle_type()
 	{
-		return $this->belongsTo(Area::class, 'vehicle_type_uuid');
+		return $this->belongsTo(VehicleType::class, 'vehicle_type_uuid');
 	}
 
 	public function area_single()
