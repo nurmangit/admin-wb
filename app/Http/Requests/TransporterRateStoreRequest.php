@@ -27,7 +27,6 @@ class TransporterRateStoreRequest extends FormRequest
             'name' => 'required|max:255',
             'area_uuid' => 'required|uuid',
             'vehicle_type_uuid' => 'required|uuid',
-            'rate' => 'required',
             'charge' => 'required',
             'start_date' => 'required|date_format:Y-m-d\TH:i',
             'end_date' => 'required|date_format:Y-m-d\TH:i'
