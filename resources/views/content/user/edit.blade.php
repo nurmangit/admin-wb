@@ -54,7 +54,7 @@
 
           <div class="mb-3">
             <label class="form-label" for="company">Company</label>
-            <input type="text" class="form-control" id="company" name="company" placeholder="Company" value="{{ old('company', $user->company) }}" />
+            <input type="text" class="form-control" id="company" name="company" placeholder="Company" required readonly value="KMP" />
             @error('company')
             <div class="text-danger">{{ $message }}</div>
             @enderror
