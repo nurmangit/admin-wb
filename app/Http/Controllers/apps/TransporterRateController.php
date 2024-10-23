@@ -32,7 +32,7 @@ class TransporterRateController extends Controller
       'content.transporter-rate.create',
       [
         'areas' => Area::get(),
-        "vehicleTypes" => VehicleType::get(),
+        "vehicleTypes" => VehicleType::orderBy('ShortChar01', 'ASC')->get(),
       ]
     );
   }
@@ -43,7 +43,7 @@ class TransporterRateController extends Controller
       'content.transporter-rate.edit',
       [
         "transporterRate" => TransporterRate::findOrFail($uuid),
-        "vehicleTypes" => VehicleType::get(),
+        "vehicleTypes" => VehicleType::orderBy('ShortChar01', 'ASC')->get(),
         'areas' => Area::get(),
       ]
     );

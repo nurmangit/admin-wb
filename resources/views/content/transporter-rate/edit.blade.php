@@ -17,6 +17,7 @@
           <div class="mb-3">
             <label class="form-label" for="area_uuid">Area <span class="text-danger">*</span></label>
             <select class="form-select @error('area_uuid') is-invalid @enderror" id="area_uuid" name="area_uuid" required>
+              <option value="">-- select --</option>
               @foreach ($areas as $area)
               <option value="{{$area->uuid}}" {{ $transporterRate->uuid == $area->uuid ? 'selected' : '' }}>{{$area->code}} - {{$area->name}}</option>
               @endforeach
@@ -29,6 +30,7 @@
           <div class="mb-3">
             <label class="form-label" for="vehicle_type_uuid">Area <span class="text-danger">*</span></label>
             <select class="form-select @error('vehicle_type_uuid') is-invalid @enderror" id="vehicle_type_uuid" name="vehicle_type_uuid" required>
+              <option value="">-- select --</option>
               @foreach ($vehicleTypes as $vehicleType)
               <option value="{{$vehicleType->uuid}}" {{ $transporterRate->uuid == $vehicleType->uuid ? 'selected' : '' }}>{{$vehicleType->code}} - {{$vehicleType->name}}</option>
               @endforeach

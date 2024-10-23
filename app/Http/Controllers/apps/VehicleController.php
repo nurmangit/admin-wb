@@ -33,8 +33,8 @@ class VehicleController extends Controller
     return view(
       'content.vehicle.create',
       [
-        'vehicleTypes' => VehicleType::get(),
-        'transporterRates' => TransporterRate::get(),
+        "vehicleTypes" => VehicleType::orderBy('ShortChar01', 'ASC')->get(),
+        // 'transporterRates' => TransporterRate::get(),
         'transporters' => Transporter::get(),
       ]
     );
@@ -57,8 +57,8 @@ class VehicleController extends Controller
       'content.vehicle.edit',
       [
         "vehicle" => Vehicle::findOrFail($uuid),
-        'vehicleTypes' => VehicleType::get(),
-        'transporterRates' => TransporterRate::get(),
+        "vehicleTypes" => VehicleType::orderBy('ShortChar01', 'ASC')->get(),
+        // 'transporterRates' => TransporterRate::get(),
         'transporters' => Transporter::get(),
       ]
     );
