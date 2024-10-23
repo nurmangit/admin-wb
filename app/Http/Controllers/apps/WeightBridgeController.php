@@ -167,7 +167,7 @@ class WeightBridgeController extends Controller
       $device->status = 'unstable';
       $device->used_at = $currentDateTime;
       $device->save();
-      $weightBridge->remark =  $validated['remark'];
+      $weightBridge->remark = $validated['remark'] ?? '';
       $weightBridge->update();
     } catch (\Throwable $th) {
       if ($validated['weighing_type'] == 'rm') {
