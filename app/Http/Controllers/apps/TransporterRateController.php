@@ -7,6 +7,8 @@ use App\Http\Requests\TransporterRateStoreRequest;
 use App\Models\Area;
 use App\Models\TransporterRate;
 use App\Models\VehicleType;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 
 class TransporterRateController extends Controller
@@ -39,11 +41,25 @@ class TransporterRateController extends Controller
 
   public function edit($uuid)
   {
+    $transporterRate = TransporterRate::findOrFail($uuid);
+    $startDate = str_replace(':AM', ' AM', $transporterRate->start_date);
+    $startDate = str_replace(':PM', ' PM', $startDate);
+
+    $startDate = Carbon::parse($startDate);
+    $formatedStartDate = $startDate->format('d/m/Y');
+
+    $endDate = str_replace(':AM', ' AM', $transporterRate->end_date);
+    $endDate = str_replace(':PM', ' PM', $endDate);
+
+    $endDate = Carbon::parse($endDate);
+    $formatedEndDate = $endDate->format('d/m/Y');
     return view(
       'content.transporter-rate.edit',
       [
         "transporterRate" => TransporterRate::findOrFail($uuid),
         "vehicleTypes" => VehicleType::orderBy('ShortChar01', 'ASC')->get(),
+        'formatedStartDate' => $formatedStartDate,
+        'formatedEndDate' => $formatedEndDate,
         'areas' => Area::get(),
       ]
     );
