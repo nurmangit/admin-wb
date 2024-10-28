@@ -19,17 +19,8 @@
             <div class="col">
               <div class="mb-3">
                 <label class="form-label" for="register-number">Register Number <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('register_number') is-invalid @enderror" id="register-number" name="register_number" placeholder="Enter Register Number" value="{{ old('register_number',$vehicle->register_number) }}" required />
+                <input type="text" class="form-control @error('register_number') is-invalid @enderror" id="register-number" name="register_number" placeholder="Enter Register Number" value="{{ old('register_number',$vehicle->register_number) }}" required disabled readonly />
                 @error('register_number')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-              </div>
-            </div>
-            <div class="col">
-              <div class="mb-3">
-                <label class="form-label" for="code">Code <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('code') is-invalid @enderror" id="code" name="code" placeholder="Enter Code" value="{{ old('code',$vehicle->code) }}" required />
-                @error('code')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
               </div>
@@ -73,8 +64,8 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label" for="description">Description</label>
-            <textarea id="description" class="form-control @error('description') is-invalid @enderror" name="description" placeholder="Enter Description">{{ old('description',$vehicle->description) }}</textarea>
+            <label class="form-label" for="description">Description <span class="text-danger">*</span> </label>
+            <textarea id="description" class="form-control @error('description') is-invalid @enderror" name="description" placeholder="Enter Description" required>{{ old('description',$vehicle->description) }}</textarea>
             @error('description')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror

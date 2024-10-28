@@ -14,39 +14,55 @@
       <div class="card-body">
         <form action="{{ route('master-data.transporter-rate.update',$transporterRate->uuid) }}" method="POST">
           @csrf
-          <div class="mb-3">
-            <label class="form-label" for="area_uuid">Area <span class="text-danger">*</span></label>
-            <select class="form-select @error('area_uuid') is-invalid @enderror" id="area_uuid" name="area_uuid" required>
-              <option value="">-- select --</option>
-              @foreach ($areas as $area)
-              <option value="{{$area->uuid}}" {{ $transporterRate->area_uuid == $area->uuid ? 'selected' : '' }}>{{$area->code}} - {{$area->name}}</option>
-              @endforeach
-            </select>
-            @error('area_uuid')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
-
           <div class="row">
-            <div class="col-6">
+            <div class="col-12">
               <div class="mb-3">
-                <label class="form-label" for="name">Name</label>
+                <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Name" required value="{{ old('name',$transporterRate->name) }}" />
                 @error('name')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
               </div>
             </div>
-            <div class="col-3">
+          </div>
+          <div class="row">
+            <div class="col-6">
               <div class="mb-3">
-                <label class="form-label" for="charge">Charge</label>
-                <input type="text" class="form-control" id="charge" name="charge" placeholder="Charge" required value="{{ old('charge',$transporterRate->charge) }}" />
-                @error('charge')
+                <label class="form-label" for="start_date">Start Date <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" id="start_date" name="start_date" placeholder="End Date" required value="{{ old('start_date', $transporterRate->start_date ? $formatedStartDate : '') }}" />
+                @error('start_date')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
               </div>
             </div>
-            <div class="col-3">
+            <div class="col-6">
+              <div class="mb-3">
+                <label class="form-label" for="end_date">End Date <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" id="end_date" name="end_date" placeholder="End Date" required value="{{ old('end_date', $transporterRate->end_date ? $formatedEndDate : '') }}" />
+                @error('end_date')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="mb-3">
+                <label class="form-label" for="area_uuid">Area <span class="text-danger">*</span></label>
+                <select class="form-select @error('area_uuid') is-invalid @enderror" id="area_uuid" name="area_uuid" required>
+                  <option value="">-- select --</option>
+                  @foreach ($areas as $area)
+                  <option value="{{$area->uuid}}" {{ $transporterRate->area_uuid == $area->uuid ? 'selected' : '' }}>{{$area->code}} - {{$area->name}}</option>
+                  @endforeach
+                </select>
+                @error('area_uuid')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
               <div class="mb-3">
                 <label class="form-label" for="vehicle_type_uuid">Vehicle Type <span class="text-danger">*</span></label>
                 <select class="form-select @error('vehicle_type_uuid') is-invalid @enderror" id="vehicle_type_uuid" name="vehicle_type_uuid" required>
@@ -60,23 +76,11 @@
                 @enderror
               </div>
             </div>
-          </div>
-
-          <div class="row">
-            <div class="col-3">
+            <div class="col-6">
               <div class="mb-3">
-                <label class="form-label" for="start_date">Start Date</label>
-                <input type="date" class="form-control" id="start_date" name="start_date" placeholder="End Date" required value="{{ old('start_date', $transporterRate->start_date ? $formatedStartDate : '') }}" />
-                @error('start_date')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="mb-3">
-                <label class="form-label" for="end_date">End Date</label>
-                <input type="date" class="form-control" id="end_date" name="end_date" placeholder="End Date" required value="{{ old('end_date', $transporterRate->end_date ? $formatedEndDate : '') }}" />
-                @error('end_date')
+                <label class="form-label" for="charge">Charge <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="charge" name="charge" placeholder="Charge" required value="{{ old('charge',$transporterRate->charge) }}" />
+                @error('charge')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
               </div>

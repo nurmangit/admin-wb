@@ -18,12 +18,10 @@ use Yajra\Auditable\AuditableWithDeletesTrait;
  * 
  * @property string $uuid
  * @property string $register_number
- * @property string $code
  * @property string $status
  * @property string $type
  * @property string $vehicle_type_uuid
  * @property string $description
- * @property string $transporter_rate_uuid
  * @property string $transporter_uuid
  * @property string $ownership
  * @property Carbon|null $created_at
@@ -47,12 +45,10 @@ class Vehicle extends Model
 
 	protected $fillable = [
 		'register_number',
-		'code',
 		'status',
 		'type',
 		'vehicle_type_uuid',
 		'description',
-		'transporter_rate_uuid',
 		'transporter_uuid',
 		'ownership'
 	];
@@ -60,11 +56,6 @@ class Vehicle extends Model
 	public function vehicle_type()
 	{
 		return $this->belongsTo(VehicleType::class, 'Key2', 'Key1');
-	}
-
-	public function transporter_rate()
-	{
-		return $this->belongsTo(TransporterRate::class, 'transporter_rate_uuid');
 	}
 
 	public function transporter()
@@ -85,13 +76,11 @@ class Vehicle extends Model
 		static::setAttributeMapping([
 			'uuid' => 'Key1',
 			'register_number' => 'Character01',
-			'code' => 'ShortChar01',
 			'status' => 'ShortChar02',
 			'type' => 'ShortChar04',
 			'vehicle_type_uuid' => 'Key2',
 			'description' => 'Character02',
 			'transporter_uuid' => 'Key3',
-			'transporter_rate_uuid' => 'Key4',
 			'ownership' => 'ShortChar03',
 			'created_at' => 'Date01',
 			'updated_at' => 'Date02',

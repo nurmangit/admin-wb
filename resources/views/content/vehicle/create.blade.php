@@ -25,15 +25,6 @@
                 @enderror
               </div>
             </div>
-            <div class="col">
-              <div class="mb-3">
-                <label class="form-label" for="code">Code <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('code') is-invalid @enderror" id="code" name="code" placeholder="Enter Code" value="{{ old('code') }}" required />
-                @error('code')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-              </div>
-            </div>
           </div>
 
           <div class="mb-3">
@@ -74,8 +65,8 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label" for="description">Description</label>
-            <textarea id="description" class="form-control @error('description') is-invalid @enderror" name="description" placeholder="Enter Description">{{ old('description') }}</textarea>
+            <label class="form-label" for="description">Description <span class="text-danger">*</span></label>
+            <textarea id="description" class="form-control @error('description') is-invalid @enderror" name="description" placeholder="Enter Description" required>{{ old('description') }}</textarea>
             @error('description')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror

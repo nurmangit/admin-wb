@@ -30,7 +30,6 @@
       <thead>
         <tr>
           <th>Register Number</th>
-          <th>Code</th>
           <th>Vehicle Type</th>
           <th>Transporter</th>
           <th>Status</th>
@@ -42,7 +41,6 @@
         @foreach($vehicles as $vehicle)
         <tr>
           <td>{{ $vehicle->register_number }}</td>
-          <td>{{ $vehicle->code }}</td>
           <td>{{ $vehicle->vehicle_type->name }}</td>
           <td>{{ $vehicle->transporter->name }}</td>
           <td>

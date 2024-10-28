@@ -46,13 +46,13 @@ class TransporterRateController extends Controller
     $startDate = str_replace(':PM', ' PM', $startDate);
 
     $startDate = Carbon::parse($startDate);
-    $formatedStartDate = $startDate->format('d/m/Y');
+    $formatedStartDate = $startDate->format('Y-m-d');
 
     $endDate = str_replace(':AM', ' AM', $transporterRate->end_date);
     $endDate = str_replace(':PM', ' PM', $endDate);
 
     $endDate = Carbon::parse($endDate);
-    $formatedEndDate = $endDate->format('d/m/Y');
+    $formatedEndDate = $endDate->format('Y-m-d');
     return view(
       'content.transporter-rate.edit',
       [

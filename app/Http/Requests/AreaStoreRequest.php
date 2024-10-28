@@ -25,7 +25,7 @@ class AreaStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
-            'code' => 'required|max:255',
+            'code' => 'required|max:255|unique:sqlsrv.Ice.UD103A,ShortChar01',
             'region_uuid' => 'required|uuid',
         ];
     }

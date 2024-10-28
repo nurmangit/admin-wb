@@ -24,8 +24,8 @@ class RegionStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:255',
-            'code' => 'required|max:255',
+            'name' => 'required|max:255|unique:sqlsrv.Ice.UD103,Character01',
+            'code' => 'required|max:255|unique:sqlsrv.Ice.UD103,ShortChar01',
         ];
     }
 }

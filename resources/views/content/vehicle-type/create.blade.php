@@ -15,6 +15,14 @@
         <form action="{{ route('master-data.vehicle-type.store') }}" method="POST">
           @csrf
           <div class="mb-3">
+            <label class="form-label" for="code">Code</label>
+            <input type="text" class="form-control" id="code" name="code" placeholder="Code" required value="{{ old('code') }}" />
+            @error('code')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+
+          <div class="mb-3">
             <label class="form-label" for="name">Name</label>
             <input type="text" class="form-control" id="name" name="name" placeholder="Name" required value="{{ old('name') }}" />
             @error('name')
@@ -22,13 +30,6 @@
             @enderror
           </div>
 
-          <div class="mb-3">
-            <label class="form-label" for="code">Code</label>
-            <input type="text" class="form-control" id="code" name="code" placeholder="Code" required value="{{ old('code') }}" />
-            @error('code')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
           <label class="form-label" for="tolerance">Tolerance</label>
           <div class="input-group mb-3">
             <input type="number" class="form-control" id="tolerance" name="tolerance" placeholder="Tolerance" aria-describedby="tolerance-suffix" required value="{{ old('tolerance') }}" />
