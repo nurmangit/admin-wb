@@ -26,16 +26,20 @@ trait Auditable
     {
         $newValues = $model->getAttributes();
 
+        $differences = array_diff_assoc($newValues, $oldValues);
+        if (empty($differences)) {
+            return;
+        }
         AuditLog::create([
-            'description'  => $description,
-            'subject_uuid'   => $model->uuid ?? null,
-            'subject_type' => get_class($model) ?? null,
-            'user_uuid'      => auth()->user()->uuid ?? 'System',
-            'properties'   => json_encode([
-                'old' => $oldValues,
-                'new' => $newValues,
+            'description'   => $description,
+            'subject_uuid'  => $model->uuid ?? null,
+            'subject_type'  => get_class($model) ?? null,
+            'user_uuid'     => auth()->user()->uuid ?? 'System',
+            'properties'    => json_encode([
+                'old' => array_intersect_key($oldValues, $differences),
+                'new' => $differences,
             ]),
-            'host'         => request()->ip() ?? null,
+            'host'          => request()->ip() ?? null,
         ]);
     }
 }
