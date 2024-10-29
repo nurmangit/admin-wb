@@ -4,6 +4,7 @@ namespace App\Http\Controllers\apps;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TransporterStoreRequest;
+use App\Http\Requests\TransporterUpdateRequest;
 use App\Models\Transporter;
 use Illuminate\Http\Request;
 
@@ -39,7 +40,7 @@ class TransporterController extends Controller
     );
   }
 
-  public function update(TransporterStoreRequest $request, $uuid)
+  public function update(TransporterUpdateRequest $request, $uuid)
   {
     $transporter = Transporter::findOrFail($uuid);
     $validated = $request->validated();
