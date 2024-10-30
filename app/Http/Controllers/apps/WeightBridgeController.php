@@ -91,7 +91,7 @@ class WeightBridgeController extends Controller
     }
     $slipNo = Generator::generateSlipNo(strtoupper($validated['weighing_type']));
     $currentDateTime = new DateTime();
-    $currentDateTime = $currentDateTime->format('Y-m-d');
+    $currentDateTime = $currentDateTime->format('Y-m-d H:i:s');
     try {
       // Get the secret from the environment variable
       $secret = env('DEVICE_SECRET');
@@ -169,7 +169,7 @@ class WeightBridgeController extends Controller
     }
 
     $currentDateTime = new DateTime();
-    $currentDateTime = $currentDateTime->format('Y-m-d');
+    $currentDateTime = $currentDateTime->format('Y-m-d H:i:s');
     try {
       $weightBridge->weight_out = $validated['weight_out'];
       $weightBridge->weight_out_date = $currentDateTime;

@@ -70,7 +70,7 @@ class WeightBridge extends Model
 			'slip_no' => 'Character01',
 			'weight_in_by' => 'Character04',
 			'weight_out_by' => 'Character05',
-			'arrival_date' => 'Date01',
+			'arrival_date' => 'Character09',
 			'weight_type' => 'ShortChar01',
 			'vehicle_uuid' => 'Key2',
 			'weight_in' => 'Number01',
