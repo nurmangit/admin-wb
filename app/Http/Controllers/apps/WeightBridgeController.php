@@ -84,13 +84,14 @@ class WeightBridgeController extends Controller
 
     if ($otherProcess) {
       if ($validated['weighing_type'] == 'rm') {
-        return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight IN failed. Detail: Other process not finished Vehicle no: ' . $otherProcess->vehicle->register_number);
+        return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight IN failed. Detail: Other process not finished Vehicle no: ' . $otherProcess->slip_no);
       } else {
-        return redirect()->route('transaction.weight-bridge.finish-good')->with('error', 'Weight IN failed. Detail: Other process not finished with Vehicle No: ' . $otherProcess->vehicle->register_number);
+        return redirect()->route('transaction.weight-bridge.finish-good')->with('error', 'Weight IN failed. Detail: Other process not finished with Vehicle No: ' . $otherProcess->slip_no);
       }
     }
     $slipNo = Generator::generateSlipNo(strtoupper($validated['weighing_type']));
     $currentDateTime = new DateTime();
+    $currentDateTime = $currentDateTime->format('Y-m-d');
     try {
       // Get the secret from the environment variable
       $secret = env('DEVICE_SECRET');
@@ -154,9 +155,9 @@ class WeightBridgeController extends Controller
 
     if ($otherProcess) {
       if ($validated['weighing_type'] == 'rm') {
-        return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight OUT failed. Detail: Other process not finished Vehicle no: ' . $otherProcess->vehicle->register_number);
+        return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight OUT failed. Detail: Other process not finished Vehicle no: ' . $otherProcess->slip_no);
       } else {
-        return redirect()->route('transaction.weight-bridge.finish-good')->with('error', 'Weight OUT failed. Detail: Other process not finished with Vehicle No: ' . $otherProcess->vehicle->register_number);
+        return redirect()->route('transaction.weight-bridge.finish-good')->with('error', 'Weight OUT failed. Detail: Other process not finished with Vehicle No: ' . $otherProcess->slip_no);
       }
     }
     if (!$weightBridge) {
@@ -168,6 +169,7 @@ class WeightBridgeController extends Controller
     }
 
     $currentDateTime = new DateTime();
+    $currentDateTime = $currentDateTime->format('Y-m-d');
     try {
       $weightBridge->weight_out = $validated['weight_out'];
       $weightBridge->weight_out_date = $currentDateTime;
@@ -198,8 +200,7 @@ class WeightBridgeController extends Controller
       $device->used_at = $currentDateTime;
       $device->save();
       $weightBridge->remark = $validated['remark'] ?? '';
-      $weightBridge->updated_at = Carbon::now();
-      $weightBridge->update();
+      $weightBridge->save();
     } catch (\Throwable $th) {
       if ($validated['weighing_type'] == 'rm') {
         return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight OUT failed. Detail:' . $th->getMessage());

@@ -51,7 +51,7 @@ class WeightBridge extends Model
 
 	public function vehicle()
 	{
-		return $this->belongsTo(Vehicle::class, 'Key2', 'Key1');
+		return $this->hasOne(Vehicle::class, 'Key1', 'Key2');
 	}
 
 	// Override the SoftDeletes deleted_at column to Date04
