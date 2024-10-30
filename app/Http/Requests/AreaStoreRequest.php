@@ -24,8 +24,8 @@ class AreaStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:255',
-            'code' => 'required|max:255|unique:sqlsrv.Ice.UD103A,ShortChar01',
+            'name' => 'required|max:255|unique:sqlsrv.Ice.UD103A,Character01',
+            'code' => 'required|max:50|unique:sqlsrv.Ice.UD103A,ShortChar01',
             'region_uuid' => 'required|uuid',
         ];
     }

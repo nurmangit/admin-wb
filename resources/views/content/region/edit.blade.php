@@ -16,7 +16,7 @@
           @csrf
           <div class="mb-3">
             <label class="form-label" for="code">Code</label>
-            <input type="text" class="form-control" id="code" name="code" placeholder="Code" value="{{ old('code', $region->code) }}" />
+            <input type="text" maxlength="50" class="form-control" id="code" name="code" placeholder="Code" value="{{ old('code', $region->code) }}" />
             @error('code')
             <div class="text-danger">{{ $message }}</div>
             @enderror
@@ -24,7 +24,7 @@
 
           <div class="mb-3">
             <label class="form-label" for="name">Name</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="{{ old('name', $region->name) }}" />
+            <input type="text" maxlength="255" class="form-control" id="name" name="name" placeholder="Name" value="{{ old('name', $region->name) }}" />
             @error('name')
             <div class="text-danger">{{ $message }}</div>
             @enderror

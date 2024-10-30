@@ -12,7 +12,11 @@
     <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-info mb-4 fw-bold">Import Data</a>
     @endcan
     @can('export region')
-    <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-success mb-4 fw-bold">Export Data</a>
+<!--    <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-success mb-4 fw-bold">Export Data</a>-->
+    <form action="{{ route('dataexport') }}" method="POST" style="display: inline;">
+      @csrf
+      <button type="submit" class="btn btn-success mb-4 fw-bold">Export Data</button>
+    </form>
     @endcan
     @can('create region')
     <a href="{{ route('master-data.region.create') }}" class="btn btn-primary mb-4 fw-bold">Add New Region</a>

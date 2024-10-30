@@ -24,7 +24,7 @@ class TransporterStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => 'required|max:255|unique:sqlsrv.Ice.UD102,ShortChar01',
+            'code' => 'required|max:50|unique:sqlsrv.Ice.UD102,ShortChar01',
             'name' => 'required|max:255',
             'address' => 'required',
         ];
