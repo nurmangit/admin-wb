@@ -34,8 +34,28 @@ class ExportImportController extends Controller
         return response()->stream($callback, 200, $csvHeaders);
     }
 
-    public function import()
+    public function import(Request $request)
     {
-        return;
+        $table = $request->input('table');
+        $columns = $request->input('columns');
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            if (($handle = fopen($file->getRealPath(), 'r')) !== false) {
+                fgetcsv($handle);
+
+                while (($data = fgetcsv($handle, 1000, ',')) !== false) {
+                    $rowData = array_combine($columns, $data);
+
+                    DB::table($table)->insert($rowData);
+                }
+                fclose($handle);
+            }
+
+            return back()->with('success', 'Data Imported Successfully');
+        }
+
+        return back()->withErrors(['file' => 'Please upload a valid CSV file.']);
     }
 }
