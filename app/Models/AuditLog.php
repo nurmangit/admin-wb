@@ -45,8 +45,8 @@ class AuditLog extends Model
             'user_uuid' => 'Key3',
             'properties' => 'Character03',
             'host' => 'Character04',
-            'created_at' => 'Date01',
-            'updated_at' => 'Date02',
+            'created_at' => 'Character05',
+            'updated_at' => 'Character06',
         ]);
         static::creating(function ($model) {
             $model->uuid = \Illuminate\Support\Str::uuid();

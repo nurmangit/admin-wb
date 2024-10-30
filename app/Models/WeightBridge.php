@@ -30,6 +30,7 @@ class WeightBridge extends Model
 
 	protected $fillable = [
 		'slip_no',
+		'vehicle_no',
 		'arrival_date',
 		'weight_type',
 		'vehicle_uuid',
@@ -65,6 +66,7 @@ class WeightBridge extends Model
 
 		static::setAttributeMapping([
 			'uuid' => 'Key1',
+			'vehicle_no' => 'Character08',
 			'slip_no' => 'Character01',
 			'weight_in_by' => 'Character04',
 			'weight_out_by' => 'Character05',

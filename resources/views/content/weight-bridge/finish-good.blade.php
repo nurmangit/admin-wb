@@ -238,7 +238,8 @@
           url: `{{ route('master-data.vehicle.details') }}`, // URL to your backend
           type: 'GET',
           data: {
-            vehicle_no: vehicleNo
+            vehicle_no: vehicleNo,
+            weight_type: 'FG'
           },
           success: function(response) {
 

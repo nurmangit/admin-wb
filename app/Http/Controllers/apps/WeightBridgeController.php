@@ -55,15 +55,24 @@ class WeightBridgeController extends Controller
   {
     $validated = $request->validated();
 
-    $vehicle = Vehicle::where('Character01', $validated['vehicle_no'])->where('ShortChar02', 'active')->first();
-
-    if (!$vehicle) {
-      return redirect()->route('transaction.weight-bridge.finish-good')->with('error', 'Weight IN failed. Details: Vehicle No:' . $validated['vehicle_no'] . ' not active.');
-    }
-    $isApprovalExist = WeightBridge::where('Key2', $vehicle->uuid)->where('ShortChar01', 'WAITING FOR APPROVAL')->orderBy('Date04', 'DESC')->first();
-
     $status = strtoupper(($validated['weighing_type'] == 'fg' ? 'rm' : 'fg')) . '-IN';
-    $otherProcess = WeightBridge::where('Key2', $vehicle->uuid)->where('ShortChar01', $status)->orderBy('Date04', 'DESC')->first();
+    $vehicle = null;
+    switch ($validated['weighing_type']) {
+      case 'fg':
+        $vehicle = Vehicle::where('Character01', $validated['vehicle_no'])->where('ShortChar02', 'active')->first();
+        if (!$vehicle) {
+          return redirect()->route('transaction.weight-bridge.finish-good')->with('error', 'Weight IN failed. Details: Vehicle No:' . $validated['vehicle_no'] . ' not active.');
+        }
+        $isApprovalExist = WeightBridge::where('Key2', $vehicle->uuid)->where('ShortChar01', 'WAITING FOR APPROVAL')->orderBy('Date04', 'DESC')->first();
+        $otherProcess = WeightBridge::where('Key2', $vehicle->uuid)->where('ShortChar01', $status)->orderBy('Date04', 'DESC')->first();
+
+        break;
+
+      default:
+        $isApprovalExist = WeightBridge::where('Character08', $validated['vehicle_no'])->where('ShortChar01', 'WAITING FOR APPROVAL')->orderBy('Date04', 'DESC')->first();
+        $otherProcess = WeightBridge::where('Character08', $validated['vehicle_no'])->where('ShortChar01', $status)->orderBy('Date04', 'DESC')->first();
+        break;
+    }
 
     if ($isApprovalExist) {
       if ($validated['weighing_type'] == 'rm') {
@@ -93,12 +102,13 @@ class WeightBridgeController extends Controller
       $weightBridge = WeightBridge::create(
         [
           'slip_no' => $slipNo,
+          'vehicle_no' => $validated['vehicle_no'],
           'arrival_date' => $currentDateTime,
           'weight_type' => $validated['weighing_type'],
-          'vehicle_uuid' => $vehicle->uuid,
+          'vehicle_uuid' => $vehicle?->uuid,
           'weight_in' => $validated['weight_in'],
           'weight_in_date' => $currentDateTime,
-          'weight_standart' => $vehicle->vehicle_type->weight_standart,
+          'weight_standart' => $vehicle?->vehicle_type->weight_standart ?? '0',
           'weight_in_by' => 'admin',
           'remark' => $validated['remark'] ?? '',
           'status' => strtoupper($validated['weighing_type']) . "-IN",
@@ -123,15 +133,25 @@ class WeightBridgeController extends Controller
       return redirect()->route('transaction.weight-bridge.finish-good')->with('success', 'Weight IN success.');
     }
   }
+
   public function weightOut(WeightOutRequest $request)
   {
     $validated = $request->validated();
-
-    $vehicle = Vehicle::where('Character01', $validated['vehicle_no'])->where('ShortChar02', 'active')->first();
-    $weightBridge = WeightBridge::where('Key2', $vehicle->uuid)->where('ShortChar02', strtoupper($validated['weighing_type']) . '-IN')->first();
-
     $status = strtoupper(($validated['weighing_type'] == 'fg' ? 'rm' : 'fg')) . '-IN';
-    $otherProcess = WeightBridge::where('Key2', $vehicle->uuid)->where('ShortChar01', $status)->orderBy('Date04', 'DESC')->first();
+    $vehicle = null;
+    switch ($validated['weighing_type']) {
+      case 'fg':
+        $vehicle = Vehicle::where('Character01', $validated['vehicle_no'])->where('ShortChar02', 'active')->first();
+        $weightBridge = WeightBridge::where('Key2', $vehicle->uuid)->where('ShortChar02', strtoupper($validated['weighing_type']) . '-IN')->first();
+        $otherProcess = WeightBridge::where('Key2', $vehicle->uuid)->where('ShortChar01', $status)->orderBy('Date04', 'DESC')->first();
+        break;
+
+      default:
+        $weightBridge = WeightBridge::where('Character08', $validated['vehicle_no'])->where('ShortChar02', strtoupper($validated['weighing_type']) . '-IN')->first();
+        $otherProcess = WeightBridge::where('Character08', $validated['vehicle_no'])->where('ShortChar01', $status)->orderBy('Date04', 'DESC')->first();
+        break;
+    }
+
     if ($otherProcess) {
       if ($validated['weighing_type'] == 'rm') {
         return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight OUT failed. Detail: Other process not finished Vehicle no: ' . $otherProcess->vehicle->register_number);
@@ -178,6 +198,7 @@ class WeightBridgeController extends Controller
       $device->used_at = $currentDateTime;
       $device->save();
       $weightBridge->remark = $validated['remark'] ?? '';
+      $weightBridge->updated_at = Carbon::now();
       $weightBridge->update();
     } catch (\Throwable $th) {
       if ($validated['weighing_type'] == 'rm') {

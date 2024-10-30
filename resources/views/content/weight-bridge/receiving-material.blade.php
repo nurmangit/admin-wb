@@ -41,21 +41,7 @@
                   Vehicle number not found.
                 </div>
               </div>
-              <!-- Vehicle Type -->
-              <div class="mb-3">
-                <label class="form-label" for="vehicle-type">Vehicle Type</label>
-                <input disabled type="text" class="form-control" id="vehicle-type" placeholder="Enter vehicle type" />
-              </div>
-              <!-- Tolerance -->
-              <div class="mb-3">
-                <label class="form-label" for="tolerance">Tolerance</label>
-                <input disabled type="number" class="form-control" id="tolerance" placeholder="Enter tolerance" />
-              </div>
-              <!-- Transporter Name -->
-              <div class="mb-3">
-                <label class="form-label" for="transporter-name">Transporter Name</label>
-                <input disabled type="text" class="form-control" id="transporter-name" placeholder="Enter transporter name" />
-              </div>
+
             </div>
             <div class="col-4">
               <!-- Weight In -->
@@ -212,7 +198,8 @@
           url: `{{ route('master-data.vehicle.details') }}`, // URL to your backend
           type: 'GET',
           data: {
-            vehicle_no: vehicleNo
+            vehicle_no: vehicleNo,
+            weight_type: 'RM'
           },
           success: function(response) {
 

@@ -89,31 +89,34 @@ class VehicleController extends Controller
   public function getVehicleDetails(Request $request)
   {
     $vehicleNo = $request->input('vehicle_no');
+    $weightType = $request->input('weight_type');
 
-    $vehicle = Vehicle::where('Character01', $vehicleNo)->first();
-    if (!$vehicle) {
-      return response()->json([
-        "status" => "failed",
-        "message" => "Data Not Found!",
-        "data" => []
-      ]);
+    $vehicle = null;
+    switch ($weightType) {
+      case 'FG':
+        $vehicle = Vehicle::where('Character01', $vehicleNo)->first();
+        if (!$vehicle) {
+          return response()->json([
+            "status" => "failed",
+            "message" => "Data Not Found!",
+            "data" => []
+          ]);
+        }
+        $weightBridge = WeightBridge::where('Key2', $vehicle->uuid)->where('ShortChar02', 'FG-IN')->first();
+        break;
+
+      default:
+        $weightBridge = WeightBridge::where('Character08', $vehicleNo)->where('ShortChar02', 'RM-IN')->first();
+        break;
     }
-
-    $weightBridge = WeightBridge::where('Key2', $vehicle->uuid)->where('ShortChar02', 'RM-IN')->first();
-    if (!$weightBridge) {
-      $weightBridge = WeightBridge::where('Key2', $vehicle->uuid)->where('ShortChar02', 'FG-IN')->first();
-    }
-
-    // Fetch the vehicle details from the database or any other source
-    // Example data returned:
     $vehicleDetails = [
       "status" => "success",
       "message" => "Data Found!",
       "data" => [
-        'vehicle_type' => $vehicle->vehicle_type->name,
-        'tolerance' => $vehicle->vehicle_type->tolerance,
-        'weight_standart' => $vehicle->vehicle_type->weight_standart,
-        'transporter_name' => $vehicle->transporter->name,
+        'vehicle_type' => $vehicle?->vehicle_type->name,
+        'tolerance' => $vehicle?->vehicle_type->tolerance,
+        'weight_standart' => $vehicle?->vehicle_type->weight_standart,
+        'transporter_name' => $vehicle?->transporter->name,
         'slip_no' => $weightBridge?->slip_no,
         'weight_in' => $weightBridge?->weight_in,
         'weight_in_date' => $weightBridge?->weight_in_date,

@@ -32,12 +32,12 @@
             @foreach($raw_materials as $raw_material)
             <tr>
               <td>{{$raw_material->slip_no}}</td>
-              <td>{{$raw_material->vehicle->register_number ?? '-'}}</td>
+              <td>{{$raw_material->vehicle->register_number ?? $raw_material->vehicle_no}}</td>
               <td>{{$raw_material->arrival_date}}</td>
               <td><span class="badge text-secondary bg-label-{{($raw_material->status == 'RM-OUT') ? 'success' : ($raw_material->status == 'RM-IN' ? 'warning' : 'danger')}} me-1">{{$raw_material->status}}</span></td>
               <td>
                 <div class="d-flex">
-<!--                  <a href="{{route('transaction.weight-bridge.view',$raw_material->uuid)}}" class="btn btn-sm btn-info">view</a>-->
+                  <!--                  <a href="{{route('transaction.weight-bridge.view',$raw_material->uuid)}}" class="btn btn-sm btn-info">view</a>-->
                   <a type="button" href="{{route('transaction.weight-bridge.printSlip',$raw_material->uuid)}}" target="_blank" class="btn btn-sm btn-info">view</a>
                 </div>
               </td>
@@ -66,8 +66,8 @@
             @foreach($finish_goods as $finish_good)
             <tr>
               <td>{{$finish_good->slip_no}}</td>
-              <td>{{$finish_good->vehicle->register_number ?? '-'}}</td>
-              <td>{{$finish_good->arrival_date}}</td>
+              <td>{{$finish_good->vehicle?->register_number ?? '-'}}</td>
+              <td>{{$finish_good?->arrival_date}}</td>
               <td><span class="badge text-secondary bg-label-{{($finish_good->status == 'FG-OUT') ? 'success' : ($finish_good->status == 'FG-IN' ? 'warning' : 'danger')}} me-1">{{$finish_good->status}}</span></td>
               <td>
                 <div class="d-flex">

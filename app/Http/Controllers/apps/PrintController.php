@@ -22,9 +22,9 @@ class PrintController extends Controller
     $data = [
       'slip_no' => $slip->slip_no,
       'weight_in_date' => $slip->weight_in_date,
-      'vehicle_no' => $slip->vehicle->register_number,
-      'transporter_name' => $slip->vehicle->transporter->name ?? 'Unknown',
-      'vehicle_type' => $slip->vehicle->vehicle_type->name,
+      'vehicle_no' => $slip->vehicle_no ?? $slip->vehicle->register_number,
+      'transporter_name' => $slip->vehicle?->transporter->name,
+      'vehicle_type' => $slip->vehicle?->vehicle_type->name,
       'weight_type' => $slip->weight_type,
       'remark' => $slip->remark,
       'weight_in' => (int)$slip->weight_in,
@@ -36,7 +36,7 @@ class PrintController extends Controller
       'weight_out_time' => $slip->weight_out_date ? Carbon::parse($slip->weight_out_date)->format('H.i') : '',
       'weight_out_date' => $slip->weight_out_date ? Carbon::parse($slip->weight_out_date)->format('Y-m-d') : '',
       'weight_in_by' => $slip->weight_in_by,
-      'driver_name' => $slip->vehicle->driver_name ?? 'Unknown',
+      'driver_name' => $slip->vehicle?->driver_name,
       'po_do' => $slip->po_do,
       'actual_weight' => $slip->actual_weight,
     ];

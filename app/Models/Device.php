@@ -52,7 +52,7 @@ class Device extends Model
 			'tolerance' => 'Number03',
 			'current_weight' => 'Number01',
 			'previous_weight' => 'Number02',
-			'used_at' => 'Date01',
+			'used_at' => 'Character04',
 			'created_at' => 'Date02',
 			'updated_at' => 'Date03',
 			'deleted_at' => 'Date04',
