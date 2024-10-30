@@ -97,7 +97,7 @@ class TransporterRate extends Model
 			'deleted_at' => 'Date05',
 			'created_by' => 'Key4',
 			'updated_by' => 'Key5',
-			'deleted_by' => 'Key6',
+			'deleted_by' => 'ChildKey2',
 		]);
 		static::creating(function ($model) {
 			$model->uuid = \Illuminate\Support\Str::uuid();

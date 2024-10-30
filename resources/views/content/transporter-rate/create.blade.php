@@ -12,7 +12,7 @@
         <h5 class="mb-0">Transporter Rate Details</h5>
       </div>
       <div class="card-body">
-        <form action="{{ route('master-data.transporter-rate.store') }}" method="POST">
+        <form id="form" action="{{ route('master-data.transporter-rate.store') }}" method="POST">
           @csrf
           <div class="row">
             <div class="col-12">
@@ -79,7 +79,7 @@
             <div class="col-6">
               <div class="mb-3">
                 <label class="form-label" for="charge">Charge <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="charge" name="charge" placeholder="Charge" required value="{{ old('charge') }}" />
+                <input type="number" min="1" class="form-control @error('charge') is-invalid @enderror" id="charge" name="charge" placeholder="Charge" required value="{{ old('charge') }}" />
                 @error('charge')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -101,6 +101,11 @@
       $('#area_uuid').select2({
         placeholder: 'Select a transporter rate',
         allowClear: true
+      });
+
+      $('#start_date').on('change', function() {
+        let startDate = $(this).val();
+        $('#end_date').attr('min', startDate);
       });
     });
   </script>

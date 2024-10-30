@@ -98,6 +98,11 @@ Route::prefix('transaction')->name('transaction.')->middleware('auth')->group(fu
     });
 });
 
+Route::prefix('data')->name('data')->middleware('auth')->group(function () {
+   Route::post('/export', [\App\Http\Controllers\apps\ExportImportController::class, 'export'])->middleware('can:export')->name('export');
+   Route::post('/import', [\App\Http\Controllers\apps\ExportImportController::class, 'import'])->middleware('can:import')->name('import');
+});
+
 Route::prefix('account')->name('account.')->middleware('auth')->group(function () {
     Route::prefix('user')->name('user.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->middleware('can:view user')->name('list');

@@ -16,7 +16,7 @@
           @csrf
           <div class="mb-3">
             <label class="form-label" for="code">Code</label>
-            <input type="text" class="form-control" id="code" name="code" placeholder="Code" required value="{{ old('code') }}" />
+            <input type="text" maxlength="50" class="form-control" id="code" name="code" placeholder="Code" required value="{{ old('code') }}" />
             @error('code')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -24,7 +24,7 @@
 
           <div class="mb-3">
             <label class="form-label" for="name">Name</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Name" required value="{{ old('name') }}" />
+            <input type="text" maxlength="255" class="form-control" id="name" name="name" placeholder="Name" required value="{{ old('name') }}" />
             @error('name')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -32,7 +32,7 @@
 
           <label class="form-label" for="tolerance">Tolerance</label>
           <div class="input-group mb-3">
-            <input type="number" class="form-control" id="tolerance" name="tolerance" placeholder="Tolerance" aria-describedby="tolerance-suffix" required value="{{ old('tolerance') }}" />
+            <input type="number" min="1" class="form-control" id="tolerance" name="tolerance" placeholder="Tolerance" aria-describedby="tolerance-suffix" required value="{{ old('tolerance') }}" />
             <span class="input-group-text" id="tolerance-suffix">KG</span>
             @error('tolerance')
             <div class="invalid-feedback">{{ $message }}</div>
@@ -41,7 +41,7 @@
 
           <label class="form-label" for="weight_standart">Weight Standart</label>
           <div class="input-group mb-3">
-            <input type="number" class="form-control" id="weight_standart" name="weight_standart" placeholder="Tolerance" aria-describedby="weight_standart-suffix" required value="{{ old('weight_standart') }}" />
+            <input type="number" min="1" class="form-control" id="weight_standart" name="weight_standart" placeholder="Tolerance" aria-describedby="weight_standart-suffix" required value="{{ old('weight_standart') }}" />
             <span class="input-group-text" id="weight_standart-suffix">KG</span>
             @error('weight_standart')
             <div class="invalid-feedback">{{ $message }}</div>

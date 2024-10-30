@@ -68,6 +68,7 @@ class WeightBridge extends Model
 			'uuid' => 'Key1',
 			'vehicle_no' => 'Character08',
 			'slip_no' => 'Character01',
+            'vehicle_no'=> 'Character08',
 			'weight_in_by' => 'Character04',
 			'weight_out_by' => 'Character05',
 			'arrival_date' => 'Date01',

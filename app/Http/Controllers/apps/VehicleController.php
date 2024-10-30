@@ -4,6 +4,7 @@ namespace App\Http\Controllers\apps;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\VehicleStoreRequest;
+use App\Http\Requests\VehicleUpdateRequest;
 use App\Models\Transporter;
 use App\Models\TransporterRate;
 use App\Models\Vehicle;
@@ -40,7 +41,7 @@ class VehicleController extends Controller
     );
   }
 
-  public function update(VehicleStoreRequest $request, $uuid)
+  public function update(VehicleUpdateRequest $request, $uuid)
   {
     $vehicle = Vehicle::findOrFail($uuid);
     $validated = $request->validated();
