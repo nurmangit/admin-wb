@@ -28,12 +28,11 @@
       <thead>
         <tr>
           <th>Name</th>
-          <th>Area</th>
-          <th>Region</th>
-          <th>Vehicle Type</th>
-          <th>charge</th>
           <th>Start Date</th>
           <th>End Date</th>
+          <th>Area</th>
+          <th>Vehicle Type</th>
+          <th>charge</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -41,12 +40,11 @@
         @foreach ($transporterRates as $transporterRate)
         <tr>
           <td>{{ $transporterRate->name }}</td>
-          <td>{{ $transporterRate->area->name }}</td>
-          <td>{{ $transporterRate->area->region->name }}</td>
-          <td>{{ $transporterRate->vehicle_type?->name }}</td>
-          <td>{{ $transporterRate->charge }}</td>
           <td>{{ $transporterRate->start_date }}</td>
           <td>{{ $transporterRate->end_date }}</td>
+          <td>{{ $transporterRate->area->name }}</td>
+          <td>{{ $transporterRate->vehicle_type?->name }}</td>
+          <td>{{ $transporterRate->charge }}</td>
           <td>
             <div class="d-flex">
               @can('edit transporter_rate')
