@@ -80,7 +80,6 @@ class VehicleController extends Controller
     if ($isExist) {
       return redirect()->route(
         'master-data.vehicle.create',
-
       )->with('failed', 'Register Number already registered.');
     }
     Vehicle::create($validated);
