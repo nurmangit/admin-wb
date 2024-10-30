@@ -16,14 +16,14 @@
           @csrf
           <div class="mb-3">
             <label class="form-label" for="code">Code</label>
-            <input type="text" maxlength="50" class="form-control" id="code" name="code" placeholder="Code" required value="{{ old('code') }}" />
+            <input type="text" maxlength="50" class="form-control @error('code') is-invalid @enderror" id="code" name="code" placeholder="Code" required value="{{ old('code') }}" />
             @error('code')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
           </div>
           <div class="mb-3">
             <label class="form-label" for="name">Name</label>
-            <input type="text" maxlength="255" class="form-control" id="name" name="name" placeholder="Name" required value="{{ old('name') }}" />
+            <input type="text" maxlength="255" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="Name" required value="{{ old('name') }}" />
             @error('name')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror

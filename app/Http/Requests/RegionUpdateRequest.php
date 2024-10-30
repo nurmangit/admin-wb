@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class RegionStoreRequest extends FormRequest
+class RegionUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class RegionStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:255|unique:sqlsrv.Ice.UD103,Character01',
-            'code' => 'required|max:50|unique:sqlsrv.Ice.UD103,ShortChar01',
+            'name' => 'required|max:255',
+            'code' => 'required|max:50',
         ];
     }
 }

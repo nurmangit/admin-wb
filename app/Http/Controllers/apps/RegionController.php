@@ -4,6 +4,7 @@ namespace App\Http\Controllers\apps;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegionStoreRequest;
+use App\Http\Requests\RegionUpdateRequest;
 use App\Models\Region;
 use Illuminate\Http\Request;
 
@@ -39,15 +40,24 @@ class RegionController extends Controller
     );
   }
 
-  public function update(RegionStoreRequest $request, $uuid)
+  public function update(RegionUpdateRequest $request, $uuid)
   {
-    $region = Region::findOrFail($uuid);
-    $validated = $request->validated();
-    $region->update($validated);
-    return redirect()->route(
-      'master-data.region.edit',
-      ['uuid' => $uuid]
-    )->with('success', 'Region updated successfully');
+      $validated = $request->validated();
+      $findRegion = Region::where('ShortChar01', $validated['code'])->first();
+      $region = Region::findOrFail($uuid);
+
+      if ($findRegion and $region->uuid != $findRegion->uuid) {
+          return redirect()->route(
+              'master-data.region.edit',
+              ['uuid' => $uuid]
+          )->with('error', 'Code already exist!');
+      }
+
+      $region->update($validated);
+      return redirect()->route(
+          'master-data.region.edit',
+          ['uuid' => $uuid]
+      )->with('success', 'Region updated successfully');
   }
 
   public function delete($uuid)

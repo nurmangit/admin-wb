@@ -4,6 +4,7 @@ namespace App\Http\Controllers\apps;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AreaStoreRequest;
+use App\Http\Requests\AreaUpdateRequest;
 use App\Models\Area;
 use App\Models\Region;
 use Illuminate\Http\Request;
@@ -46,15 +47,24 @@ class AreaController extends Controller
     );
   }
 
-  public function update(AreaStoreRequest $request, $uuid)
+  public function update(AreaUpdateRequest $request, $uuid)
   {
-    $area = Area::findOrFail($uuid);
-    $validated = $request->validated();
-    $area->update($validated);
-    return redirect()->route(
-      'master-data.area.edit',
-      ['uuid' => $uuid]
-    )->with('success', 'Area updated successfully');
+      $validated = $request->validated();
+      $findArea = Area::where('ShortChar01', $validated['code'])->first();
+      $area = Area::findOrFail($uuid);
+
+      if($findArea and $area->uuid != $findArea->uuid) {
+          return redirect()->route(
+              'master-data.area.edit',
+              ['uuid' => $uuid]
+          )->with('error', 'Code already exist!');
+      }
+
+      $area->update($validated);
+      return redirect()->route(
+          'master-data.area.edit',
+          ['uuid' => $uuid]
+      )->with('success', 'Area updated successfully');
   }
 
   public function delete($uuid)
