@@ -52,7 +52,7 @@ trait HasRoles
             'model',
             config('permission.table_names.model_has_roles'),
             config('permission.column_names.model_morph_key'),
-            app(PermissionRegistrar::class)->pivotRole
+            'Key1'
         );
 
         if (! app(PermissionRegistrar::class)->teams) {
@@ -277,7 +277,7 @@ trait HasRoles
         }
 
         if ($roles instanceof Collection) {
-            return $roles->intersect($guard ? $this->roles->where('guard_name', $guard) : $this->roles)->isNotEmpty();
+            return $roles->intersect($guard ? $this->roles->where('ShortChar01', $guard) : $this->roles)->isNotEmpty();
         }
 
         throw new \TypeError('Unsupported type for $roles parameter to hasRole().');

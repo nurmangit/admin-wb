@@ -68,19 +68,6 @@ class User extends Authenticatable
         return 'Date04';  // Use your custom soft delete column
     }
 
-    /**
-     * A permission can be applied to roles.
-     */
-    public function roles(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            config('permission.models.role'),
-            config('permission.table_names.role_has_permissions'),
-            app(PermissionRegistrar::class)->pivotPermission,
-            app(PermissionRegistrar::class)->pivotRole
-        );
-    }
-
     protected static function boot()
     {
         parent::boot();

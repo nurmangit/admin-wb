@@ -316,7 +316,7 @@ trait HasPermissions
             return false;
         }
 
-        return $this->hasRole($permission->roles);
+        return $this->hasRole($permission->roles()->get());
     }
 
     /**
@@ -511,8 +511,8 @@ trait HasPermissions
                 return is_a($permission, Permission::class) ? $permission->name : $permission;
             }, $permissions);
 
-            return $this->getPermissionClass()::whereIn('name', $permissions)
-                ->whereIn('guard_name', $this->getGuardNames())
+            return $this->getPermissionClass()::whereIn('Character01', $permissions)
+                ->whereIn('ShortChar01', $this->getGuardNames())
                 ->get();
         }
 
