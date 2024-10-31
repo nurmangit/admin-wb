@@ -100,6 +100,14 @@ class WeightBridgeController extends Controller
       if (!$device) {
         throw 'Device not found!';
       }
+
+      if ($device->status != 'stable') {
+        if ($validated['weighing_type'] == 'rm') {
+          return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight IN failed. Detail: Weight Unstable');
+        } else {
+          return redirect()->route('transaction.weight-bridge.finish-good')->with('error', 'Weight IN failed. Detail:  Detail: Weight Unstable');
+        }
+      }
       $weightBridge = WeightBridge::create(
         [
           'slip_no' => $slipNo,
