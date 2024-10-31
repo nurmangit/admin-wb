@@ -59,10 +59,12 @@ class GroupController extends Controller
         foreach ($permissions as $key => $value) {
             $permission = Permission::findByName($this->replaceFirstUnderscore($key));
             if ($permission) {
-                $roleHasPermission = RoleHasPermission::create([
-                    'role_uuid' => $role->uuid,
-                    'permission_uuid' => $permission->uuid,
-                ]);
+                if (!RoleHasPermission::where('key2', $role->uuid)->where('key1', $permission->uuid)->exists()) {
+                    $roleHasPermission = RoleHasPermission::create([
+                        'role_uuid' => $role->uuid,
+                        'permission_uuid' => $permission->uuid,
+                    ]);
+                }
             }
         }
         return redirect()->route(

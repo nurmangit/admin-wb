@@ -54,6 +54,19 @@
           </div>
 
           <div class="mb-3">
+            <label class="form-label" for="group">Group <span class="text-danger">*</span></label>
+            <select class="form-select @error('group') is-invalid @enderror" id="group" name="group" required>
+              <option value="">-- Select Group --</option>
+              @foreach ($roles as $role)
+              <option value="{{$role->uuid}}" {{ $user_role?->uuid == $role->uuid ? 'selected' : '' }}>{{$role->name}}</option>
+              @endforeach
+            </select>
+            @error('status')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+
+          <div class="mb-3">
             <label class="form-label" for="company">Company</label>
             <input type="text" class="form-control" id="company" name="company" placeholder="Company" required readonly value="KMP" />
             @error('company')

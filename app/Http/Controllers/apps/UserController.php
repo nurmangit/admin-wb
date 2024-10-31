@@ -22,13 +22,19 @@ class UserController extends Controller
   public function view($uuid)
   {
     return view('content.user.view', [
-      'user' => User::findOrFail($uuid)
+      'user' => User::findOrFail($uuid),
     ]);
   }
 
   public function create()
   {
-    return view('content.user.create');
+    return view(
+      'content.user.create',
+      [
+        "roles" => Role::get(),
+        "user_role" => null,
+      ]
+    );
   }
 
   public function edit($uuid)
@@ -102,7 +108,31 @@ class UserController extends Controller
 
     $validated['is_active'] = $request->has('is_active') ? true : false;
 
-    User::create($validated);
+    $user = User::create($validated);
+
+    $role = Role::findById($validated['group']); // Get the role
+    $user->roles()->detach(); // Remove existing roles
+    $modelHasRoleOld = ModelHasRole::where('Key2', $user->uuid)->first();
+    if ($modelHasRoleOld) {
+      $modelHasRoleOld->role_uuid = $role->uuid;
+      $modelHasRoleOld->save();
+    } else {
+      $modelHasRole = ModelHasRole::create([
+        'role_uuid' => $role->uuid,
+        'model_type' => 'App\Models\User',
+        'model_uuid' => $user->uuid,
+      ]);
+    }
+
+    if ($request->filled('password')) {
+      $validated['password'] = bcrypt($validated['password']);
+      $user->password = $validated['password']; // Hash the password
+    } else {
+      unset($validated['password']); // Remove password from the validated array if not provided
+    }
+
+    $user->assignRole($role);
+    $user->save();
 
     return redirect()->route('account.user.list')
       ->with('success', 'User created successfully');
