@@ -28,7 +28,7 @@ class VehicleStoreRequest extends FormRequest
             'status' => 'required|in:active,inactive,pending',
             'type' => 'required|string|max:255',
             'vehicle_type_uuid' => 'required|uuid',
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:255',
             'transporter_uuid' => 'required|uuid',
             'ownership' => 'required|string',
         ];
