@@ -44,7 +44,7 @@
           <td>{{ $transporterRate->end_date }}</td>
           <td>{{ $transporterRate->area->name }}</td>
           <td>{{ $transporterRate->vehicle_type?->name }}</td>
-          <td>{{ $transporterRate->charge }}</td>
+          <td>{{ ((int)$transporterRate->charge) }}</td>
           <td>
             <div class="d-flex">
               @can('edit transporter_rate')
