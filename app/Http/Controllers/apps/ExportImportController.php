@@ -96,23 +96,75 @@ class ExportImportController extends Controller
     public function import(Request $request)
     {
         $table = $request->input('table');
-        $columns = $request->input('columns');
 
+        // Check if the model exists
+        if (!class_exists("App\\Models\\$table")) {
+            return back()->withErrors(['table' => 'Model not found.']);
+        }
+
+        $model = app("App\\Models\\$table");
+
+        // Get the fillable columns from the model
+        $columns = $model->getFillable();
+
+        // Check if a file was uploaded
         if ($request->hasFile('file')) {
             $file = $request->file('file');
 
+            // Open the uploaded CSV file
             if (($handle = fopen($file->getRealPath(), 'r')) !== false) {
-                fgetcsv($handle);
+                $header = fgetcsv($handle);
 
+                // Validate that CSV header matches model columns (including related models if applicable)
+                $validatedColumns = [];
+                foreach ($header as $column) {
+                    if (in_array($column, $columns)) {
+                        $validatedColumns[] = $column;
+                    } elseif (str_contains($column, '_uuid')) {
+                        // Handle related UUID columns by identifying and including related model's fillable attributes
+                        $relatedModelName = str_replace('_uuid', '', $column);
+                        $relatedModelClass = "App\\Models\\" . ucwords(str_replace('_', '', $relatedModelName));
+                        if (class_exists($relatedModelClass)) {
+                            $relatedColumns = (new $relatedModelClass)->getFillable();
+                            foreach ($relatedColumns as $relatedColumn) {
+                                if (strtolower($relatedModelName . '_' . $relatedColumn) === strtolower($column)) {
+                                    $validatedColumns[] = $column;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (empty($validatedColumns)) {
+                    return back()->withErrors(['file' => 'CSV file columns do not match the model attributes.']);
+                }
+
+                // Process each row in the CSV
                 while (($data = fgetcsv($handle, 1000, ',')) !== false) {
-                    $rowData = array_combine($columns, $data);
+                    $rowData = array_combine($validatedColumns, $data);
 
+                    // Separate related model data for UUID columns
+                    foreach ($rowData as $column => $value) {
+                        if (str_contains($column, '_uuid')) {
+                            $relatedModelName = str_replace('_uuid', '', $column);
+                            $relatedModelClass = "App\\Models\\" . ucwords(str_replace('_', '', $relatedModelName));
+                            if (class_exists($relatedModelClass)) {
+                                // Find or create related model instance
+                                $relatedInstance = $relatedModelClass::firstOrCreate([$column => $value]);
+                                $rowData[$column] = $relatedInstance->id; // Assign the related model ID to main table
+                            }
+                        }
+                    }
+
+                    // Insert or update data in the main table
                     DB::table($table)->insert($rowData);
                 }
                 fclose($handle);
+
+                return back()->with('success', 'Data Imported Successfully');
             }
 
-            return back()->with('success', 'Data Imported Successfully');
+            return back()->withErrors(['file' => 'Could not open the CSV file.']);
         }
 
         return back()->withErrors(['file' => 'Please upload a valid CSV file.']);
