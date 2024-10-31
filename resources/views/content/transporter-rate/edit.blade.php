@@ -79,7 +79,7 @@
             <div class="col-6">
               <div class="mb-3">
                 <label class="form-label" for="charge">Charge <span class="text-danger">*</span></label>
-                <input type="number" min="1" class="form-control" id="charge" name="charge" placeholder="Charge" required value="{{ ((int)old('charge',$transporterRate->charge)) }}" />
+                <input type="number" min="1" class="form-control @error('charge') is-invalid @enderror" id="charge" name="charge" placeholder="Charge" required value="{{ ((int)old('charge',$transporterRate->charge)) }}" />
                 @error('charge')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
