@@ -101,180 +101,86 @@ class ExportImportController extends Controller
         ]);
 
         $table = $request->input('table');
-
-        // Store the URL to redirect back to
         $redirectUrl = $request->input('redirect_url', url()->previous());
 
-        // Check if the model exists
         if (!class_exists("App\\Models\\$table")) {
-            return redirect($redirectUrl)
-                ->with('error', 'Model not found.');
+            return redirect($redirectUrl)->with('error', 'Model not found.');
         }
 
-        // Get model instance
         $modelClass = "App\\Models\\$table";
         $model = new $modelClass();
 
-        // Get fillable columns
-        $fillableColumns = $model->getFillable();
-
-        // Read CSV file
-        $file = $request->file('file');
-        $handle = fopen($file->getPathname(), 'r');
-
         try {
-            // Read headers
-            $headers = fgetcsv($handle);
-            if (!$headers) {
-                throw new \Exception('CSV file is empty or invalid');
-            }
+            $file = $request->file('file');
+            $csvData = array_map(function($line) {
+                return str_getcsv($line, ';');
+            }, file($file->getPathname()));
 
-            // Map headers to their positions
-            $headerMap = array_flip($headers);
-
-            // Start database transaction
-            DB::beginTransaction();
+            $headers = array_map('strtolower', $csvData[0]);
+            array_shift($csvData);
 
             $processedRows = 0;
             $errorRows = [];
+            $dataToInsert = [];
 
-            // Read data rows
-            while (($row = fgetcsv($handle)) !== false) {
-                $data = [];
-                $relatedData = [];
-                $whereConditions = [];
-
+            foreach ($csvData as $index => $row) {
                 try {
-                    // Process each column in the current row
-                    foreach ($headerMap as $header => $position) {
-                        // Skip if the position doesn't exist in the row
-                        if (!isset($row[$position])) {
-                            continue;
-                        }
+                    $data = array_combine($headers, $row);
 
-                        $value = $row[$position];
+                    $data = array_map(function($value) {
+                        $value = trim($value);
+                        return $value === '' ? null : $value;
+                    }, $data);
 
-                        // Check if this is a related model column
-                        if (str_contains($header, '_')) {
-                            list($relation, $field) = explode('_', $header, 2);
-
-                            // If this is not a UUID field in the main model
-                            if (!in_array("{$relation}_uuid", $fillableColumns)) {
-                                // Store for later processing
-                                $relatedData[$relation][$field] = $value;
-                                continue;
-                            }
-                        }
-
-                        // If it's a direct column of the main model
-                        if (in_array($header, $fillableColumns)) {
-                            $data[$header] = $value;
-                            // Build where conditions for non-null values
-                            if (!is_null($value)) {
-                                $whereConditions[$header] = $value;
-                            }
-                        }
-                    }
-
-                    // Create or update main model instance using query builder
-                    $existingRecord = DB::table($model->getTable())
-                        ->where(function($query) use ($whereConditions) {
-                            foreach ($whereConditions as $column => $value) {
-                                $value = str_replace("'", "''", $value); // Escape single quotes
-                                $query->where($column, '=', $value);
-                            }
-                        })
-                        ->where('Date04', null)
-                        ->first();
-
-                    if ($existingRecord) {
-                        DB::table($model->getTable())
-                            ->where($model->getKeyName(), $existingRecord->{$model->getKeyName()})
-                            ->update($data);
-
-                        $mainRecord = $modelClass::find($existingRecord->{$model->getKeyName()});
-                    } else {
-                        $mainRecord = $modelClass::create($data);
-                    }
-
-                    // Process related models
-                    foreach ($relatedData as $relation => $fields) {
-                        $relationName = str_replace(' ', '', ucwords(str_replace('_', ' ', $relation)));
-                        $relatedModelClass = "App\\Models\\$relationName";
-
-                        if (!class_exists($relatedModelClass)) {
-                            continue;
-                        }
-
-                        $relatedModel = new $relatedModelClass();
-                        $relatedFillable = $relatedModel->getFillable();
-
-                        $validFields = array_intersect_key($fields, array_flip($relatedFillable));
-
-                        if (!empty($validFields)) {
-                            $existingRelated = DB::table($relatedModel->getTable())
-                                ->where(function($query) use ($validFields) {
-                                    foreach ($validFields as $column => $value) {
-                                        if (!is_null($value)) {
-                                            $value = str_replace("'", "''", $value);
-                                            $query->where($column, '=', $value);
-                                        }
-                                    }
-                                })
-                                ->where('Date04', null)
-                                ->first();
-
-                            if ($existingRelated) {
-                                DB::table($relatedModel->getTable())
-                                    ->where($relatedModel->getKeyName(), $existingRelated->{$relatedModel->getKeyName()})
-                                    ->update($validFields);
-
-                                $relatedRecord = $relatedModelClass::find($existingRelated->{$relatedModel->getKeyName()});
-                            } else {
-                                $relatedRecord = $relatedModelClass::create($validFields);
-                            }
-
-                            if (isset($relatedRecord)) {
-                                $mainRecord->{$relation . '_uuid'} = $relatedRecord->uuid;
-                                $mainRecord->save();
-                            }
-                        }
-                    }
+                    $dataToInsert[] = $data;
 
                     $processedRows++;
-
                 } catch (\Exception $e) {
-                    // Store the error information
                     $errorRows[] = [
-                        'row' => $row,
+                        'row_number' => $index + 2,
+                        'data' => $row,
                         'error' => $e->getMessage()
                     ];
-                    \Log::error("Error processing row: " . json_encode($row));
-                    \Log::error("Error message: " . $e->getMessage());
+                    \Log::error("Error processing row " . ($index + 2) . ": " . $e->getMessage());
                 }
             }
 
-            // Commit transaction
-            DB::commit();
+            foreach ($dataToInsert as $dataRow) {
+                try {
+                    $modelClass::updateOrCreate(
+                        ['code' => $dataRow['code']],
+                        $dataRow
+                    );
 
-            // Prepare success message with details
+                    $processedRows++;
+                } catch (\Exception $e) {
+                    $errorRows[] = [
+                        'row_number' => $processedRows + 2,
+                        'data' => $dataRow,
+                        'error' => $e->getMessage(),
+                    ];
+                    \Log::error("Error processing row {$processedRows}: {$e->getMessage()}");
+                }
+            }
+
             $message = "Successfully processed {$processedRows} rows.";
             if (count($errorRows) > 0) {
                 $message .= " Failed to process " . count($errorRows) . " rows.";
-                // Store error details in session for detailed view if needed
                 session(['import_errors' => $errorRows]);
+
+                foreach ($errorRows as $error) {
+                    \Log::error("Row {$error['row_number']} failed:", [
+                        'data' => $error['data'],
+                        'error' => $error['error']
+                    ]);
+                }
             }
 
             return redirect($redirectUrl)->with('success', $message);
 
         } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect($redirectUrl)
-                ->with('error', 'Import failed: ' . $e->getMessage());
-        } finally {
-            if (is_resource($handle)) {
-                fclose($handle);
-            }
+            \Log::error("Import failed: " . $e->getMessage());
+            return redirect($redirectUrl)->with('error', 'Import failed: ' . $e->getMessage());
         }
     }
 
