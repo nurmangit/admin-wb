@@ -98,7 +98,11 @@ class WeightBridgeController extends Controller
       // Find the device using the secret, or fail if not found
       $device = Device::where('Character02', $secret)->first();
       if (!$device) {
-        throw 'Device not found!';
+        if ($validated['weighing_type'] == 'rm') {
+          return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight IN failed. Detail: Device not found!');
+        } else {
+          return redirect()->route('transaction.weight-bridge.finish-good')->with('error', 'Weight IN failed. Detail:  Detail:  Device not found!');
+        }
       }
 
       if ($device->status != 'stable') {
@@ -200,7 +204,11 @@ class WeightBridgeController extends Controller
       // Find the device using the secret, or fail if not found
       $device = Device::where('Character02', $secret)->first();
       if (!$device) {
-        throw 'Device not found!';
+        if ($validated['weighing_type'] == 'rm') {
+          return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight IN failed. Detail: Device not found!');
+        } else {
+          return redirect()->route('transaction.weight-bridge.finish-good')->with('error', 'Weight IN failed. Detail:  Detail:  Device not found!');
+        }
       }
       if ($device->status != 'stable') {
         if ($validated['weighing_type'] == 'rm') {
