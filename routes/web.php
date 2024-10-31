@@ -112,7 +112,17 @@ Route::prefix('data')->name('data.')->middleware('auth')->group(function () {
             ]
         )
         ->name('export');
-    Route::post('/import', [\App\Http\Controllers\apps\ExportImportController::class, 'import'])->middleware('can:import')->name('import');
+    Route::post('/import', [\App\Http\Controllers\apps\ExportImportController::class, 'import'])
+        ->middleware([
+            'can:import user',
+            'can:import vehicle',
+            'can:import vehicle_type',
+            'can:import area',
+            'can:import region',
+            'can:import transporter',
+            'can:import transporter_rate',
+        ])
+        ->name('import');
 });
 
 Route::prefix('account')->name('account.')->middleware('auth')->group(function () {
