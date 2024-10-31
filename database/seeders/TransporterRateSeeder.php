@@ -31,7 +31,6 @@ class TransporterRateSeeder extends Seeder
                 TransporterRate::create([
                     'name'       => $row[0],
                     'area_uuid' => $area->uuid,
-                    'rate'       => (int)$row[3],
                     'charge'     => (int)$row[4],
                     'created_by'  => 'System',
                     'updated_by' => 'System'

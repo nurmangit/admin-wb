@@ -46,7 +46,6 @@ class TransporterRate extends Model
 	protected $fillable = [
 		'name',
 		'area_uuid',
-		'rate',
 		'charge',
 		'start_date',
 		'end_date',
@@ -88,7 +87,6 @@ class TransporterRate extends Model
 			'name' => 'Character01',
 			'area_uuid' => 'Key2',
 			'vehicle_type_uuid' => 'ChildKey1',
-			'rate' => 'Number01',
 			'charge' => 'Number02',
 			'start_date' => 'Date01',
 			'end_date' => 'Date02',
