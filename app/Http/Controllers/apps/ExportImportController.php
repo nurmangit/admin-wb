@@ -156,7 +156,7 @@ class ExportImportController extends Controller
 
             $messageSuccess = "Successfully processed {$processedRows} rows.";
             if (count($errorRows) > 0) {
-                $messageError = "Failed to process " . count($errorRows) . " rows." . " Message: " . $errorRows['error'];
+                $messageError = "Failed to process " . count($errorRows) + 1 . " rows." . " Message: " . $errorRows['error'];
                 session(['import_errors' => $errorRows]);
                 return redirect($redirectUrl)->with([
                     'error' => $messageError,

@@ -9,7 +9,7 @@
   </h4>
   <div>
     @can('import region')
-    <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-info mb-4 fw-bold">Import Data</a>
+    <button class="btn btn-info mb-4 fw-bold btn-import" id="btn-import" data-table-name="Region" type="button" data-bs-toggle="modal" data-bs-target="#importModal">Import Data</button>
     @endcan
     @can('export region')
     <a target="_blank" href="{{ route('data.export') }}?table=Region" class="btn btn-success mb-4 fw-bold">Export Data</a>

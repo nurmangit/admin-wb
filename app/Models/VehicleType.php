@@ -80,6 +80,9 @@ class VehicleType extends Model
 		]);
 		static::creating(function ($model) {
 			$model->uuid = \Illuminate\Support\Str::uuid();
+            if (VehicleType::where('ShortChar01', $model->code)->exists()) {
+                throw new \Exception('Data already exist. Details: code ' . $model->code);
+            }
 		});
 	}
 }

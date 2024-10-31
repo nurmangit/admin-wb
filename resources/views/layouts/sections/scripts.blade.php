@@ -12,6 +12,15 @@
 <!-- BEGIN: Theme JS-->
 <script src="{{ asset(mix('assets/js/main.js')) }}"></script>
 
+<script>
+  $(document).ready(function() {
+    $('#btn-import').click(function() {
+      let data = $(this).data('table-name');
+      $('#importModal #table-name').val(data);
+    });
+  })
+</script>
+
 <!-- END: Theme JS-->
 <!-- Pricing Modal JS-->
 @stack('pricing-script')

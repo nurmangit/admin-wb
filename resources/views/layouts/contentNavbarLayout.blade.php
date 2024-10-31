@@ -45,6 +45,34 @@ $container = ($container ?? 'container-xxl');
           <div class="{{$container}} flex-grow-1 container-p-y">
             @endif
 
+            <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <form action="{{ route('data.import') }}" method="POST" enctype="multipart/form-data">
+                  @csrf
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="importModalLabel">Import CSV Data</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="mb-3 d-none">
+                        <label for="table" class="form-label">Select Table</label>
+                        <input type="hidden" id="table-name" name="table" value="" />
+                      </div>
+                      <div class="mb-3">
+                        <label for="file" class="form-label">CSV File</label>
+                        <input type="file" name="file" id="file" class="form-control" accept=".csv" required>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary">Import</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+
             @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
               {{ session('success') }}

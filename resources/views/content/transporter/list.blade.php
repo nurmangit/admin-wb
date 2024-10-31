@@ -9,8 +9,7 @@
   </h4>
   <div>
     @can('import transporter')
-<!--    <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-info mb-4 fw-bold">Import Data</a>-->
-    <button class="btn btn-info mb-4 fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#importModal">Import Data</button>
+    <button class="btn btn-info mb-4 fw-bold btn-import" id="btn-import" data-table-name="Transporter" type="button" data-bs-toggle="modal" data-bs-target="#importModal">Import Data</button>
     @endcan
     @can('export transporter')
     <a target="_blank" href="{{ route('data.export') }}?table=Transporter" class="btn btn-success mb-4 fw-bold">Export Data</a>
@@ -61,35 +60,6 @@
   </div>
 </div>
 <!--/ Hoverable Table rows -->
-
-<div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form action="{{ route('data.import') }}" method="POST" enctype="multipart/form-data">
-      @csrf
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="importModalLabel">Import CSV Data</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3 d-none">
-            <label for="table" class="form-label">Select Table</label>
-            <select name="table" id="table" class="form-select" required>
-              <option value="Transporter">Transporter</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="file" class="form-label">CSV File</label>
-            <input type="file" name="file" id="file" class="form-control" accept=".csv" required>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Import</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
 @endsection
 
 @section('page-script')
