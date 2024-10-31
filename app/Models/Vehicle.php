@@ -60,9 +60,8 @@ class Vehicle extends Model
 
 	public function transporter()
 	{
-		return $this->belongsTo(Transporter::class, 'transporter_uuid');
+		return $this->hasOne(Transporter::class, 'Key1', 'Key3');
 	}
-
 	// Override the SoftDeletes deleted_at column to Date04
 	public function getDeletedAtColumn()
 	{

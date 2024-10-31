@@ -23,20 +23,68 @@ class ExportImportController extends Controller
         // Get the columns dynamically from the model's attributes
         $columns = (new ("App\\Models\\$table"))->getFillable(); // Assuming you're using fillable attributes
 
+        $headerColumns = $columns;
+
+        foreach ($columns as $column) {
+            if (str_contains($column, '_uuid')) {
+                // Modify column name
+                $relatedModelName = str_replace('_uuid', '', $column);
+                $tempRelatedModelName = $relatedModelName;
+                $relatedModelName = str_replace('_', ' ', $relatedModelName);
+                $relatedModelName = ucwords($relatedModelName);
+                $relatedModelName = str_replace(' ', '', $relatedModelName);
+
+                // Check if related model exists
+                $relatedModel = "App\\Models\\$relatedModelName";
+                if (class_exists($relatedModel)) {
+                    $relatedColumns = (new $relatedModel)->getFillable();
+
+                    // Merge unique columns only
+                    foreach ($relatedColumns as $relatedColumn) {
+                        $qualifiedColumn = $tempRelatedModelName . '_' . $relatedColumn; // Prefix with table name
+                        if (!in_array($qualifiedColumn, $headerColumns)) {
+                            $headerColumns[] = strtolower($qualifiedColumn);
+                        }
+                    }
+                }
+            }
+        }
+
         $csvHeaders = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => "attachment; filename=\"$table.csv\"",
         ];
 
-        $callback = function () use ($data, $columns) {
+        $csvData = [];
+        foreach ($data as $row) {
+            $tempData = $row->only($columns);
+            foreach ($columns as $column) {
+                if (str_contains($column, '_uuid')) {
+                    // Modify column name
+                    $relatedModelName = str_replace('_uuid', '', $column);
+                    if (method_exists($row, $relatedModelName)) {
+                        $relatedColumns = $row->$relatedModelName?->getFillable() ?? [];
+                        foreach ($relatedColumns as $relatedColumn) {
+                            $qualifiedColumn = $relatedModelName . '_' . $relatedColumn; // Prefix with table name
+                            if (in_array($qualifiedColumn, $headerColumns)) {
+                                $tempData[strtolower($qualifiedColumn)] = $row->$relatedModelName->$relatedColumn;
+                            }
+                        }
+                    }
+                }
+            }
+            $csvData[] = $tempData;
+        }
+
+        $callback = function () use ($csvData, $headerColumns) {
             $file = fopen('php://output', 'w');
 
             // Write the column headers to the CSV
-            fputcsv($file, $columns);
+            fputcsv($file, $headerColumns);
 
             // Write each row of data to the CSV
-            foreach ($data as $row) {
-                fputcsv($file, $row->only($columns)); // Use only the specified columns
+            foreach ($csvData as $row) {
+                fputcsv($file, $row);
             }
 
             fclose($file);

@@ -46,7 +46,7 @@ class Area extends Model
 
 	public function region()
 	{
-		return $this->belongsTo(Region::class, 'ChildKey1', 'Key1');
+		return $this->hasOne(Region::class, 'Key1', 'ChildKey1');
 	}
 	public function region_single()
 	{
