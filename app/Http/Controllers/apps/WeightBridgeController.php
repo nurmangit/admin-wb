@@ -204,9 +204,9 @@ class WeightBridgeController extends Controller
       }
       if ($device->status != 'stable') {
         if ($validated['weighing_type'] == 'rm') {
-          return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight IN failed. Detail: Weight Unstable');
+          return redirect()->route('transaction.weight-bridge.receiving-material')->with('error', 'Weight Out failed. Detail: Weight Unstable');
         } else {
-          return redirect()->route('transaction.weight-bridge.finish-good')->with('error', 'Weight IN failed. Detail:  Detail: Weight Unstable');
+          return redirect()->route('transaction.weight-bridge.finish-good')->with('error', 'Weight Out failed. Detail:  Detail: Weight Unstable');
         }
       }
       $device->current_weight = 0;
