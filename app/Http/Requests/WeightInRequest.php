@@ -26,7 +26,7 @@ class WeightInRequest extends FormRequest
         return [
             'weight_in' => 'required|max:10',
             'vehicle_no' => 'required|string',
-            'remark' => 'nullable|string|max:255',
+            'remark' => 'nullable|string|max:50',
             'weighing_type' => 'required|in:rm,fg',
         ];
     }

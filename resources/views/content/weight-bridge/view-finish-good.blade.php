@@ -35,7 +35,7 @@
               <!-- Vehicle No -->
               <div class="mb-3">
                 <label class="form-label" for="vehicle-no">Vehicle No</label>
-                <input type="text" class="form-control @error('vehicle_no') is-invalid @enderror" value="{{$weight_bridge->vehicle->register_number}}" id="vehicle-no" name="vehicle_no" placeholder="Enter vehicle number" disabled />
+                <input type="text" class="form-control @error('vehicle_no') is-invalid @enderror" maxlength="10" value="{{$weight_bridge->vehicle->register_number}}" id="vehicle-no" name="vehicle_no" placeholder="Enter vehicle number" disabled />
                 <div class="invalid-feedback">
                   Vehicle number not found.
                 </div>
@@ -85,7 +85,7 @@
               <!-- Remark -->
               <div class="mb-3">
                 <label class="form-label" for="remark">Remark</label>
-                <textarea disabled id="remark" class="form-control @error('remark') is-invalid @enderror" name="remark" rows='8' placeholder="Enter any remarks">{{$weight_bridge->remark}}
+                <textarea disabled id="remark" class="form-control @error('remark') is-invalid @enderror" maxlength="50" name="remark" rows='8' placeholder="Enter any remarks">{{$weight_bridge->remark}}
                 </textarea>
                 @error('remark')
                 <div class="invalid-feedback">{{ $message }}</div>
