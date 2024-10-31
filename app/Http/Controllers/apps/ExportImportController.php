@@ -128,94 +128,24 @@ class ExportImportController extends Controller
             $errorRows = [];
 
             while (($row = fgetcsv($handle)) !== false) {
-                $data = [];
-                $relatedData = [];
-                $whereConditions = [];
-
                 try {
                     foreach ($headerMap as $header => $pos) {
                         if (!isset($row[$pos])) {
                             continue;
                         }
 
-                        $value = $row[$pos];
-
-                        if (str_contains($header, '_')) {
-                            list($relation, $field) = explode('_', $header, 2);
-
-                            if (!in_array("{$relation}_uuid", $fillableColumn)) {
-                                $relatedData[$relation][$field] = $value;
-                                continue;
-                            }
-                        }
-
-                        if (in_array($header, $fillableColumn)) {
-                            $data[$header] = $value;
-
-                            if (!is_null($value)) {
-                                $whereConditions[$header] = $value;
-                            }
-                        }
-                    }
-
-                    $existingRecord = DB::table($model->getTable())->where(function ($query) use ($whereConditions) {
-                        foreach ($whereConditions as $column => $value) {
-                            $value = str_replace("'", "''", $value);
-                            $query->where($column, '=', $value);                        }
-                    })->where('Date03', null)->first();
-
-                    if ($existingRecord) {
-                        DB::table($model->getTable())->where($model->getKeyName(), $existingRecord->{$model->getKeyName()})->update($data);
-                        $mainRecord = $modelClass::find($existingRecord->{$model->getKeyName()});
-                    } else {
-                        $mainRecord = $modelClass::create($data);
-                    }
-
-                    foreach ($relatedData as $relation => $fields) {
-                        $relationName = str_replace(' ', '', ucwords(str_replace('_', ' ', $relation)));
-                        $relatedModelClass = "App\\Models\\$relationName";
-
-                        if (!class_exists($relatedModelClass)) {
-                            continue;
-                        }
-
-                        $relatedModel = new $relatedModelClass();
-                        $relatedFillable = $relatedModel->getFillable();
-
-                        $validFields = array_intersect_key($fields, array_flip($relatedFillable));
-
-                        if (!empty($validFields)) {
-                            $existingRelated = DB::table($relatedModel->getTable())
-                                ->where(function($query) use ($validFields) {
-                                    foreach ($validFields as $column => $value) {
-                                        if (!is_null($value)) {
-                                            $value = str_replace("'", "''", $value);
-                                            $query->where($column, '=', $value);
-                                        }
-                                    }
-                                })
-                                ->where('Date04', null)
-                                ->first();
-
-                            if ($existingRelated) {
-                                DB::table($relatedModel->getTable())
-                                    ->where($relatedModel->getKeyName(), $existingRelated->{$relatedModel->getKeyName()})
-                                    ->update($validFields);
-
-                                $relatedRecord = $relatedModelClass::find($existingRelated->{$relatedModel->getKeyName()});
+                        foreach ($row as $r) {
+                            $tempVal = explode(';', $r);
+                            if (count($fillableColumn) === count($tempVal)) {
+                                $modelClass::create(array_combine($fillableColumn, $tempVal));
+                                $processedRows++;
                             } else {
-                                $relatedRecord = $relatedModelClass::create($validFields);
-                            }
-
-                            if (isset($relatedRecord)) {
-                                $mainRecord->{$relation . '_uuid'} = $relatedRecord->uuid;
-                                $mainRecord->save();
+                                throw new Exception("Mismatch between columns and values.");
                             }
                         }
                     }
-                    $processedRows++;
                 } catch (\Exception $e) {
-                    $errorRows[] = [
+                    $errorRows = [
                         'row' => $row,
                         'error' => $e->getMessage()
                     ];
@@ -224,13 +154,17 @@ class ExportImportController extends Controller
 
             DB::commit();
 
-            $message = "Successfully processed {$processedRows} rows.";
+            $messageSuccess = "Successfully processed {$processedRows} rows.";
             if (count($errorRows) > 0) {
-                $message .= " Failed to process " . count($errorRows) . " rows.";
+                $messageError = "Failed to process " . count($errorRows) . " rows." . " Message: " . $errorRows['error'];
                 session(['import_errors' => $errorRows]);
+                return redirect($redirectUrl)->with([
+                    'error' => $messageError,
+                    'success' => $messageSuccess
+                ]);
             }
 
-            return redirect($redirectUrl)->with('success', $message);
+            return redirect($redirectUrl)->with('success', $messageSuccess);
         } catch (\Exception $e) {
             dd($e);
         } finally {

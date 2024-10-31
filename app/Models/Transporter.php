@@ -72,7 +72,10 @@ class Transporter extends Model
 			'deleted_by' => 'Key4',
 		]);
 		static::creating(function ($model) {
-			$model->uuid = \Illuminate\Support\Str::uuid();
+            $model->uuid = \Illuminate\Support\Str::uuid();
+            if (Transporter::where('ShortChar01', $model->code)->exists()) {
+                throw new \Exception('Data already exist. Details: code ' . $model->code);
+            }
 		});
 	}
 }
