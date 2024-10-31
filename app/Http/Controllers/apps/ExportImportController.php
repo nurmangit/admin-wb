@@ -11,21 +11,32 @@ class ExportImportController extends Controller
     public function export(Request $request)
     {
         $table = $request->input('table');
-        $columns = $request->input('columns');
 
-        $data = DB::table($table)->select($columns)->get();
+        // Check if the model exists
+        if (!class_exists("App\\Models\\$table")) {
+            return response()->json(['error' => 'Model not found.'], 404);
+        }
+
+        // Retrieve data from the specified model
+        $data = app("App\\Models\\$table")::get();
+
+        // Get the columns dynamically from the model's attributes
+        $columns = (new ("App\\Models\\$table"))->getFillable(); // Assuming you're using fillable attributes
 
         $csvHeaders = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => "attachment; filename=\"$table.csv\"",
         ];
 
-        $callback = function() use ($data, $columns) {
+        $callback = function () use ($data, $columns) {
             $file = fopen('php://output', 'w');
+
+            // Write the column headers to the CSV
             fputcsv($file, $columns);
 
+            // Write each row of data to the CSV
             foreach ($data as $row) {
-                fputcsv($file, array_values((array) $row));
+                fputcsv($file, $row->only($columns)); // Use only the specified columns
             }
 
             fclose($file);

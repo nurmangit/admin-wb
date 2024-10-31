@@ -13,7 +13,7 @@
     <a href="{{ route('account.user.create') }}" class="btn btn-info mb-4 fw-bold">Import Data</a>
     @endcan
     @can('export user')
-    <a href="{{ route('account.user.create') }}" class="btn btn-success mb-4 fw-bold">Export Data</a>
+    <a target="_blank" href="{{ route('data.export') }}?table=User" class="btn btn-success mb-4 fw-bold">Export Data</a>
     @endcan
     @can('create user')
     <a href="{{ route('account.user.create') }}" class="btn btn-primary mb-4 fw-bold">Add New User</a>

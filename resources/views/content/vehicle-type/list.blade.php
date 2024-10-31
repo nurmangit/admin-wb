@@ -12,7 +12,7 @@
     <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-info mb-4 fw-bold">Import Data</a>
     @endcan
     @can('export vehicle_type')
-    <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-success mb-4 fw-bold">Export Data</a>
+    <a target="_blank" href="{{ route('data.export') }}?table=VehicleType" class="btn btn-success mb-4 fw-bold">Export Data</a>
     @endcan
     @can('create vehicle_type')
     <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-primary mb-4 fw-bold">Add New Vehicle Type</a>

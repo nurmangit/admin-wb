@@ -13,7 +13,7 @@
     @endcan
 
     @can('export vehicle')
-    <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-success mb-4 fw-bold">Export Data</a>
+    <a target="_blank" href="{{ route('data.export') }}?table=Vehicle" class="btn btn-success mb-4 fw-bold">Export Data</a>
     @endcan
 
     @can('create vehicle')

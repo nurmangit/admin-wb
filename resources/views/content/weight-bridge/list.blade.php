@@ -8,7 +8,7 @@
     <span class="text-muted fw-light">Transaction /</span> Data
   </h4>
   <div>
-    <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-success mb-4 fw-bold">Export Data</a>
+    <a target="_blank" href="{{ route('data.export') }}?table=WeightBridge" class="btn btn-success mb-4 fw-bold">Export Data</a>
   </div>
 </div>
 
