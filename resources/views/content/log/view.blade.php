@@ -186,7 +186,7 @@
   function findDifferences(oldData, newData) {
     let differences = {};
 
-    for (let key in oldData) {
+    for (let key in newData) {
       if (oldData[key] !== newData[key]) {
         differences[key] = { old: oldData[key], new: newData[key] };
       }
