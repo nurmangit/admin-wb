@@ -103,6 +103,10 @@
       placeholder: 'Select a transporter rate',
       allowClear: true
     });
+    $('#start_date').on('change', function() {
+      let startDate = $(this).val();
+      $('#end_date').attr('min', startDate);
+    });
   });
 </script>
 @endsection
