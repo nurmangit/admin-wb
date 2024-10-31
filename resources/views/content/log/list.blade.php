@@ -17,6 +17,7 @@
         <tr>
           <th>Description</th>
           <th>Subject Type</th>
+          <th>Subject uuid</th>
           <th>User</th>
           <th>Host</th>
           <th>Created At</th>
@@ -28,6 +29,7 @@
         <tr>
           <td>{{ $log->description }}</td>
           <td>{{ $log->subject_type }}</td>
+          <td>{{ $log->subject_uuid }}</td>
           <td>{{ $log->user?->name }}</td> <!-- Adjust to show user name if available -->
           <td>{{ $log->host }}</td>
           <td>{{ $log->created_at }}</td>
@@ -51,7 +53,9 @@
       "info": true,
       "autoWidth": false,
       "responsive": true,
-      "order": []
+      "order": [
+        [5, "desc"]
+      ]
     });
   });
 </script>
