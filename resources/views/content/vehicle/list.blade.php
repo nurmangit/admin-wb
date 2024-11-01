@@ -42,8 +42,8 @@
         @foreach($vehicles as $vehicle)
         <tr>
           <td>{{ $vehicle->register_number }}</td>
-          <td>{{ $vehicle->vehicle_type->name }}</td>
-          <td>{{ $vehicle->transporter->name }}</td>
+          <td>{{ $vehicle->vehicle_type?->name }}</td>
+          <td>{{ $vehicle->transporter?->name }}</td>
           <td>
             <span class="badge bg-label-{{ $vehicle->status == 'active' ? 'primary' : 'secondary' }}">
               {{ ucfirst($vehicle->status) }}
