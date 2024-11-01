@@ -10,6 +10,7 @@
   <div>
 
     @can('import user')
+    <a target="_blank" href="{{ route('data.download') }}?table=User" class="btn btn-secondary mb-4 fw-bold">Download Template</a>
     <a href="{{ route('account.user.create') }}" class="btn btn-info mb-4 fw-bold">Import Data</a>
     @endcan
     @can('export user')

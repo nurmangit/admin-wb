@@ -9,6 +9,7 @@
   </h4>
   <div>
     @can('import area')
+    <a target="_blank" href="{{ route('data.download') }}?table=Area" class="btn btn-secondary mb-4 fw-bold">Download Template</a>
     <button class="btn btn-info mb-4 fw-bold btn-import" id="btn-import" data-table-name="Area" type="button" data-bs-toggle="modal" data-bs-target="#importModal">Import Data</button>
     @endcan
     @can('export area')

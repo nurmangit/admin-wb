@@ -9,6 +9,7 @@
   </h4>
   <div>
     @can('import vehicle')
+    <a target="_blank" href="{{ route('data.download') }}?table=Vehicle" class="btn btn-secondary mb-4 fw-bold">Download Template</a>
     <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-info mb-4 fw-bold">Import Data</a>
     @endcan
 
