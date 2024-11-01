@@ -184,7 +184,7 @@ class ExportImportController extends Controller
 
             return redirect($redirectUrl)->with('success', $messageSuccess);
         } catch (\Exception $e) {
-            dd($e);
+            return redirect($redirectUrl)->with('error', $e->getMessage());
         } finally {
             if (is_resource($handle)) {
                 fclose($handle);
