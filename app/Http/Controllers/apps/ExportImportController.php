@@ -129,43 +129,37 @@ class ExportImportController extends Controller
 
             while (($row = fgetcsv($handle)) !== false) {
                 try {
-                    foreach ($headerMap as $header => $pos) {
-                        if (!isset($row[$pos])) {
-                            continue;
-                        }
+                    if (count($fillableColumn) === count($row)) {
+                        // Combine fillable columns with temp values
+                        $tempData = array_combine($fillableColumn, $row);
 
-                        if (count($fillableColumn) === count($row)) {
-                            // Combine fillable columns with temp values
-                            $tempData = array_combine($fillableColumn, $row);
-
-                            foreach ($tempData as $keyData => $valData) {
-                                if (str_contains($keyData, '_uuid')) {
-                                    // Resolve the related model class name and check if it exists
-                                    $relatedModel = "App\\Models\\" . ucwords(str_replace('_uuid', '', $keyData));
-                                    $relatedModel = str_replace('_', ' ', $relatedModel);
-                                    $relatedModel = ucwords($relatedModel);
-                                    $relatedModel = str_replace(' ', '', $relatedModel);
-                                    if (class_exists($relatedModel)) {
-                                        // Attempt to find the related model by `ShortChar01`
-                                        $tempModelValue = $relatedModel::where('ShortChar01', $valData)->first();
-                                        if ($tempModelValue) {
-                                            $tempData[$keyData] = $tempModelValue->uuid;
-                                        } else {
-                                            throw new \Exception("Relation $relatedModel not found!. Details: $valData");
-                                        }
+                        foreach ($tempData as $keyData => $valData) {
+                            if (str_contains($keyData, '_uuid')) {
+                                // Resolve the related model class name and check if it exists
+                                $relatedModel = "App\\Models\\" . ucwords(str_replace('_uuid', '', $keyData));
+                                $relatedModel = str_replace('_', ' ', $relatedModel);
+                                $relatedModel = ucwords($relatedModel);
+                                $relatedModel = str_replace(' ', '', $relatedModel);
+                                if (class_exists($relatedModel)) {
+                                    // Attempt to find the related model by `ShortChar01`
+                                    $tempModelValue = $relatedModel::where('ShortChar01', $valData)->first();
+                                    if ($tempModelValue) {
+                                        $tempData[$keyData] = $tempModelValue->uuid;
+                                    } else {
+                                        throw new \Exception("Relation $relatedModel not found!. Details: $valData");
                                     }
                                 }
-                                if (str_contains($keyData, 'password')) {
-                                    $tempData[$keyData]  = bcrypt($valData);
-                                }
                             }
-
-                            // Create the new model instance with modified data
-                            $modelClass::create($tempData);
-                            $processedRows++;
-                        } else {
-                            throw new \Exception("Mismatch between columns and values.");
+                            if (str_contains($keyData, 'password')) {
+                                $tempData[$keyData]  = bcrypt($valData);
+                            }
                         }
+
+                        // Create the new model instance with modified data
+                        $modelClass::create($tempData);
+                        $processedRows++;
+                    } else {
+                        throw new \Exception("Mismatch between columns and values.");
                     }
                 } catch (\Exception $e) {
                     $errorRows = [
