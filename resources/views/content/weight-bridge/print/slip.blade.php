@@ -111,7 +111,7 @@
         </tr>
     </table>
 
-    @if($weight_type == 'fg')
+    @if($weight_type == 'fg' and $status == 'FG-OUT')
     <table style="width: 100%; font-size:7px;">
         <tr>
             <td style="width: 70%;">&nbsp;</td>

@@ -39,6 +39,7 @@ class PrintController extends Controller
       'driver_name' => $slip->vehicle?->driver_name,
       'po_do' => $slip->po_do,
       'actual_weight' => $slip->actual_weight,
+      'status' => $slip->status,
     ];
 
     // Load the view and pass the data
