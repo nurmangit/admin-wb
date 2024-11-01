@@ -114,6 +114,9 @@
 <script>
   $(document).ready(function() {
 
+    // Variable to store interval ID
+    var fetchIntervals = [];
+
     function fetchDeviceDetails(type) {
       $.ajax({
         url: "{{ route('device.detail') }}", // The URL to the controller method
@@ -140,12 +143,20 @@
           }
         },
         error: function(error) {
-          // Handle error (optional)
+          $(`#weight-${type}`).val('');
+          stopAllFetchIntervals();
+          $(`#weight-${type}-feedback-invalid`).html('<span class="text-warning">Device not connected. You can manually enter the weight.</span>');
+          $(`#weight-${type}`).removeClass('is-valid');
+          $(`#weight-${type}`).addClass('is-invalid');
           console.error("Error fetching device details:", error);
         }
       });
     }
 
+    function stopAllFetchIntervals() {
+      fetchIntervals.forEach(clearInterval);
+      fetchIntervals = [];
+    }
     // Get current time in UTC and apply offset for Indonesia (UTC+7)
     var now = new Date();
     // Adjust to Indonesia time (WIB = UTC+7)
@@ -188,8 +199,6 @@
       }
     });
 
-    // Variable to store interval ID
-    var fetchInterval;
     $('#vehicle-no').on('input', function() {
       var vehicleNo = $(this).val();
       // When vehicle number has 5 characters, make the request
@@ -215,8 +224,8 @@
               $('#weight-out-feedback-invalid').text('');
               $('#weightInBtn').attr('disabled', true);
               // Stop the interval if it's running
-              if (fetchInterval) {
-                clearInterval(fetchInterval);
+              if (fetchIntervals) {
+                stopAllFetchIntervals()
               }
             } else {
               $('#weightInBtn').attr('disabled', false);
@@ -235,14 +244,14 @@
                 $('#weight-out').attr('disabled', false);
                 $('#weightOutBtn').attr('disabled', false);
                 // Call the fetch function every 1 second
-                fetchInterval = setInterval(function() {
+                fetchIntervals.push(setInterval(function() {
                   fetchDeviceDetails('out');
-                }, 2000);
+                }, 2000));
               } else {
                 // Call the fetch function every 1 second
-                fetchInterval = setInterval(function() {
+                fetchIntervals.push(setInterval(function() {
                   fetchDeviceDetails('in');
-                }, 2000);
+                }, 2000));
                 $('#weightOutBtn').attr('disabled', true);
                 $('#weight-out').attr('disabled', true)
               }
