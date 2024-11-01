@@ -144,10 +144,10 @@
         },
         error: function(error) {
           $(`#weight-${type}`).val('');
-          // stopAllFetchIntervals();
-          $(`#weight-${type}-feedback-invalid`).html('<span class="text-warning">Device not connected. You can manually enter the weight.</span>');
-          $(`#weight-${type}`).removeClass('is-valid');
-          $(`#weight-${type}`).addClass('is-invalid');
+          // // stopAllFetchIntervals();
+          // $(`#weight-${type}-feedback-invalid`).html('<span class="text-warning">Device not connected. You can manually enter the weight.</span>');
+          // $(`#weight-${type}`).removeClass('is-valid');
+          // $(`#weight-${type}`).addClass('is-invalid');
           console.error("Error fetching device details:", error);
         }
       });
