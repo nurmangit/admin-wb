@@ -135,10 +135,9 @@ class ExportImportController extends Controller
                         }
 
                         foreach ($row as $r) {
-                            $tempVal = explode(',', $r);
-                            if (count($fillableColumn) === count($tempVal)) {
+                            if (count($fillableColumn) === count($row)) {
                                 // Combine fillable columns with temp values
-                                $tempData = array_combine($fillableColumn, $tempVal);
+                                $tempData = array_combine($fillableColumn, $row);
 
                                 foreach ($tempData as $keyData => $valData) {
                                     if (str_contains($keyData, '_uuid')) {
