@@ -137,10 +137,28 @@ class ExportImportController extends Controller
                         foreach ($row as $r) {
                             $tempVal = explode(';', $r);
                             if (count($fillableColumn) === count($tempVal)) {
-                                $modelClass::create(array_combine($fillableColumn, $tempVal));
+                                // Combine fillable columns with temp values
+                                $tempData = array_combine($fillableColumn, $tempVal);
+
+                                foreach ($tempData as $keyData => $valData) {
+                                    if (str_contains($keyData, '_uuid')) {
+                                        // Resolve the related model class name and check if it exists
+                                        $relatedModel = "App\\Models\\" . ucwords(str_replace('_uuid', '', $keyData));
+                                        if (class_exists($relatedModel)) {
+                                            // Attempt to find the related model by `ShortChar01`
+                                            $tempModelValue = $relatedModel::where('ShortChar01', $valData)->first();
+                                            if ($tempModelValue) {
+                                                $tempData[$keyData] = $tempModelValue->uuid;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // Create the new model instance with modified data
+                                $modelClass::create($tempData);
                                 $processedRows++;
                             } else {
-                                throw new Exception("Mismatch between columns and values.");
+                                throw new \Exception("Mismatch between columns and values.");
                             }
                         }
                     }
@@ -173,6 +191,4 @@ class ExportImportController extends Controller
             }
         }
     }
-
 }
-
