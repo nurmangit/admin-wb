@@ -125,6 +125,7 @@ class ExportImportController extends Controller
             DB::beginTransaction();
 
             $processedRows = 0;
+            $errorRow = 0;
             $errorRows = [];
 
             while (($row = fgetcsv($handle)) !== false) {
@@ -146,6 +147,7 @@ class ExportImportController extends Controller
                                     if ($tempModelValue) {
                                         $tempData[$keyData] = $tempModelValue->uuid;
                                     } else {
+                                        $errorRow++;
                                         throw new \Exception("Relation $relatedModel not found!. Details: $valData");
                                     }
                                 }
@@ -173,7 +175,7 @@ class ExportImportController extends Controller
 
             $messageSuccess = "Successfully processed {$processedRows} rows.";
             if (count($errorRows) > 0) {
-                $messageError = "Failed to process " . count($errorRows) + 1 . " rows." . " Message: " . $errorRows['error'];
+                $messageError = "Failed to process " . $errorRow . " rows." . " Message: " . $errorRows['error'];
                 session(['import_errors' => $errorRows]);
                 return redirect($redirectUrl)->with([
                     'error' => $messageError,
