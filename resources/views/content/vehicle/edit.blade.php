@@ -55,7 +55,7 @@
             <label class="form-label" for="vehicle_type_uuid">Vehicle Type <span class="text-danger">*</span></label>
             <select class="form-select @error('vehicle_type_uuid') is-invalid @enderror" id="vehicle_type_uuid" name="vehicle_type_uuid" required>
               @foreach ($vehicleTypes as $vehicleType)
-              <option value="{{$vehicleType->uuid}}" {{ $vehicle->vehicle_type->uuid == $vehicleType->uuid ? 'selected' : '' }}>{{$vehicleType->code}} - {{$vehicleType->name}}</option>
+              <option value="{{$vehicleType->uuid}}" {{ $vehicle->vehicle_type?->uuid == $vehicleType->uuid ? 'selected' : '' }}>{{$vehicleType->code}} - {{$vehicleType->name}}</option>
               @endforeach
             </select>
             @error('status')
