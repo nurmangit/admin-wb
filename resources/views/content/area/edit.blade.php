@@ -34,7 +34,7 @@
             <label class="form-label" for="region_uuid">Region <span class="text-danger">*</span></label>
             <select class="form-select @error('region_uuid') is-invalid @enderror" id="region_uuid" name="region_uuid" required>
               @foreach ($regions as $region)
-              <option value="{{$region->uuid}}" {{ $area->region->uuid == $region->uuid ? 'selected' : '' }}>{{$region->code}} - {{$region->name}}</option>
+              <option value="{{$region->uuid}}" {{ $area->region?->uuid == $region->uuid ? 'selected' : '' }}>{{$region->code}} - {{$region->name}}</option>
               @endforeach
             </select>
             @error('status')

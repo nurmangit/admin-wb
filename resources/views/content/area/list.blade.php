@@ -8,10 +8,10 @@
     <span class="text-muted fw-light">Area /</span> List
   </h4>
   <div>
-    @can('export area')
-    <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-info mb-4 fw-bold">Import Data</a>
-    @endcan
     @can('import area')
+    <button class="btn btn-info mb-4 fw-bold btn-import" id="btn-import" data-table-name="Area" type="button" data-bs-toggle="modal" data-bs-target="#importModal">Import Data</button>
+    @endcan
+    @can('export area')
     <a target="_blank" href="{{ route('data.export') }}?table=Area" class="btn btn-success mb-4 fw-bold">Export Data</a>
     @endcan
     @can('create area')
@@ -37,7 +37,7 @@
         <tr>
           <td>{{ $area->code }}</td>
           <td>{{ $area->name }}</td>
-          <td>{{ $area->region->name }}</td>
+          <td>{{ $area->region?->name }}</td>
           <td>
             <div class="d-flex">
               @can('edit area')
