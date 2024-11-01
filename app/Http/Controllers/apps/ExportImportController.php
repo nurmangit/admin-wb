@@ -147,7 +147,6 @@ class ExportImportController extends Controller
                                     if ($tempModelValue) {
                                         $tempData[$keyData] = $tempModelValue->uuid;
                                     } else {
-                                        $errorRow++;
                                         throw new \Exception("Relation $relatedModel not found!. Details: $valData");
                                     }
                                 }
@@ -164,6 +163,7 @@ class ExportImportController extends Controller
                         throw new \Exception("Mismatch between columns and values.");
                     }
                 } catch (\Exception $e) {
+                    $errorRow++;
                     $errorRows = [
                         'row' => $row,
                         'error' => $e->getMessage()
