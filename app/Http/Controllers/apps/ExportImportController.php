@@ -135,7 +135,7 @@ class ExportImportController extends Controller
                         }
 
                         foreach ($row as $r) {
-                            $tempVal = explode(';', $r);
+                            $tempVal = explode(',', $r);
                             if (count($fillableColumn) === count($tempVal)) {
                                 // Combine fillable columns with temp values
                                 $tempData = array_combine($fillableColumn, $tempVal);
