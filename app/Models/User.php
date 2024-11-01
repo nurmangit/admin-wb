@@ -89,6 +89,9 @@ class User extends Authenticatable
         ]);
         static::creating(function ($model) {
             $model->uuid = \Illuminate\Support\Str::uuid();
+            if (Vehicle::where('Character02', $model->email)->exists()) {
+                throw new \Exception('Data already exist. Details: email ' . $model->email);
+            }
         });
     }
 }

@@ -90,6 +90,9 @@ class Vehicle extends Model
 		]);
 		static::creating(function ($model) {
 			$model->uuid = \Illuminate\Support\Str::uuid();
+			if (Vehicle::where('Character01', $model->register_number)->exists()) {
+				throw new \Exception('Data already exist. Details: register number ' . $model->register_number);
+			}
 		});
 	}
 }
