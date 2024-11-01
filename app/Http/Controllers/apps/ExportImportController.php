@@ -149,6 +149,8 @@ class ExportImportController extends Controller
                                             $tempModelValue = $relatedModel::where('ShortChar01', $valData)->first();
                                             if ($tempModelValue) {
                                                 $tempData[$keyData] = $tempModelValue->uuid;
+                                            } else {
+                                                throw new \Exception("Relation $relatedModel not found!. Details: $valData");
                                             }
                                         }
                                     }
