@@ -123,6 +123,17 @@ Route::prefix('data')->name('data.')->middleware('auth')->group(function () {
             'can:import transporter_rate',
         ])
         ->name('import');
+    Route::get('/download-template', [\App\Http\Controllers\apps\ExportImportController::class, 'download'])
+        ->middleware([
+            'can:import user',
+            'can:import vehicle',
+            'can:import vehicle_type',
+            'can:import area',
+            'can:import region',
+            'can:import transporter',
+            'can:import transporter_rate',
+        ])
+        ->name('download');
 });
 
 Route::prefix('account')->name('account.')->middleware('auth')->group(function () {

@@ -191,4 +191,45 @@ class ExportImportController extends Controller
             }
         }
     }
+
+    public function download(Request $request)
+    {
+        $table = $request->input('table');
+
+        // Check if the model exists
+        if (!class_exists("App\\Models\\$table")) {
+            return response()->json(['error' => 'Model not found.'], 404);
+        }
+
+        // Retrieve data from the specified model
+        $data = app("App\\Models\\$table")::get();
+
+        // Get the columns dynamically from the model's attributes
+        $columns = (new ("App\\Models\\$table"))->getFillable();
+
+        $csvHeaders = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"$table-import-template.csv\"",
+        ];
+
+
+        $headerColumns = [];
+        foreach ($columns as $column) {
+            if (str_contains($column, '_uuid')) {
+                $headerColumns[] = str_replace('_uuid', '_code', $column);
+                continue;
+            }
+            $headerColumns[] = $column;
+        }
+        $callback = function () use ($headerColumns) {
+            $file = fopen('php://output', 'w');
+
+            // Write the column headers to the CSV
+            fputcsv($file, $headerColumns);
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $csvHeaders);
+    }
 }
