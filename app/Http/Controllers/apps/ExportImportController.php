@@ -143,6 +143,9 @@ class ExportImportController extends Controller
                                     if (str_contains($keyData, '_uuid')) {
                                         // Resolve the related model class name and check if it exists
                                         $relatedModel = "App\\Models\\" . ucwords(str_replace('_uuid', '', $keyData));
+                                        $relatedModel = str_replace('_', ' ', $relatedModel);
+                                        $relatedModel = ucwords($relatedModel);
+                                        $relatedModel = str_replace(' ', '', $relatedModel);
                                         if (class_exists($relatedModel)) {
                                             // Attempt to find the related model by `ShortChar01`
                                             $tempModelValue = $relatedModel::where('ShortChar01', $valData)->first();
