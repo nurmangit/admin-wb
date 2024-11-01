@@ -152,6 +152,9 @@ class ExportImportController extends Controller
                                             }
                                         }
                                     }
+                                    if (str_contains($keyData, 'password')) {
+                                        $tempData[$keyData]  = bcrypt($valData);
+                                    }
                                 }
 
                                 // Create the new model instance with modified data
