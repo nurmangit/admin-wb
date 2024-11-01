@@ -144,7 +144,7 @@
         },
         error: function(error) {
           $(`#weight-${type}`).val('');
-          stopAllFetchIntervals();
+          // stopAllFetchIntervals();
           $(`#weight-${type}-feedback-invalid`).html('<span class="text-warning">Device not connected. You can manually enter the weight.</span>');
           $(`#weight-${type}`).removeClass('is-valid');
           $(`#weight-${type}`).addClass('is-invalid');
