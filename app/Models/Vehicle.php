@@ -58,6 +58,11 @@ class Vehicle extends Model
 		return $this->belongsTo(VehicleType::class, 'Key2', 'Key1');
 	}
 
+	public function vehicle_transporters()
+	{
+		return $this->hasMany(VehicleTransporter::class, 'Key3', 'Key1');
+	}
+
 	public function transporter()
 	{
 		return $this->hasOne(Transporter::class, 'Key1', 'Key3');

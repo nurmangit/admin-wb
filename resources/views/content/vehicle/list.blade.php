@@ -43,7 +43,17 @@
         <tr>
           <td>{{ $vehicle->register_number }}</td>
           <td>{{ $vehicle->vehicle_type?->name }}</td>
-          <td>{{ $vehicle->transporter?->name }}</td>
+          <td>
+            @php
+            $transporterNames = $vehicle->vehicle_transporters->pluck('transporter.name')->implode(', ');
+            @endphp
+            <span
+              data-bs-toggle="tooltip"
+              title="{{ $transporterNames }}"
+              style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; max-width: 300px;">
+              {{ Str::limit($transporterNames, 30) }}
+            </span>
+          </td>
           <td>
             <span class="badge bg-label-{{ $vehicle->status == 'active' ? 'primary' : 'secondary' }}">
               {{ ucfirst($vehicle->status) }}

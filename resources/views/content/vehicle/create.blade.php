@@ -74,8 +74,7 @@
 
           <div class="mb-3">
             <label class="form-label" for="transporter_uuid">Transporter <span class="text-danger">*</span></label>
-            <select class="form-select @error('transporter_uuid') is-invalid @enderror" id="transporter_uuid" name="transporter_uuid" required>
-              <option value=""> -- Select --</option>
+            <select class="form-select @error('transporter_uuid') is-invalid @enderror" id="transporter_uuid" name="transporter_uuid[]" required>
               @foreach ($transporters as $transporter)
               <option value="{{$transporter->uuid}}" {{ old('trans$transporter_uuid') == '$transporter->uuid' ? 'selected' : '' }}>{{$transporter->code}} - {{$transporter->name}}</option>
               @endforeach
@@ -113,7 +112,8 @@
   $(document).ready(function() {
     $('#transporter_uuid').select2({
       placeholder: 'Select a transporter',
-      allowClear: true
+      allowClear: true,
+      multiple: true
     });
   });
 </script>

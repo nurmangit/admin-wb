@@ -29,7 +29,8 @@ class VehicleStoreRequest extends FormRequest
             'type' => 'required|string|max:255',
             'vehicle_type_uuid' => 'required|uuid',
             'description' => 'nullable|string|max:255',
-            'transporter_uuid' => 'required|uuid',
+            'transporter_uuid' => 'required|array',
+            'transporter_uuid.*' => 'uuid',
             'ownership' => 'required|string',
         ];
     }

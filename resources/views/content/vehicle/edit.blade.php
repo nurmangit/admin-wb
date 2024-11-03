@@ -74,13 +74,16 @@
 
           <div class="mb-3">
             <label class="form-label" for="transporter_uuid">Transporter <span class="text-danger">*</span></label>
-            <select class="form-select @error('transporter_uuid') is-invalid @enderror" id="transporter_uuid" name="transporter_uuid" required>
+            <select class="form-select @error('transporter_uuid') is-invalid @enderror" id="transporter_uuid" name="transporter_uuid[]" multiple required>
               <option value="">-- select --</option>
               @foreach ($transporters as $transporter)
-              <option value="{{$transporter->uuid}}" {{ $vehicle->transporter->uuid == $transporter->uuid ? 'selected' : '' }}>{{$transporter->code}} - {{$transporter->name}}</option>
+              <option value="{{ $transporter->uuid }}"
+                {{ in_array($transporter->uuid, $vehicleTransporters->pluck('transporter_uuid')->toArray()) ? 'selected' : '' }}>
+                {{ $transporter->code }} - {{ $transporter->name }}
+              </option>
               @endforeach
             </select>
-            @error('status')
+            @error('transporter_uuid')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
           </div>
@@ -112,7 +115,8 @@
   $(document).ready(function() {
     $('#transporter_uuid').select2({
       placeholder: 'Select a transporter',
-      allowClear: true
+      allowClear: true,
+      multiple: true
     });
   });
 </script>
