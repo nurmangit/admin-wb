@@ -49,7 +49,6 @@ class Vehicle extends Model
 		'type',
 		'vehicle_type_uuid',
 		'description',
-		'transporter_uuid',
 		'ownership'
 	];
 
@@ -84,7 +83,6 @@ class Vehicle extends Model
 			'type' => 'ShortChar04',
 			'vehicle_type_uuid' => 'Key2',
 			'description' => 'Character02',
-			'transporter_uuid' => 'Key3',
 			'ownership' => 'ShortChar03',
 			'created_at' => 'Date01',
 			'updated_at' => 'Date02',
