@@ -58,8 +58,10 @@ class ExportImportController extends Controller
         $csvData = [];
         foreach ($data as $row) {
             $tempData = $row->only($columns);
+            $tempDataUuidToRemove = [];
             foreach ($columns as $column) {
                 if (str_contains($column, '_uuid')) {
+                    $tempDataUuidToRemove[] = $column;
                     // Modify column name
                     $relatedModelName = str_replace('_uuid', '', $column);
                     if (method_exists($row, $relatedModelName)) {
@@ -73,6 +75,10 @@ class ExportImportController extends Controller
                     }
                 }
             }
+            foreach ($tempDataUuidToRemove as $uuidColumn) {
+                unset($tempData[$uuidColumn]);
+            }
+
             $csvData[] = $tempData;
         }
 
