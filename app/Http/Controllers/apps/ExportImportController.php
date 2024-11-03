@@ -82,6 +82,7 @@ class ExportImportController extends Controller
             $csvData[] = $tempData;
         }
 
+        $headerColumns = array_diff($headerColumns, $tempDataUuidToRemove);
         $callback = function () use ($csvData, $headerColumns) {
             $file = fopen('php://output', 'w');
 
