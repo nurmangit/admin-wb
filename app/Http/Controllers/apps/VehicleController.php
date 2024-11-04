@@ -142,19 +142,26 @@ class VehicleController extends Controller
         $weightBridge = WeightBridge::where('Character08', $vehicleNo)->where('ShortChar02', 'RM-IN')->first();
         break;
     }
+
+    $device = new DeviceController();
+    $deviceDetail = $device->detail();
+
+    $deviceData = $deviceDetail->getData() ?? [];
+
     $vehicleDetails = [
       "status" => "success",
       "message" => "Data Found!",
       "data" => [
-        'vehicle_type' => $vehicle?->vehicle_type->name,
-        'tolerance' => $vehicle?->vehicle_type->tolerance,
-        'weight_standart' => $vehicle?->vehicle_type->weight_standart,
-        'transporter_name' => $vehicle?->transporter->name,
-        'slip_no' => $weightBridge?->slip_no,
-        'weight_in' => $weightBridge?->weight_in,
-        'weight_in_date' => $weightBridge?->weight_in_date,
-        'remark' => $weightBridge?->remark,
-        'status' => $weightBridge?->status
+          'vehicle_type' => $vehicle?->vehicle_type->name,
+          'tolerance' => $vehicle?->vehicle_type->tolerance,
+          'weight_standart' => $vehicle?->vehicle_type->weight_standart,
+          'transporter_name' => $vehicle?->transporter->name,
+          'slip_no' => $weightBridge?->slip_no,
+          'weight_in' => $weightBridge?->weight_in,
+          'weight_in_date' => $weightBridge?->weight_in_date,
+          'remark' => $weightBridge?->remark,
+          'status' => $weightBridge?->status,
+          'device_status' => $deviceData->status ?? false
       ]
     ];
 

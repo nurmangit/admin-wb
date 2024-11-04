@@ -99,6 +99,13 @@
               </div>
             </div>
             <div class="col-4">
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="toggle_input">
+                <label class="form-check-label" for="toggle_input">
+                  <span id="inputLabel" >Manual Input Weight</span>
+                  <i class="menu-icon tf-icons bx bx-help-circle ms-2" data-bs-toggle="tooltip" title="Toggle between automatic and manual input weight." style="cursor: pointer;"></i>
+                </label>
+              </div>
               <!-- Date Weight In -->
               <div class="mb-3">
                 <label class="form-label" for="date-weight-in">Date Weight In</label>
@@ -148,9 +155,11 @@
 @section('page-script')
 <script>
   $(document).ready(function() {
-
     // Variable to store interval ID
-    var fetchIntervals = [];
+    let fetchIntervals = [];
+    let fetchType = '';
+    let queryKey = 'type';
+    let queryValue = '';
 
     function fetchDeviceDetails(type) {
       $.ajax({
@@ -192,6 +201,39 @@
       fetchIntervals.forEach(clearInterval);
       fetchIntervals = [];
     }
+
+    // Toggle input between Auto and Manual
+    $("#toggle_input").on('change', function() {
+      if ($(this).is(':checked')) {
+        $("#inputLabel").html('Auto Input Weight');
+        queryValue = 'auto';
+        console.log(fetchType);
+
+        // Enable Auto Input: disable manual entry and start fetching
+        if (fetchType) {
+          stopAllFetchIntervals();
+          fetchIntervals.push(setInterval(function() {
+            fetchDeviceDetails(fetchType);
+          }, 2000));
+        }
+        if (fetchType === 'in') {
+          $('#weight-in').attr('disabled', false);
+          $('#weight-out').attr('disabled', true);
+        } else {
+          $('#weight-out').attr('disabled', false);
+          $('#weight-in').attr('disabled', true);
+        }
+      } else {
+        queryValue = 'manual';
+        $("#inputLabel").html('Manual Input Weight');
+
+        // Stop fetching and allow manual input
+        stopAllFetchIntervals();
+        $(`#weight-${fetchType}`).attr('disabled', false).removeClass('is-invalid');
+      }
+    });
+
+
     // Get current time in UTC and apply offset for Indonesia (UTC+7)
     var now = new Date();
     // Adjust to Indonesia time (WIB = UTC+7)
@@ -211,12 +253,12 @@
 
 
     $('#weightInBtn').click(function() {
-      $('#weighbridgeForm').attr('action', "{{ route('transaction.weight-bridge.weightIn') }}");
+      $('#weighbridgeForm').attr('action', "{{ route('transaction.weight-bridge.weightIn') }}" + "?" + queryKey + "=" + encodeURIComponent(queryValue));
       $('#weighbridgeForm').attr('method', 'POST');
       $('#weighbridgeForm').submit();
     });
     $('#weightOutBtn').click(function() {
-      $('#weighbridgeForm').attr('action', "{{ route('transaction.weight-bridge.weightOut') }}");
+      $('#weighbridgeForm').attr('action', "{{ route('transaction.weight-bridge.weightOut') }}" + "?" + queryKey + "=" + encodeURIComponent(queryValue));
       $('#weighbridgeForm').attr('method', 'POST');
       $('#weighbridgeForm').submit();
     });
@@ -269,6 +311,7 @@
                 stopAllFetchIntervals()
               }
             } else {
+              $("#toggle_input").prop("checked", true).trigger('change');
               $('#weightInBtn').attr('disabled', false);
               $('#vehicle-no').removeClass('is-invalid');
               $('#vehicle-type').val(response.data.vehicle_type);
@@ -286,11 +329,13 @@
                 $('#weight-out').attr('disabled', false);
                 $('#weightOutBtn').attr('disabled', false);
                 // Call the fetch function every 1 second
+                fetchType = 'out';
                 fetchIntervals.push(setInterval(function() {
                   fetchDeviceDetails('out');
                 }, 2000));
               } else {
                 // Call the fetch function every 1 second
+                fetchType = 'in';
                 fetchIntervals.push(setInterval(function() {
                   fetchDeviceDetails('in');
                 }, 2000));
