@@ -204,6 +204,10 @@
 
     // Toggle input between Auto and Manual
     $("#toggle_input").on('change', function() {
+      if (!fetchType) {
+        return;
+      }
+
       if ($(this).is(':checked')) {
         $("#inputLabel").html('Auto Input Weight');
         queryValue = 'auto';
@@ -312,6 +316,7 @@
               }
             } else {
               $("#toggle_input").prop("checked", true).trigger('change');
+              $("#inputLabel").html('Auto Input Weight');
               $('#weightInBtn').attr('disabled', false);
               $('#vehicle-no').removeClass('is-invalid');
               $('#vehicle-type').val(response.data.vehicle_type);

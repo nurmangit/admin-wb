@@ -141,6 +141,10 @@ class ExportImportController extends Controller
                         // Combine fillable columns with temp values
                         $tempData = array_combine($fillableColumn, $row);
 
+                        if ($model::where('ShortChar01', $tempData['code'])->exists()) {
+                            throw new \Exception("Record with code {$tempData['code']} already exists.");
+                        }
+
                         foreach ($tempData as $keyData => $valData) {
                             if (str_contains($keyData, '_uuid')) {
                                 // Resolve the related model class name and check if it exists

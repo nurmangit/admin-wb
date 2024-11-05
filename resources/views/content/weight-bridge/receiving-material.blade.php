@@ -167,6 +167,10 @@
 
     // Toggle input between Auto and Manual
     $("#toggle_input").on('change', function() {
+      if (!fetchType) {
+        return;
+      }
+
       if ($(this).is(':checked')) {
         $("#inputLabel").html('Auto Input Weight');
         queryValue = 'auto';
@@ -180,8 +184,10 @@
         }
         if (fetchType === 'in') {
           $('#weight-in').attr('disabled', false);
+          $('#weight-out').attr('disabled', true);
         } else {
           $('#weight-out').attr('disabled', false);
+          $('#weight-in').attr('disabled', true);
         }
       } else {
         queryValue = 'manual';
@@ -265,6 +271,7 @@
             }
             else {
               $("#toggle_input").prop("checked", true).trigger('change');
+              $("#inputLabel").html('Auto Input Weight');
               $('#weightInBtn').attr('disabled', false);
               $('#vehicle-no').removeClass('is-invalid');
               $('#vehicle-type').val(response.data.vehicle_type);
