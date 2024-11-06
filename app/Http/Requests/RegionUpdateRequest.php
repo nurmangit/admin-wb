@@ -24,7 +24,7 @@ class RegionUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|alpha_num|max:255',
+            'name' => ['required', 'regex:/^[a-zA-Z0-9 ]+$/', 'max:255'],
             'code' => 'required|alpha_num|max:50',
         ];
     }
