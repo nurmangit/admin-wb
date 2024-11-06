@@ -138,7 +138,6 @@ class ExportImportController extends Controller
             while (($row = fgetcsv($handle)) !== false) {
                 try {
                     if (count($fillableColumn) === count($row)) {
-                        // Combine fillable columns with temp values
                         $tempData = array_combine($fillableColumn, $row);
 
                         if ($model::where('ShortChar01', $tempData['code'])->exists()) {
@@ -167,7 +166,6 @@ class ExportImportController extends Controller
                             }
                         }
 
-                        // Create the new model instance with modified data
                         $modelClass::create($tempData);
                         $processedRows++;
                     } else {

@@ -10,7 +10,7 @@
   <div>
     @can('import transporter_rate')
     <a target="_blank" href="{{ route('data.download') }}?table=TransporterRate" class="btn btn-secondary mb-4 fw-bold">Download Template</a>
-    <a href="{{ route('master-data.vehicle-type.create') }}" class="btn btn-info mb-4 fw-bold">Import Data</a>
+    <button class="btn btn-info mb-4 fw-bold btn-import" id="btn-import" data-table-name="TransporterRate" type="button" data-bs-toggle="modal" data-bs-target="#importModal">Import Data</button>
     @endcan
     @can('export transporter_rate')
     <a target="_blank" href="{{ route('data.export') }}?table=TransporterRate" class="btn btn-success mb-4 fw-bold">Export Data</a>

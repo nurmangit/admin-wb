@@ -142,7 +142,6 @@
             @can('weight_out')
             <button type="button" style="margin-right: 10px;" id="weightOutBtn" class="btn btn-info fw-bold">WEIGHT OUT</button>
             @endcan
-            <button type="button" class="btn btn-primary fw-bold">PRINT</button>
           </div>
         </form>
       </div>
