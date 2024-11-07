@@ -43,7 +43,7 @@
           <td>{{ $transporterRate->name }}</td>
           <td>{{ $transporterRate->start_date }}</td>
           <td>{{ $transporterRate->end_date }}</td>
-          <td>{{ $transporterRate->area->name }}</td>
+          <td>{{ $transporterRate->area?->name }}</td>
           <td>{{ $transporterRate->vehicle_type?->name }}</td>
           <td>{{ ((int)$transporterRate->charge) }}</td>
           <td>
