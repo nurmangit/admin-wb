@@ -24,8 +24,8 @@ class AreaUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|alpha_num|max:255',
-            'code' => 'required|alpha_num|max:50',
+            'name' => 'required|regex:/^[a-zA-Z0-9 ]+$/|max:255',
+            'code' => 'required|regex:/^[a-zA-Z0-9 ]+$/|max:50',
             'region_uuid' => 'required|uuid',
         ];
     }
