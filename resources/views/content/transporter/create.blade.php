@@ -9,7 +9,7 @@
   <div class="col-xl">
     <div class="card mb-4">
       <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Region Details</h5>
+        <h5 class="mb-0">Transporter Details</h5>
       </div>
       <div class="card-body">
         <form action="{{ route('master-data.transporter.store') }}" method="POST">
