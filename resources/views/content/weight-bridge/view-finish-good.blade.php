@@ -53,7 +53,7 @@
               <!-- Transporter Name -->
               <div class="mb-3">
                 <label class="form-label" for="transporter-name">Transporter Name</label>
-                <input disabled type="text" class="form-control" value="{{$weight_bridge->vehicle->transporter->name}}" id="transporter-name" placeholder="Enter transporter name" />
+                <input disabled type="text" class="form-control" value="{{$weight_bridge->vehicle->vehicle_transporters->first()?->transporter->name}}" id="transporter-name" placeholder="Enter transporter name" />
               </div>
             </div>
             <div class="col-4">
