@@ -153,7 +153,7 @@ class ExportImportController extends Controller
                                 $relatedModel = str_replace(' ', '', $relatedModel);
                                 if (class_exists($relatedModel)) {
                                     // Attempt to find the related model by `ShortChar01`
-                                    $tempModelValue = $relatedModel::where('ShortChar01', $valData)->first();
+                                    $tempModelValue = $relatedModel::where('ShortChar01', "$valData")->first();
                                     if ($tempModelValue) {
                                         $tempData[$keyData] = $tempModelValue->uuid;
                                     } else {
