@@ -52,7 +52,7 @@
               <a href="{{ route('master-data.transporter-rate.edit', $transporterRate->uuid) }}" class="btn btn-sm btn-info" style="margin-right: 5px;">edit</a>
               @endcan
               @can('delete transporter_rate')
-              <form action="{{ route('master-data.transporter-rate.delete', $transporterRate->uuid) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this type of vehicle?');">
+              <form action="{{ route('master-data.transporter-rate.delete', $transporterRate->uuid) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this Transporter Rate?');">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-sm btn-danger">delete

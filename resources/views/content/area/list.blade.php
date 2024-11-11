@@ -45,7 +45,7 @@
               <a href="{{ route('master-data.area.edit', $area->uuid) }}" class="btn btn-sm btn-info" style="margin-right: 5px;">edit</i></a>
               @endcan
               @can('delete area')
-              <form action="{{ route('master-data.area.delete', $area->uuid) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this type of vehicle?');">
+              <form action="{{ route('master-data.area.delete', $area->uuid) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this Area?');">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-sm btn-danger">
