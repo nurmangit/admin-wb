@@ -81,7 +81,7 @@
               <div class="form-check form-switch mb-3">
                 <input class="form-check-input" type="checkbox" id="toggle_input">
                 <label class="form-check-label" for="toggle_input">
-                  <span id="inputLabel" >Manual Input Weight</span>
+                  <span id="inputLabel">Manual Input Weight</span>
                   <i class="menu-icon tf-icons bx bx-help-circle ms-2" data-bs-toggle="tooltip" title="Toggle between automatic and manual input weight." style="cursor: pointer;"></i>
                 </label>
               </div>
@@ -94,6 +94,14 @@
               <div class="mb-3">
                 <label class="form-label" for="date-weight-out">Date Weight Out</label>
                 <input type="datetime-local" class="form-control" id="date-weight-out" disabled />
+              </div>
+              <!-- Date PO / DO -->
+              <div class="mb-3">
+                <label class="form-label" for="po_do">PO / DO</label>
+                <input type="text" class="form-control @error('po_do') is-invalid @enderror" id="po_do" disabled name="po_do" placeholder="Enter PO / DO" />
+                @error('po_do')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
               </div>
             </div>
           </div>
@@ -253,22 +261,22 @@
           },
           success: function(response) {
             if (response.status != 'success') {
-                $('#vehicle-no').addClass('is-invalid');
-                $('#vehicle-type').val('');
-                $('#tolerance').val('');
-                $('#transporter-name').val('');
-                $('#weight-bridge-slip-no').val('');
-                $('#weight-in').val('').removeClass('is-invalid').attr('disabled', true);
-                $('#weight-out').val('').removeClass('is-invalid').attr('disabled', true);
-                $('#weight-in-feedback-invalid').text('');
-                $('#weight-out-feedback-invalid').text('');
-                $('#weightInBtn').attr('disabled', true);
-                // Stop the interval if it's running
-                if (fetchIntervals) {
-                  stopAllFetchIntervals()
-                }
-            }
-            else {
+              $('#vehicle-no').addClass('is-invalid');
+              $('#vehicle-type').val('');
+              $('#tolerance').val('');
+              $('#transporter-name').val('');
+              $('#weight-bridge-slip-no').val('');
+              $('#weight-in').val('').removeClass('is-invalid').attr('disabled', true);
+              $('#weight-out').val('').removeClass('is-invalid').attr('disabled', true);
+              $('#weight-in-feedback-invalid').text('');
+              $('#weight-out-feedback-invalid').text('');
+              $('#weightInBtn').attr('disabled', true);
+              $('#po_do').attr('disabled', true);
+              // Stop the interval if it's running
+              if (fetchIntervals) {
+                stopAllFetchIntervals()
+              }
+            } else {
               $("#toggle_input").prop("checked", true).trigger('change');
               $("#inputLabel").html('Auto Input Weight');
               $('#weightInBtn').attr('disabled', false);
@@ -286,6 +294,7 @@
                 $('#weight-in').attr('disabled', true);
                 $('#weight-out').attr('disabled', false);
                 $('#weightOutBtn').attr('disabled', false);
+                $('#po_do').attr('disabled', true);
                 // Call the fetch function every 1 second
                 fetchType = 'out';
                 fetchIntervals.push(setInterval(function() {
@@ -297,6 +306,7 @@
                 fetchIntervals.push(setInterval(function() {
                   fetchDeviceDetails(fetchType);
                 }, 2000));
+                $('#po_do').attr('disabled', false);
                 $('#weightOutBtn').attr('disabled', true);
                 $('#weight-out').attr('disabled', true)
               }

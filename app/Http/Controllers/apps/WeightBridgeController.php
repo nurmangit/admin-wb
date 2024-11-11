@@ -200,7 +200,7 @@ class WeightBridgeController extends Controller
                 $weightBridge->weight_netto = $validated['weight_out'] - $weightBridge->weight_in;
             }
             $weightBridge->status = strtoupper($validated['weighing_type']) . '-OUT';
-            if ($validated['weighing_type'] == 'fg') {
+            if ($validated['weighing_type'] == 'rm') {
                 $weightBridge->po_do = $validated['po_do'] ?? "";
             }
 

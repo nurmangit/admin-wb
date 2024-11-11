@@ -97,6 +97,11 @@
                 <label class="form-label" for="date-weight-out">Date Weight Out</label>
                 <input type="datetime-local" class="form-control" id="date-weight-out" value="{{$weight_bridge->weight_out_date}}" disabled />
               </div>
+              <!-- Date PO / DO -->
+              <div class="mb-3">
+                <label class="form-label" for="po_do">PO / DO</label>
+                <input type="text" class="form-control" id="po_do" name="po_do" value="{{$weight_bridge->po_do}}" disabled placeholder="Enter PO / DO" />
+              </div>
             </div>
           </div>
           <div class="d-flex justify-content-end">
