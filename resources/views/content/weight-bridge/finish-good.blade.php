@@ -99,6 +99,7 @@
               </div>
             </div>
             <div class="col-4">
+              @can('manual_input')
               <div class="form-check form-switch mb-3">
                 <input class="form-check-input" type="checkbox" id="toggle_input">
                 <label class="form-check-label" for="toggle_input">
@@ -106,6 +107,7 @@
                   <i class="menu-icon tf-icons bx bx-help-circle ms-2" data-bs-toggle="tooltip" title="Toggle between automatic and manual input weight." style="cursor: pointer;"></i>
                 </label>
               </div>
+              @endcan
               <!-- Date Weight In -->
               <div class="mb-3">
                 <label class="form-label" for="date-weight-in">Date Weight In</label>

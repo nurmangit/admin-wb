@@ -62,6 +62,7 @@ class PermissionSeeder extends Seeder
             'view receiving_material',
             'view finish_good',
             'weight_in',
+            'manual_input',
             'weight_out',
             'print_rw',
             'print_fg',

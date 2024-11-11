@@ -4,9 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use Database\Seeders\TransporterRateSeeder as SeedersTransporterRateSeeder;
+use Database\Seeders\TransporterRateSeeder;
 use Illuminate\Database\Seeder;
-use TransporterRateSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,7 +19,7 @@ class DatabaseSeeder extends Seeder
             RegionSeeder::class,
             AreaSeeder::class,
             TransporterSeeder::class,
-            SeedersTransporterRateSeeder::class,
+            TransporterRateSeeder::class,
             RoleSeeder::class,
             PermissionSeeder::class,
             UserSeeder::class,
