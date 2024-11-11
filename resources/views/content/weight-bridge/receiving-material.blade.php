@@ -296,7 +296,7 @@
                 $('#weight-in').attr('disabled', true);
                 $('#weight-out').attr('disabled', false);
                 $('#weightOutBtn').attr('disabled', false);
-                $('#po_do').attr('disabled', true);
+                $('#po_do').attr('disabled', false);
                 // Call the fetch function every 1 second
                 fetchType = 'out';
                 fetchIntervals.push(setInterval(function() {
@@ -308,7 +308,7 @@
                 fetchIntervals.push(setInterval(function() {
                   fetchDeviceDetails(fetchType);
                 }, 2000));
-                $('#po_do').attr('disabled', false);
+                $('#po_do').attr('disabled', true);
                 $('#weightOutBtn').attr('disabled', true);
                 $('#weight-out').attr('disabled', true)
               }
