@@ -140,8 +140,10 @@ class ExportImportController extends Controller
                     if (count($fillableColumn) === count($row)) {
                         $tempData = array_combine($fillableColumn, $row);
 
-                        if ($model::where('ShortChar01', $tempData['code'])->exists()) {
-                            throw new \Exception("Record with code {$tempData['code']} already exists.");
+                        if (array_key_exists('code', $tempData)) {
+                            if ($model::where('ShortChar01', $tempData['code'])->exists()) {
+                                throw new \Exception("Record with code {$tempData['code']} already exists.");
+                            }
                         }
 
                         foreach ($tempData as $keyData => $valData) {
