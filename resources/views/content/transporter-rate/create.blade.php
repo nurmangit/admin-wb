@@ -52,7 +52,7 @@
                 <select class="form-select @error('area_uuid') is-invalid @enderror" id="area_uuid" name="area_uuid" required>
                   <option value="">-- select --</option>
                   @foreach ($areas as $area)
-                  <option value="{{$area->uuid}}" {{ old('area_uuid') == '$area->uuid' ? 'selected' : '' }}>{{$area->name}}({{$area->code}}) - {{$area->region->name}}({{$area->region->code}})</option>
+                  <option value="{{$area->uuid}}" {{ old('area_uuid') == '$area->uuid' ? 'selected' : '' }}>{{$area->name}}({{$area->code}}) - {{$area->region?->name}}({{$area->region?->code}})</option>
                   @endforeach
                 </select>
                 @error('area_uuid')
