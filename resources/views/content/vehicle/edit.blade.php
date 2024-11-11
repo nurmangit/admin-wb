@@ -32,7 +32,6 @@
             <select class="form-select @error('status') is-invalid @enderror" id="status" name="status" required>
               <option value="active" {{ $vehicle->status == 'active' ? 'selected' : '' }}>Active</option>
               <option value="inactive" {{ $vehicle->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
-              <option value="pending" {{ $vehicle->status == 'pending' ? 'selected' : '' }}>Pending</option>
             </select>
             @error('status')
             <div class="invalid-feedback">{{ $message }}</div>
