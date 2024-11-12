@@ -92,7 +92,7 @@
               <option value="">-- select --</option>
               @foreach ($transporters as $transporter)
               <option value="{{ $transporter->uuid }}"
-                {{ in_array($transporter->uuid, $vehicleTransporters->pluck(transporter_uuid')->toArray()) ? 'selected' : '' }}>
+                {{ in_array($transporter->uuid, $vehicleTransporters->pluck('transporter_uuid')->toArray()) ? 'selected' : '' }}>
                 {{ $transporter->code }} - {{ $transporter->name }}
               </option>
               @endforeach
