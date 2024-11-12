@@ -119,6 +119,17 @@ class VehicleController extends Controller
     return redirect()->route('master-data.vehicle.list')->with('success', 'Vehicle created successfully');
   }
 
+  public function setActiveTransporter(Request $request, $uuid)
+  {
+      $data = [
+          'transporter_uuid' => $request->request->get('transporter_uuid')
+      ];
+      $transporter = Transporter::findOrFail($data['transporter_uuid']);
+      $vehicle = Vehicle::findOrFail($uuid);
+
+      dd($transporter, $vehicle);
+  }
+
   public function getVehicleDetails(Request $request)
   {
     $vehicleNo = $request->input('vehicle_no');

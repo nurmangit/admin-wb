@@ -61,6 +61,14 @@
           </td>
           <td>
             <div class="d-flex">
+              <button
+                data-bs-toggle="modal"
+                data-bs-target="#setTransporterModal"
+                type="button"
+                class="btn btn-sm btn-outline-primary"
+                style="margin-right: 5px">
+                Set Transporter
+              </button>
               @can('edit vehicle')
               <a href="{{ route('master-data.vehicle.edit', $vehicle->uuid) }}" class="btn btn-sm btn-info" style="margin-right: 5px;">edit</a>
               @endcan

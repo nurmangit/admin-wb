@@ -72,6 +72,29 @@ $container = ($container ?? 'container-xxl');
               </div>
             </div>
 
+            <div class="modal fade" id="setTransporterModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <form action="{{ route('data.import') }}" method="POST" enctype="multipart/form-data">
+                  @csrf
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="importModalLabel">Set Active Transporter</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="mb-3">
+                        <label for="list" class="form-label">Transporter List</label>
+
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary">Import</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+
 
             @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">

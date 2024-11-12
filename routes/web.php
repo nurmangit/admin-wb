@@ -31,6 +31,7 @@ Route::prefix('master-data')->name('master-data.')->middleware('auth')->group(fu
         Route::get('/view', [VehicleController::class, 'index'])->middleware('can:view vehicle')->name('view');
         Route::get('/create', [VehicleController::class, 'create'])->middleware('can:create vehicle')->name('create');
         Route::post('/store', [VehicleController::class, 'store'])->middleware('can:create vehicle')->name('store');
+        Route::post('/set/transporter/{uuid}', [VehicleController::class, 'setActiveTransporter'])->name('setTransporter');
         Route::delete('/delete/{uuid}', [VehicleController::class, 'delete'])->middleware('can:delete vehicle')->name('delete');
         Route::get('/edit/{uuid}', [VehicleController::class, 'edit'])->middleware('can:edit vehicle')->name('edit');
         Route::post('/update/{uuid}', [VehicleController::class, 'update'])->middleware('can:edit vehicle')->name('update');
