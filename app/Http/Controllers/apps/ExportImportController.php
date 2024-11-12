@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\apps;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AreaStoreRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -168,6 +169,15 @@ class ExportImportController extends Controller
                             }
                         }
 
+                        $requestClass = $table . 'StoreRequest';
+                        $validationClass = new $requestClass();
+                        $validate = $validationClass->rules();
+                        $validator = \Validator::make($tempData, $validate);
+
+                        if ($validator->fails()) {
+                            $errorRow++;
+                            continue;
+                        }
                         $modelClass::create($tempData);
                         $processedRows++;
                     } else {
