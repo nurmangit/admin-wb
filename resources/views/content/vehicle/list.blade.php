@@ -32,7 +32,8 @@
         <tr>
           <th>Register Number</th>
           <th>Vehicle Type</th>
-          <th>Transporter</th>
+          <th>Active Transporter</th>
+          <th>Other Transporter</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
@@ -43,6 +44,7 @@
         <tr>
           <td>{{ $vehicle->register_number }}</td>
           <td>{{ $vehicle->vehicle_type?->name }}</td>
+          <td>{{ $vehicle->transporter?->name }}</td>
           <td>
             @php
             $transporterNames = $vehicle->vehicle_transporters->pluck('transporter.name')->implode(', ');
@@ -61,14 +63,6 @@
           </td>
           <td>
             <div class="d-flex">
-              <button
-                data-bs-toggle="modal"
-                data-bs-target="#setTransporterModal"
-                type="button"
-                class="btn btn-sm btn-outline-primary"
-                style="margin-right: 5px">
-                Set Transporter
-              </button>
               @can('edit vehicle')
               <a href="{{ route('master-data.vehicle.edit', $vehicle->uuid) }}" class="btn btn-sm btn-info" style="margin-right: 5px;">edit</a>
               @endcan

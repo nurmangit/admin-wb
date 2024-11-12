@@ -47,8 +47,8 @@ class VehicleController extends Controller
     $vehicle = Vehicle::findOrFail($uuid);
     $validated = $request->validated();
 
-    $transporters = $validated['transporter_uuid'];
-    unset($validated['transporter_uuid']);
+    $transporters = $validated['multi_transporter_uuid'];
+    unset($validated['multi_transporter_uuid']);
 
     $transporterVehicles = [];
     foreach ($transporters as $transporter) {
@@ -99,8 +99,8 @@ class VehicleController extends Controller
       return redirect()->route('master-data.vehicle.create')->with('failed', 'Register Number already registered.');
     }
 
-    $transporters = $validated['transporter_uuid'];
-    unset($validated['transporter_uuid']);
+    $transporters = $validated['multi_transporter_uuid'];
+    unset($validated['multi_transporter_uuid']);
 
     $vehicle = Vehicle::create($validated);
 
@@ -117,17 +117,6 @@ class VehicleController extends Controller
     }
 
     return redirect()->route('master-data.vehicle.list')->with('success', 'Vehicle created successfully');
-  }
-
-  public function setActiveTransporter(Request $request, $uuid)
-  {
-      $data = [
-          'transporter_uuid' => $request->request->get('transporter_uuid')
-      ];
-      $transporter = Transporter::findOrFail($data['transporter_uuid']);
-      $vehicle = Vehicle::findOrFail($uuid);
-
-      dd($transporter, $vehicle);
   }
 
   public function getVehicleDetails(Request $request)
@@ -166,7 +155,7 @@ class VehicleController extends Controller
         'vehicle_type' => $vehicle?->vehicle_type->name,
         'tolerance' => $vehicle?->vehicle_type->tolerance,
         'weight_standart' => $vehicle?->vehicle_type->weight_standart,
-        'transporter_name' => $vehicle?->vehicle_transporters?->first()?->transporter->name,
+        'transporter_name' => $vehicle?->transporter?->name,
         'slip_no' => $weightBridge?->slip_no,
         'weight_in' => $weightBridge?->weight_in,
         'weight_in_date' => $weightBridge?->weight_in_date,

@@ -72,17 +72,33 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label" for="transporter_uuid">Transporter <span class="text-danger">*</span></label>
-            <select class="form-select @error('transporter_uuid') is-invalid @enderror" id="transporter_uuid" name="transporter_uuid[]" multiple required>
+            <label class="form-label" for="transporter_uuid">Active Transporter <span class="text-danger">*</span></label>
+            <select class="form-select @error('transporter_uuid') is-invalid @enderror" id="transporter_uuid" name="transporter_uuid" required>
               <option value="">-- select --</option>
               @foreach ($transporters as $transporter)
               <option value="{{ $transporter->uuid }}"
-                {{ in_array($transporter->uuid, $vehicleTransporters->pluck('transporter_uuid')->toArray()) ? 'selected' : '' }}>
+                {{  ($vehicle->transporter?->uuid == $transporter->uuid) ? 'selected' : '' }}>
                 {{ $transporter->code }} - {{ $transporter->name }}
               </option>
               @endforeach
             </select>
             @error('transporter_uuid')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="multi_transporter_uuid">Other Transporter <span class="text-danger">*</span></label>
+            <select class="form-select @error('multi_transporter_uuid') is-invalid @enderror" id="multi_transporter_uuid" name="multi_transporter_uuid[]" multiple required>
+              <option value="">-- select --</option>
+              @foreach ($transporters as $transporter)
+              <option value="{{ $transporter->uuid }}"
+                {{ in_array($transporter->uuid, $vehicleTransporters->pluck('multi_transporter_uuid')->toArray()) ? 'selected' : '' }}>
+                {{ $transporter->code }} - {{ $transporter->name }}
+              </option>
+              @endforeach
+            </select>
+            @error('multi_transporter_uuid')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
           </div>
@@ -112,7 +128,14 @@
 @section('page-script')
 <script>
   $(document).ready(function() {
+    $('#transporter_uuid').val(null).trigger('change');
     $('#transporter_uuid').select2({
+      placeholder: 'Select a Active transporter',
+      allowClear: true,
+      multiple: false
+    });
+    $('#multi_transporter_uuid').val(null).trigger('change');
+    $('#multi_transporter_uuid').select2({
       placeholder: 'Select a transporter',
       allowClear: true,
       multiple: true

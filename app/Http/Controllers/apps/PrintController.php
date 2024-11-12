@@ -23,7 +23,7 @@ class PrintController extends Controller
       'slip_no' => $slip->slip_no,
       'weight_in_date' => $slip->weight_in_date,
       'vehicle_no' => $slip->vehicle_no ?? $slip->vehicle->register_number,
-      'transporter_name' => $slip->vehicle?->vehicle_transporters?->first()?->transporter->name,
+      'transporter_name' => $slip->transporter_name,
       'vehicle_type' => $slip->vehicle?->vehicle_type->name,
       'weight_type' => $slip->weight_type,
       'remark' => $slip->remark,

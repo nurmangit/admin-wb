@@ -28,8 +28,9 @@ class VehicleUpdateRequest extends FormRequest
             'type' => 'required|string|max:255',
             'vehicle_type_uuid' => 'required|uuid',
             'description' => 'nullable|string',
-            'transporter_uuid' => 'required|array',
-            'transporter_uuid.*' => 'uuid',
+            'transporter_uuid' => 'required|uuid',
+            'multi_transporter_uuid' => 'array',
+            'multi_transporter_uuid.*' => 'uuid',
             'ownership' => 'required|string',
         ];
     }

@@ -13,6 +13,7 @@ use App\Utils\Generator;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
+use PDO;
 
 class WeightBridgeController extends Controller
 {
@@ -245,6 +246,9 @@ class WeightBridgeController extends Controller
             $tolerance = $weightBridge->vehicle->vehicle_type->tolerance;
             $difference = ($weightNetto - $tolerance) - $weightStandart;
             $weightBridge->difference = $difference;
+            if ($vehicle->transporter?->name) {
+                $weightBridge->transporter_name = $vehicle->transporter->name;
+            }
             $weightBridge->update();
             if (($weightNetto < $weightStandart) || ($weightNetto > $weightStandart + $tolerance)) {
                 $weightBridgeApproval = WeightBridgeApproval::create(

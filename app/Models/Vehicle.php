@@ -50,7 +50,7 @@ class Vehicle extends Model
 		'vehicle_type_uuid',
 		'description',
 		'ownership',
-        'active_transporter_uuid'
+		'transporter_uuid'
 	];
 
 	public function vehicle_type()
@@ -85,7 +85,7 @@ class Vehicle extends Model
 			'vehicle_type_uuid' => 'Key2',
 			'description' => 'Character02',
 			'ownership' => 'ShortChar03',
-            'active_transporter_uuid' => 'Key3',
+			'transporter_uuid' => 'Key3',
 			'created_at' => 'Date01',
 			'updated_at' => 'Date02',
 			'deleted_at' => 'Date03',
