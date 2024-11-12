@@ -92,7 +92,7 @@
               <option value="">-- select --</option>
               @foreach ($transporters as $transporter)
               <option value="{{ $transporter->uuid }}"
-                {{ in_array($transporter->uuid, $vehicleTransporters->pluck('multi_transporter_uuid')->toArray()) ? 'selected' : '' }}>
+                {{ in_array($transporter->uuid, $vehicleTransporters->pluck(transporter_uuid')->toArray()) ? 'selected' : '' }}>
                 {{ $transporter->code }} - {{ $transporter->name }}
               </option>
               @endforeach
@@ -127,7 +127,6 @@
 @section('page-script')
 <script>
   $(document).ready(function() {
-    $('#transporter_uuid').val(null).trigger('change');
     $('#transporter_uuid').select2({
       placeholder: 'Select a Active transporter',
       allowClear: true,
