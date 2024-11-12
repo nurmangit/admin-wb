@@ -15,7 +15,7 @@ use Yajra\Auditable\AuditableWithDeletesTrait;
 
 /**
  * Class Vehicle
- * 
+ *
  * @property string $uuid
  * @property string $register_number
  * @property string $status
@@ -26,7 +26,7 @@ use Yajra\Auditable\AuditableWithDeletesTrait;
  * @property string $ownership
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property VehicleType $vehicle_type
  * @property TransporterRate $transporter_rate
  * @property Transporter $transporter
@@ -35,7 +35,7 @@ use Yajra\Auditable\AuditableWithDeletesTrait;
  */
 class Vehicle extends Model
 {
-	use SoftDeletes, AuditableWithDeletesTrait, Auditable, DynamicAttributeMapper;
+	use AuditableWithDeletesTrait, Auditable, DynamicAttributeMapper;
 	protected $table = 'Ice.UD101A';
 	protected $primaryKey = 'Key1';
 	public $incrementing = false;

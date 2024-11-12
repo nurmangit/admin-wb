@@ -26,8 +26,8 @@ class VehicleTypeStoreRequest extends FormRequest
         return [
             'name' => 'required|max:255',
             'code' => 'required|max:50',
-            'tolerance' => 'required|integer',
-            'weight_standart' => 'required|integer',
+            'tolerance' => 'required|numeric|min:1',
+            'weight_standart' => 'required|numeric|min:1',
         ];
     }
 }
