@@ -16,14 +16,14 @@ use Yajra\Auditable\AuditableWithDeletesTrait;
 
 /**
  * Class VehicleType
- * 
+ *
  * @property string $uuid
  * @property string $name
  * @property string $code
  * @property string $tolerance
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property Collection|Vehicle[] $vehicles
  *
  * @package App\Models
@@ -79,10 +79,20 @@ class VehicleType extends Model
 			'deleted_by' => 'Key4',
 		]);
 		static::creating(function ($model) {
-			$model->uuid = \Illuminate\Support\Str::uuid();
-            if (VehicleType::where('ShortChar01', $model->code)->exists()) {
-                throw new \Exception('Data already exist. Details: code ' . $model->code);
-            }
+      $model->uuid = \Illuminate\Support\Str::uuid();
+      if (VehicleType::where('ShortChar01', $model->code)->exists()) {
+        throw new \Exception('Data already exist. Details: code ' . $model->code);
+      }
+      if ($model->tolerance <= 0 || $model->weight_standart <= 0) {
+        throw new \Exception('Tolerance and Weight Standard must be greater than 0.');
+      }
 		});
+
+    static::updating(function ($model) {
+      if ($model->tolerance <= 0 || $model->weight_standart <= 0) {
+        throw new \Exception('Tolerance and Weight Standard must be greater than 0.');
+      }
+    });
+
 	}
 }
