@@ -74,7 +74,6 @@
           <div class="mb-3">
             <label class="form-label" for="transporter_uuid">Active Transporter <span class="text-danger">*</span></label>
             <select class="form-select @error('transporter_uuid') is-invalid @enderror" id="transporter_uuid" name="transporter_uuid" required>
-              <option value="">-- select --</option>
               @foreach ($transporters as $transporter)
               <option value="{{ $transporter->uuid }}"
                 {{  ($vehicle->transporter?->uuid == $transporter->uuid) ? 'selected' : '' }}>
@@ -134,7 +133,6 @@
       allowClear: true,
       multiple: false
     });
-    $('#multi_transporter_uuid').val(null).trigger('change');
     $('#multi_transporter_uuid').select2({
       placeholder: 'Select a transporter',
       allowClear: true,
