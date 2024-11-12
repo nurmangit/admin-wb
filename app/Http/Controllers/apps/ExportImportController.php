@@ -169,15 +169,19 @@ class ExportImportController extends Controller
                             }
                         }
 
-                        $requestClass = $table . 'StoreRequest';
+                        $requestClass = "App\Http\Requests\\" . $table . 'StoreRequest';
                         $validationClass = new $requestClass();
                         $validate = $validationClass->rules();
                         $validator = \Validator::make($tempData, $validate);
 
                         if ($validator->fails()) {
-                            $errorRow++;
+                            $errors = $validator->errors()->all();
+                            $errorString = implode(', ', $errors);
+
+                            throw new \Exception("Make sure you input valid values. Details : " . $errorString);
                             continue;
                         }
+
                         $modelClass::create($tempData);
                         $processedRows++;
                     } else {
