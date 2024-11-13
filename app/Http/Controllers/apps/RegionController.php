@@ -65,7 +65,7 @@ class RegionController extends Controller
   {
     $region = Region::findOrFail($uuid);
 
-    $area = Area::where('Key2', $uuid)->exists();
+    $area = Area::where('ChildKey1', $uuid)->exists();
     if ($area) {
       return redirect()->route('master-data.region.list')->with('error', 'Failed to delete Region. Reason: The Region is already associated with a Area`s.');
     }
