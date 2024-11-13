@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TransporterStoreRequest;
 use App\Http\Requests\TransporterUpdateRequest;
 use App\Models\Transporter;
+use App\Models\Vehicle;
 use Illuminate\Http\Request;
 
 class TransporterController extends Controller
@@ -54,6 +55,12 @@ class TransporterController extends Controller
   public function delete($uuid)
   {
     $transporter = Transporter::findOrFail($uuid);
+
+    $vehicle = Vehicle::where('Key3', $uuid)->exists();
+    if ($vehicle) {
+      return redirect()->route('master-data.transporter.list')->with('error', 'Failed to delete Transporter. Reason: The Transporter is already associated with a Vehicle`s.');
+    }
+
     $transporter->delete();
 
     return redirect()->route('master-data.transporter.list')->with('success', 'Transporter deleted successfully.');

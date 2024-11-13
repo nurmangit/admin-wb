@@ -87,6 +87,12 @@ class VehicleController extends Controller
   public function delete($uuid)
   {
     $vehicle = Vehicle::findOrFail($uuid);
+
+    $weightBridge = WeightBridge::where('Key2', $uuid)->exists();
+    if ($weightBridge) {
+      return redirect()->route('master-data.vehicle.list')->with('error', 'Failed to delete vehicle. Reason: The vehicle is already associated with a transaction.');
+    }
+
     $vehicle->delete();
 
     return redirect()->route('master-data.vehicle.list')->with('success', 'Vehicle deleted successfully.');

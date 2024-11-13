@@ -4,6 +4,8 @@ namespace App\Http\Controllers\apps;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\VehicleTypeStoreRequest;
+use App\Models\TransporterRate;
+use App\Models\Vehicle;
 use App\Models\VehicleType;
 
 class VehicleTypeController extends Controller
@@ -52,6 +54,19 @@ class VehicleTypeController extends Controller
   public function delete($uuid)
   {
     $vehicleType = VehicleType::findOrFail($uuid);
+
+    $vehicle = Vehicle::where('Key2', $uuid)->exists();
+
+    if ($vehicle) {
+      return redirect()->route('master-data.vehicle-type.list')->with('error', 'Failed to delete Vehicle Type. Reason: The Vehicle Type is already associated with a Vehicle`s.');
+    }
+
+    $transporterRate = TransporterRate::where('ChildKey1', $uuid)->exists();
+
+    if ($transporterRate) {
+      return redirect()->route('master-data.vehicle-type.list')->with('error', 'Failed to delete Vehicle Type. Reason: The Vehicle Type is already associated with a Transporer Rates`s.');
+    }
+
     $vehicleType->delete();
 
     return redirect()->route('master-data.vehicle-type.list')->with('success', 'Vehicle Type deleted successfully.');

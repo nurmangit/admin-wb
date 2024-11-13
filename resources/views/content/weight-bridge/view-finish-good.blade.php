@@ -35,7 +35,7 @@
               <!-- Vehicle No -->
               <div class="mb-3">
                 <label class="form-label" for="vehicle-no">Vehicle No</label>
-                <input type="text" class="form-control @error('vehicle_no') is-invalid @enderror" maxlength="10" value="{{$weight_bridge->vehicle->register_number}}" id="vehicle-no" name="vehicle_no" placeholder="Enter vehicle number" disabled />
+                <input type="text" class="form-control @error('vehicle_no') is-invalid @enderror" maxlength="10" value="{{$weight_bridge->vehicle?->register_number}}" id="vehicle-no" name="vehicle_no" placeholder="Enter vehicle number" disabled />
                 <div class="invalid-feedback">
                   Vehicle number not found.
                 </div>
@@ -43,12 +43,12 @@
               <!-- Vehicle Type -->
               <div class="mb-3">
                 <label class="form-label" for="vehicle-type">Vehicle Type</label>
-                <input disabled type="text" class="form-control" value="{{$weight_bridge->vehicle->vehicle_type->name}}" id="vehicle-type" placeholder="Enter vehicle type" />
+                <input disabled type="text" class="form-control" value="{{$weight_bridge->vehicle?->vehicle_type->name}}" id="vehicle-type" placeholder="Enter vehicle type" />
               </div>
               <!-- Tolerance -->
               <div class="mb-3">
                 <label class="form-label" for="tolerance">Tolerance</label>
-                <input disabled type="number" class="form-control" value="{{$weight_bridge->vehicle->vehicle_type->tolerance}}" id="tolerance" placeholder="Enter tolerance" />
+                <input disabled type="number" class="form-control" value="{{$weight_bridge->vehicle?->vehicle_type->tolerance}}" id="tolerance" placeholder="Enter tolerance" />
               </div>
               <!-- Transporter Name -->
               <div class="mb-3">
@@ -80,7 +80,7 @@
               <!-- Weight Standart -->
               <div class="mb-3">
                 <label class="form-label" for="weight-standart">Weight Standart</label>
-                <input disabled type="number" class="form-control" id="weight-standart" value="{{$weight_bridge->vehicle->vehicle_type->weight_standart}}" placeholder="Enter weight standart" disabled />
+                <input disabled type="number" class="form-control" id="weight-standart" value="{{$weight_bridge->vehicle?->vehicle_type->weight_standart}}" placeholder="Enter weight standart" disabled />
               </div>
               <!-- Remark -->
               <div class="mb-3">
