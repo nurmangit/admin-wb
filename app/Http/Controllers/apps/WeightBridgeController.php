@@ -130,6 +130,7 @@ class WeightBridgeController extends Controller
                     'weight_in_by' => 'admin',
                     'remark' => $validated['remark'] ?? '',
                     'status' => strtoupper($validated['weighing_type']) . "-IN",
+                    'transporter_name' => $vehicle?->transporter?->name
                 ]
             );
             $device->current_weight = 0;
