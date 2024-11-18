@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 use PDF;
 
 class PrintController extends Controller
@@ -17,6 +18,13 @@ class PrintController extends Controller
   {
     // Retrieve the data for the slip (replace with actual query)
     $slip = WeightBridge::findOrFail($uuid);
+
+    $spbDetails = DB::select("
+    SELECT T1.LegalNumber, T2.TotalNetWeight
+    FROM ShipHead AS T1
+    LEFT JOIN ShipDtl AS T2 ON T1.PackNum = T2.PackNum AND T1.Company = T2.Company
+    WHERE T1.NoDokumen_c = :slipNo
+", ['slipNo' => $slip->slip_no]);
 
     // Define data to pass to the Blade view
     $data = [
@@ -40,6 +48,7 @@ class PrintController extends Controller
       'po_do' => $slip->po_do,
       'actual_weight' => $slip->actual_weight,
       'status' => $slip->status,
+      'spb_details' => $spbDetails,
     ];
 
     // Load the view and pass the data

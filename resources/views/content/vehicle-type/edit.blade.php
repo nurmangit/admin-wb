@@ -38,7 +38,7 @@
             @enderror
           </div>
 
-          <label class="form-label" for="weight_standart">Weight Standart</label>
+          <label class="form-label" for="weight_standart">Capacity</label>
           <div class="input-group mb-3">
             <input type="number" min="1" class="form-control" id="weight_standart" name="weight_standart" placeholder="Tolerance" aria-describedby="weight_standart-suffix" value="{{ ((int)old('weight_standart', $vehicle_type->weight_standart)) }}" />
             <span class="input-group-text" id="weight_standart-suffix">KG</span>

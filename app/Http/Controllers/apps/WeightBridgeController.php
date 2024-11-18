@@ -245,13 +245,13 @@ class WeightBridgeController extends Controller
             $weightStandart = $weightBridge->vehicle->vehicle_type->weight_standart;
             $weightNetto = $validated['weight_out'] - $weightBridge->weight_in;
             $tolerance = $weightBridge->vehicle->vehicle_type->tolerance;
-            $difference = ($weightNetto - $tolerance) - $weightStandart;
+            $difference = abs($weightNetto - $weightStandart);
             $weightBridge->difference = $difference;
             if ($vehicle->transporter?->name) {
                 $weightBridge->transporter_name = $vehicle->transporter->name;
             }
             $weightBridge->update();
-            if (($weightNetto < $weightStandart) || ($weightNetto > $weightStandart + $tolerance)) {
+            if ($difference > $tolerance) {
                 $weightBridgeApproval = WeightBridgeApproval::create(
                     [
                         'weight_bridge_uuid' => $weightBridge->uuid,

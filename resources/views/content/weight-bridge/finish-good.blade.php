@@ -86,13 +86,17 @@
               </div>
               <!-- Weight Standart -->
               <div class="mb-3">
-                <label class="form-label" for="weight-standart">Weight Standart</label>
+                <label class="form-label" for="weight-standart">Capacity</label>
                 <input type="number" class="form-control" id="weight-standart" placeholder="Enter weight standart" disabled />
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="weight-standart-epicor">Weight Standart</label>
+                <input type="number" class="form-control" id="weight-standart-epicor" placeholder="Enter weight standart" disabled />
               </div>
               <!-- Remark -->
               <div class="mb-3">
                 <label class="form-label" for="remark">Remark</label>
-                <textarea id="remark" class="form-control @error('remark') is-invalid @enderror" name="remark" rows='8' placeholder="Enter any remarks"></textarea>
+                <textarea id="remark" class="form-control @error('remark') is-invalid @enderror" name="remark" rows='5' placeholder="Enter any remarks"></textarea>
                 @error('remark')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -266,8 +270,8 @@
       var weightStandart = $('#weight-standart').val();
       if (weightOut - weightIn >= 0) {
         $('#weight-netto').val(weightOut - weightIn);
-        $('#difference').val((weightOut - weightIn - tolerance) - weightStandart);
-        if (((weightOut - weightIn - tolerance) > weightStandart) || ((weightOut - weightIn - tolerance) < weightStandart)) {
+        $('#difference').val(Math.abs((weightOut - weightIn) - weightStandart));
+        if ($('#difference').val() > tolerance) {
           $('#difference').addClass('is-invalid');
         } else {
           $('#difference').removeClass('is-invalid');
@@ -315,6 +319,7 @@
               $('#weight-standart').val(response.data.weight_standart);
               $('#tolerance').val(response.data.tolerance);
               $('#transporter-name').val(response.data.transporter_name);
+              $('#weight-standart-epicor').val(response.data.total_weight_value);
               $('#weight-in').attr('disabled', false);
               if (response.data.status == 'FG-IN') {
                 $('#weightInBtn').attr('disabled', true);

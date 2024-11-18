@@ -12,6 +12,7 @@ use App\Models\VehicleTransporter;
 use App\Models\VehicleType;
 use App\Models\WeightBridge;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VehicleController extends Controller
 {
@@ -154,6 +155,19 @@ class VehicleController extends Controller
 
     $deviceData = $deviceDetail->getData() ?? [];
 
+    $totalWeightValue = 0;
+    if ($weightBridge != null) {
+      $slipNo = $weightBridge->slip_no;
+
+      $totalWeight = DB::select("
+        SELECT SUM(T2.TotalNetWeight) AS TotalWeight 
+        FROM ShipHead AS T1
+        LEFT JOIN ShipDtl AS T2 ON T1.PackNum = T2.PackNum AND T1.Company = T2.Company
+        WHERE T1.NoDokumen_c = :slipNo
+    ", ['slipNo' => $slipNo]);
+
+      $totalWeightValue = $totalWeight[0]->TotalWeight ?? 0;
+    }
     $vehicleDetails = [
       "status" => "success",
       "message" => "Data Found!",
@@ -167,7 +181,8 @@ class VehicleController extends Controller
         'weight_in_date' => $weightBridge?->weight_in_date,
         'remark' => $weightBridge?->remark,
         'status' => $weightBridge?->status,
-        'device_status' => $deviceData->status ?? false
+        'device_status' => $deviceData->status ?? false,
+        'total_weight_value' => $totalWeightValue,
       ]
     ];
 

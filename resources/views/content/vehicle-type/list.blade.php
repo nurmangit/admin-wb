@@ -29,7 +29,7 @@
           <th>Name</th>
           <th>Code</th>
           <th>Tolerance</th>
-          <th>Weight Standart</th>
+          <th>Capacity</th>
           <th>Actions</th>
         </tr>
       </thead>

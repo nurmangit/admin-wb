@@ -123,12 +123,14 @@
         </tr>
         <tr>
             <td>DO/SPB No:</td>
-            <td>Dist Weight</td>
+            <td>Dist Weight (KG)</td>
         </tr>
+        @foreach($spb_details as $spbDetail)
         <tr>
-            <td>{{ $slip_no }}</td>
-            <td>{{ $weight_netto }} KG</td>
+            <td>{{ $spbDetail->LegalNumber }}</td>
+            <td>{{ $spbDetail->TotalNetWeight }}</td>
         </tr>
+        @endforeach
     </table>
     @endif
 </body>
