@@ -63,7 +63,7 @@
               </form>
               @endcan
               @endif
-              @if($approval->action_date_2 == null)
+              @if($approval->action_date != null && $approval->action_date_2 == null)
               @can('approve 2')
               <form action="{{ route('transaction.weight-bridge.approval.approve', $approval->uuid) }}" method="POST" onsubmit="return confirm('Are you sure you want to approve weight out of this slip No?');">
                 @csrf
