@@ -155,6 +155,7 @@ class VehicleController extends Controller
 
     $deviceData = $deviceDetail->getData() ?? [];
 
+    $routePrint = '#';
     $totalWeightValue = 0;
     if ($weightBridge != null) {
       $slipNo = $weightBridge->slip_no;
@@ -167,6 +168,7 @@ class VehicleController extends Controller
     ", ['slipNo' => $slipNo]);
 
       $totalWeightValue = $totalWeight[0]->TotalWeight ?? 0;
+      $routePrint = route('transaction.weight-bridge.printSlip', $weightBridge->uuid);
     }
     $vehicleDetails = [
       "status" => "success",
@@ -183,6 +185,7 @@ class VehicleController extends Controller
         'status' => $weightBridge?->status,
         'device_status' => $deviceData->status ?? false,
         'total_weight_value' => $totalWeightValue,
+        'route_print' => $routePrint,
       ]
     ];
 

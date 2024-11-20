@@ -139,6 +139,7 @@
             @can('weight_out')
             <button type="button" style="margin-right: 10px;" id="weightOutBtn" class="btn btn-info fw-bold">WEIGHT OUT</button>
             @endcan
+            <button id="btn-print" class="btn btn-primary fw-bold">PRINT</a>
           </div>
         </form>
       </div>
@@ -250,7 +251,9 @@
     $('#weightInBtn').attr('disabled', true);
     $('#weight-in').attr('disabled', true);
     $('#weight-out').attr('disabled', true);
+    $('#btn-print').attr('disabled', true);
 
+    var route = '';
 
     $('#weightInBtn').click(function() {
       $('#weighbridgeForm').attr('action', "{{ route('transaction.weight-bridge.weightIn') }}" + "?" + queryKey + "=" + encodeURIComponent(queryValue));
@@ -282,6 +285,11 @@
     });
 
 
+    $('#btn-print').on('click', function() {
+      event.preventDefault();
+      window.open(route, '_blank');
+    });
+
     $('#vehicle-no').on('input', function() {
       var vehicleNo = $(this).val();
       // When vehicle number has 5 characters, make the request
@@ -306,6 +314,7 @@
               $('#weight-in-feedback-invalid').text('');
               $('#weight-out-feedback-invalid').text('');
               $('#weightInBtn').attr('disabled', true);
+              $('#btn-print').attr('disabled', true)
               // Stop the interval if it's running
               if (fetchIntervals) {
                 stopAllFetchIntervals()
@@ -330,6 +339,8 @@
                 $('#weight-in').attr('disabled', true);
                 $('#weight-out').attr('disabled', false);
                 $('#weightOutBtn').attr('disabled', false);
+                $('#btn-print').attr('disabled', false)
+                route = response.data.route_print;
                 // Call the fetch function every 1 second
                 fetchType = 'out';
                 fetchIntervals.push(setInterval(function() {

@@ -115,6 +115,7 @@
             @can('weight_out')
             <button type="button" style="margin-right: 10px;" id="weightOutBtn" class="btn btn-info fw-bold">WEIGHT OUT</button>
             @endcan
+            <button id="btn-print" class="btn btn-primary fw-bold">PRINT</a>
           </div>
         </form>
       </div>
@@ -224,7 +225,8 @@
     $('#weightInBtn').attr('disabled', true);
     $('#weight-in').attr('disabled', true);
     $('#weight-out').attr('disabled', true);
-
+    $('#btn-print').attr('disabled', true);
+    var route = '';
 
     $('#weightInBtn').click(function() {
       $('#weighbridgeForm').attr('action', "{{ route('transaction.weight-bridge.weightIn') }}" + "?" + queryKey + "=" + encodeURIComponent(queryValue));
@@ -248,6 +250,11 @@
         $('#weight-out').addClass('is-invalid')
         $('#weight-out-feedback-invalid').text('Weight OUT should less than Weight IN')
       }
+    });
+
+    $('#btn-print').on('click', function() {
+      event.preventDefault();
+      window.open(route, '_blank');
     });
 
     $('#vehicle-no').on('input', function() {
@@ -274,6 +281,7 @@
               $('#weight-out-feedback-invalid').text('');
               $('#weightInBtn').attr('disabled', true);
               $('#po_do').attr('disabled', true);
+              $('#btn-print').attr('disabled', true)
               // Stop the interval if it's running
               if (fetchIntervals) {
                 stopAllFetchIntervals()
@@ -297,6 +305,7 @@
                 $('#weight-out').attr('disabled', false);
                 $('#weightOutBtn').attr('disabled', false);
                 $('#po_do').attr('disabled', false);
+                $('#btn-print').attr('disabled', false);
                 // Call the fetch function every 1 second
                 fetchType = 'out';
                 fetchIntervals.push(setInterval(function() {
