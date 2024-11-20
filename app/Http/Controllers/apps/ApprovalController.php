@@ -38,7 +38,7 @@ class ApprovalController extends Controller
   public function approve($approvalUuid)
   {
     $approval = WeightBridgeApproval::findOrFail($approvalUuid);
-    if ($approval->is_approve == false and $approval->is_reject == false) {
+    if ($approval->action_date == null) {
       $approval->is_approve = true;
       $approval->action_date = Carbon::now();
       $approval->action_by = auth()->user()->name ?? 'admin';
@@ -62,7 +62,7 @@ class ApprovalController extends Controller
     $approval = WeightBridgeApproval::findOrFail($approvalUuid);
 
     DB::transaction(function () use ($approvalUuid, $approval) {
-      if ($approval->is_approve == false and $approval->is_reject == false) {
+      if ($approval->action_date == null) {
         $approval->is_reject = true;
         $approval->action_date = Carbon::now();
         $approval->action_by = auth()->user()->name ?? 'admin';
