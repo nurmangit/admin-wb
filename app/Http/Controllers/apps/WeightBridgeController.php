@@ -147,9 +147,9 @@ class WeightBridgeController extends Controller
         }
 
         if ($validated['weighing_type'] == 'rm') {
-            return redirect()->route('transaction.weight-bridge.receiving-material')->with('success', 'Weight IN success.');
+            return redirect()->route('transaction.weight-bridge.receiving-material')->with('vehicle_no', $validated['vehicle_no'])->with('success', 'Weight IN success.');
         } else {
-            return redirect()->route('transaction.weight-bridge.finish-good')->with('success', 'Weight IN success.');
+            return redirect()->route('transaction.weight-bridge.finish-good')->with('vehicle_no', $validated['vehicle_no'])->with('success', 'Weight IN success.');
         }
     }
 
