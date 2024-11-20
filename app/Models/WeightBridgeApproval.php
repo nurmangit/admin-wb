@@ -26,9 +26,13 @@ class WeightBridgeApproval extends Model
 	protected $fillable = [
 		'weight_bridge_uuid',
 		'action_date',
+		'action_date_2',
 		'action_by',
+		'action_by_2',
 		'is_approve',
+		'is_approve_2',
 		'is_reject',
+		'is_reject_2',
 		'is_active',
 	];
 
@@ -51,9 +55,13 @@ class WeightBridgeApproval extends Model
 			'uuid' => 'Key1',
 			'weight_bridge_uuid' => 'ChildKey1',
 			'action_date' => 'Character01',
+			'action_date_2' => 'Character02',
 			'action_by' => 'Key2',
+			'action_by_2' => 'Key3',
 			'is_approve' => 'CheckBox01',
+			'is_approve_2' => 'CheckBox03',
 			'is_reject' => 'CheckBox02',
+			'is_reject_2' => 'CheckBox04',
 			'created_at' => 'Date02',
 			'updated_at' => 'Date03',
 			'created_by' => 'Key3',

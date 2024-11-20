@@ -69,6 +69,8 @@ class PermissionSeeder extends Seeder
             'view data_wb',
             'approve',
             'reject',
+            'approve 2',
+            'reject 2',
             'view approval',
             'view group',
             'create group',

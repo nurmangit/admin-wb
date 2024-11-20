@@ -26,7 +26,8 @@
           <th>Weight Difference</th>
           <th>Date</th>
           <th>Status</th>
-          <th>Action Date</th>
+          <th>Action Date Approval 1</th>
+          <th>Action Date Approval 2</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -42,6 +43,7 @@
           <td>{{$approval->weight_bridge->weight_out_date}}</td>
           <td><span class="badge fw-bold text-secondary bg-label-{{ (($approval->is_approve == true) ? 'success' : (($approval->is_reject == true) ? 'danger' : 'warning'))}}">{{$approval->weight_bridge->status}}</span></td>
           <td>{{$approval->action_date}}</td>
+          <td>{{$approval->action_date_2}}</td>
           <td>
             <div class="d-flex">
               <a href="{{route('transaction.weight-bridge.view',$approval->weight_bridge->uuid)}}" target="_blank" class="btn btn-sm btn-info" style="margin-right: 0.2rem;">view</a>
@@ -54,6 +56,22 @@
               </form>
               @endcan
               @can('reject')
+              <form action="{{ route('transaction.weight-bridge.approval.reject', $approval->uuid) }}" method="POST" onsubmit="return confirm('Are you sure you want to reject weight out of this slip No?');">
+                @csrf
+                @method('POST')
+                <button type="submit" class="btn btn-sm btn-danger" style="margin-right: 0.2rem;">Reject</button>
+              </form>
+              @endcan
+              @endif
+              @if($approval->action_date_2 == null)
+              @can('approve 2')
+              <form action="{{ route('transaction.weight-bridge.approval.approve', $approval->uuid) }}" method="POST" onsubmit="return confirm('Are you sure you want to approve weight out of this slip No?');">
+                @csrf
+                @method('POST')
+                <button type="submit" class="btn btn-sm btn-success" style="margin-right: 0.2rem;">Approve</button>
+              </form>
+              @endcan
+              @can('reject 2')
               <form action="{{ route('transaction.weight-bridge.approval.reject', $approval->uuid) }}" method="POST" onsubmit="return confirm('Are you sure you want to reject weight out of this slip No?');">
                 @csrf
                 @method('POST')
