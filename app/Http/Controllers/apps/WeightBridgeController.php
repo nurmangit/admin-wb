@@ -38,7 +38,7 @@ class WeightBridgeController extends Controller
             : 'content.weight-bridge.view-finish-good';
         return view($template, [
             'weight_bridge' => $weightBridge,
-            'current_date' => $currentDateTime
+            'currentDateTime' => $currentDateTime
         ]);
     }
 
