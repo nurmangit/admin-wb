@@ -39,26 +39,10 @@
       </thead>
       <tbody class="table-border-bottom-0">
         @foreach ($transporterRates as $transporterRate)
-        @php
-        $startDate = DateTime::createFromFormat('M j Y h:i:s:A', $transporterRate->start_date);
-        if ($startDate) {
-        $startFormatted = $startDate->format('d/m/Y'); // Date only
-        } else {
-        $startFormatted = 'Invalid Date';
-        }
-
-        // Parse and format end_date to display date only
-        $endDate = DateTime::createFromFormat('M j Y h:i:s:A', $transporterRate->end_date);
-        if ($endDate) {
-        $endFormatted = $endDate->format('d/m/Y'); // Date only
-        } else {
-        $endFormatted = 'Invalid Date';
-        }
-        @endphp
         <tr>
           <td>{{ $transporterRate->name }}</td>
-          <td>{{ $startFormatted }}</td>
-          <td>{{ $endFormatted }}</td>
+          <td>{{ $transporterRate->start_date }}</td>
+          <td>{{ $transporterRate->end_date }}</td>
           <td>{{ $transporterRate->area?->name }}</td>
           <td>{{ $transporterRate->vehicle_type?->name }}</td>
           <td>{{ ((int)$transporterRate->charge) }}</td>
