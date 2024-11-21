@@ -46,12 +46,6 @@ class VehicleTransporter extends Model
 		return $this->hasOne(Transporter::class, 'Key1', 'Key2');
 	}
 
-	// Override the SoftDeletes deleted_at column to Date04
-	public function getDeletedAtColumn()
-	{
-		return 'Date03';  // Use your custom soft delete column
-	}
-
 	protected static function boot()
 	{
 		parent::boot();

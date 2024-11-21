@@ -18,7 +18,7 @@ use Yajra\Auditable\AuditableWithDeletesTrait;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes, AuditableWithDeletesTrait, DynamicAttributeMapper;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, AuditableWithDeletesTrait, DynamicAttributeMapper;
 
     protected $primaryKey = 'Key1';
     protected $keyType = 'string';
@@ -61,12 +61,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    // Override the SoftDeletes deleted_at column to Date04
-    public function getDeletedAtColumn()
-    {
-        return 'Date04';  // Use your custom soft delete column
-    }
 
     protected static function boot()
     {

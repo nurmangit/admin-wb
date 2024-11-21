@@ -30,7 +30,7 @@ use Yajra\Auditable\AuditableWithDeletesTrait;
  */
 class VehicleType extends Model
 {
-	use SoftDeletes, AuditableWithDeletesTrait, Auditable, DynamicAttributeMapper;
+	use AuditableWithDeletesTrait, Auditable, DynamicAttributeMapper;
 	protected $table = 'Ice.UD101';
 	protected $primaryKey = 'Key1';
 	public $incrementing = false;
@@ -53,12 +53,6 @@ class VehicleType extends Model
 	public function vehicles()
 	{
 		return $this->hasMany(Vehicle::class, 'vehicle_type_uuid');
-	}
-
-	// Override the SoftDeletes deleted_at column to Date04
-	public function getDeletedAtColumn()
-	{
-		return 'Date04';  // Use your custom soft delete column
 	}
 
 	protected static function boot()

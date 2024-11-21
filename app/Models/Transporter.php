@@ -30,7 +30,7 @@ use Yajra\Auditable\AuditableWithDeletesTrait;
  */
 class Transporter extends Model
 {
-	use SoftDeletes, AuditableWithDeletesTrait, Auditable, DynamicAttributeMapper;
+	use AuditableWithDeletesTrait, Auditable, DynamicAttributeMapper;
 	protected $table = 'Ice.UD102';
 	protected $primaryKey = 'Key1';
 	public $incrementing = false;
@@ -47,12 +47,6 @@ class Transporter extends Model
 	public function vehicles()
 	{
 		return $this->hasMany(Vehicle::class, 'transporter_uuid');
-	}
-
-	// Override the SoftDeletes deleted_at column to Date04
-	public function getDeletedAtColumn()
-	{
-		return 'Date04';  // Use your custom soft delete column
 	}
 
 	protected static function boot()
@@ -72,10 +66,10 @@ class Transporter extends Model
 			'deleted_by' => 'Key4',
 		]);
 		static::creating(function ($model) {
-            $model->uuid = \Illuminate\Support\Str::uuid();
-            if (Transporter::where('ShortChar01', $model->code)->exists()) {
-                throw new \Exception('Data already exist. Details: code ' . $model->code);
-            }
+			$model->uuid = \Illuminate\Support\Str::uuid();
+			if (Transporter::where('ShortChar01', $model->code)->exists()) {
+				throw new \Exception('Data already exist. Details: code ' . $model->code);
+			}
 		});
 	}
 }
