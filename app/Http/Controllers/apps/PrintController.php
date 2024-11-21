@@ -26,6 +26,14 @@ class PrintController extends Controller
     WHERE T1.NoDokumen_c = :slipNo
 ", ['slipNo' => $slip->slip_no]);
 
+    $totalWeight = DB::select("
+    SELECT SUM(T2.TotalNetWeight) AS TotalWeight 
+    FROM ShipHead AS T1
+    LEFT JOIN ShipDtl AS T2 ON T1.PackNum = T2.PackNum AND T1.Company = T2.Company
+    WHERE T1.NoDokumen_c = :slipNo
+    ", ['slipNo' => $slip->slip_no]);
+
+    $totalWeightValue = $totalWeight[0]->TotalWeight ?? 0;
     // Define data to pass to the Blade view
     $data = [
       'slip_no' => $slip->slip_no,
@@ -49,6 +57,7 @@ class PrintController extends Controller
       'actual_weight' => $slip->actual_weight,
       'status' => $slip->status,
       'spb_details' => $spbDetails,
+      'total_weight' => $totalWeightValue
     ];
 
     // Load the view and pass the data

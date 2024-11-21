@@ -132,6 +132,24 @@
         </tr>
         @endforeach
     </table>
+    <table style="width: 100%; font-size:7px;">
+        <tr>
+            <td style="width: 70%;">&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>Total</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>{{$total_weight}}</td>
+            <td></td>
+        </tr>
+    </table>
     @endif
 </body>
 
