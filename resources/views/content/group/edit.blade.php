@@ -24,13 +24,20 @@
           </div>
           <label class="form-label" for="permission">Permissions</label>
           <div class="d-flex flex-row flex-wrap">
-            @foreach($permissions as $permission)
-            <div class="mb-3 col-2 p-2">
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="{{$permission}}" name="{{$permission}}" @foreach($role_permissions as $role_permission) {{($role_permission== $permission ? 'checked':'')}} @endforeach>
-                <label class="form-check-label" for="{{$permission}}">{{$permission}}</label>
+            @foreach ($groupedPermissions as $module => $permissionsGroup)
+              <div class="mb-3 col-12">
+                <h5>{{ ucfirst($module) }}</h5>
+                <div class="d-flex flex-wrap">
+                    @foreach ($permissionsGroup as $permission)
+                      <div class="mb-3 col-4 p-2">
+                        <div class="form-check">
+                          <input type="checkbox" class="form-check-input" id="{{$permission}}" name="{{$permission}}" @foreach($role_permissions as $role_permission) {{($role_permission== $permission ? 'checked':'')}} @endforeach>
+                          <label class="form-check-label" for="{{$permission}}">{{$permission}}</label>
+                        </div>
+                      </div>
+                    @endforeach
+                </div>
               </div>
-            </div>
             @endforeach
           </div>
           <div class="d-flex justify-content-end">

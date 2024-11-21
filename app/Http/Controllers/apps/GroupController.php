@@ -27,11 +27,12 @@ class GroupController extends Controller
 
     public function create()
     {
-        // dd(Permission::get()->pluck('name'));
+        $groupedPermissions = $this->getGroupedPermissions();
+
         return view(
             'content.group.create',
             [
-                "permissions" => Permission::get()->pluck('name'),
+                "groupedPermissions" => $groupedPermissions,
             ]
         );
     }
@@ -39,11 +40,13 @@ class GroupController extends Controller
     public function edit($uuid)
     {
         $role = Role::findOrFail($uuid);
+        $groupedPermissions = $this->getGroupedPermissions();
+
         return view(
             'content.group.edit',
             [
                 "role" => $role,
-                "permissions" => Permission::get()->pluck('name'),
+                "groupedPermissions" => $groupedPermissions,
                 "role_permissions" => $role->getAllPermissions()->pluck('name'),
             ]
         );
@@ -116,5 +119,29 @@ class GroupController extends Controller
             }
         }
         return redirect()->route('account.group.list')->with('success', 'Group created successfully');
+    }
+
+    private function getGroupedPermissions()
+    {
+      $permissions = Permission::get()->pluck('name');
+
+      $groupedPermissions = $permissions->groupBy(function ($permission) {
+        $words = explode(' ', $permission);
+        $module = $words[1] ?? 'others';
+
+        $othersKeywords = ['2', 'data_wb', 'approval', 'receiving_material', 'finish_good', 'analytics', 'log', 'input'];
+        foreach ($othersKeywords as $keyword) {
+            if (stripos($permission, $keyword) !== false) {
+                return 'others';
+            }
+        }
+        return $module;
+      });
+
+      $others = $groupedPermissions->pull('others', collect());
+
+      $groupedPermissions = $groupedPermissions->merge(['others' => $others]);
+
+      return $groupedPermissions;
     }
 }
