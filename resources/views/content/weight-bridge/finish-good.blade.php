@@ -36,7 +36,7 @@
               <!-- Vehicle No -->
               <div class="mb-3">
                 <label class="form-label" for="vehicle-no">Vehicle No</label>
-                <input type="text" class="form-control @error('vehicle_no') is-invalid @enderror" id="vehicle-no" value="@if (session('vehicle_no')) session('vehicle_no') @endif" name="vehicle_no" placeholder="Enter vehicle number" />
+                <input type="text" class="form-control @error('vehicle_no') is-invalid @enderror" id="vehicle-no" value="@if (session('vehicle_no')) {{ session('vehicle_no') }} @endif" name="vehicle_no" placeholder="Enter vehicle number" />
                 <div class="invalid-feedback">
                   Vehicle number not found.
                 </div>
@@ -290,6 +290,12 @@
       event.preventDefault();
       window.open(route, '_blank');
     });
+
+    let vehicleNo = $('#vehicle-no').val();
+
+    if (vehicleNo && vehicleNo.length >= 1) {
+      $('#vehicle-no').trigger('input');
+    }
 
     $('#vehicle-no').on('input', function() {
       var vehicleNo = $(this).val();
