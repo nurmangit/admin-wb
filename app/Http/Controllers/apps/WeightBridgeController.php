@@ -30,12 +30,15 @@ class WeightBridgeController extends Controller
     public function view($weightBridgeUuid)
     {
         $weightBridge = WeightBridge::findOrFail($weightBridgeUuid);
+        $currentDateTime = new DateTime();
+        $currentDateTime = $currentDateTime->format('Y-m-d H:i');
         $template =
             $weightBridge->weight_type == 'rm'
             ? 'content.weight-bridge.view-receiving-material'
             : 'content.weight-bridge.view-finish-good';
         return view($template, [
             'weight_bridge' => $weightBridge,
+            'current_date' => $currentDateTime
         ]);
     }
 

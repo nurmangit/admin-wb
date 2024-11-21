@@ -218,8 +218,8 @@
     $('#arrival-date').val(formattedDate);
     // Format date and time as YYYY-MM-DDTHH:mm for 'datetime-local' inputs
     var formattedDateTime = indonesiaTime.toISOString().slice(0, 16); // Get YYYY-MM-DDTHH:mm
-    $('#date-weight-in').val(formattedDateTime);
-    $('#date-weight-out').val(formattedDateTime);
+    $('#date-weight-in').val(`{{$currentDateTime}}`);
+    $('#date-weight-out').val(`{{$currentDateTime}}`);
 
     $('#weightOutBtn').attr('disabled', true);
     $('#weightInBtn').attr('disabled', true);
@@ -258,7 +258,7 @@
     });
 
     if ($('#vehicle-no').val() != null) {
-     $('#vehicle-no').trigger('input');
+      $('#vehicle-no').trigger('input');
     }
 
     $('#vehicle-no').on('input', function() {
