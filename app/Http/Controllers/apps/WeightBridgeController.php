@@ -45,8 +45,11 @@ class WeightBridgeController extends Controller
     public function receivingMaterial()
     {
         $slipNo = Generator::generateSlipNo('RM');
+        $currentDateTime = new DateTime();
+        $currentDateTime = $currentDateTime->format('Y-m-d H:i');
         return view('content.weight-bridge.receiving-material', [
             'slip_no' => '',
+            'currentDateTime' => $currentDateTime
         ]);
     }
     public function weightIn(WeightInRequest $request)
@@ -352,9 +355,11 @@ class WeightBridgeController extends Controller
     public function finishGood()
     {
         $slipNo = Generator::generateSlipNo('FG');
-
+        $currentDateTime = new DateTime();
+        $currentDateTime = $currentDateTime->format('Y-m-d H:i');
         return view('content.weight-bridge.finish-good', [
             'slip_no' => '',
+            'currentDateTime' => $currentDateTime
         ]);
     }
 
