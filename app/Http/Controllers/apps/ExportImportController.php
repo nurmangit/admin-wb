@@ -12,6 +12,7 @@ class ExportImportController extends Controller
     public function export(Request $request)
     {
         $table = $request->input('table');
+        $type = $request->query('type');
 
         // Check if the model exists
         if (!class_exists("App\\Models\\$table")) {
@@ -19,7 +20,13 @@ class ExportImportController extends Controller
         }
 
         // Retrieve data from the specified model
-        $data = app("App\\Models\\$table")::get();
+
+        if ($type) {
+            $data = app("App\\Models\\$table")::where('ShortChar01', $type)->get();
+        } else {
+            $data = app("App\\Models\\$table")::get();
+        }
+
 
         // Get the columns dynamically from the model's attributes
         $columns = (new ("App\\Models\\$table"))->getFillable(); // Assuming you're using fillable attributes
