@@ -12,7 +12,7 @@ class ExportImportController extends Controller
     public function export(Request $request)
     {
         $table = $request->input('table');
-        $type = $request->query('type');
+        $type = $request->input('type');
 
         // Check if the model exists
         if (!class_exists("App\\Models\\$table")) {
