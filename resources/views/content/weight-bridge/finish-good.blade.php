@@ -274,7 +274,8 @@
       if (weightOut - weightIn >= 0) {
         $('#weight-netto').val(weightOut - weightIn);
         $('#difference').val(Math.abs((weightOut - weightIn) - weightStandart));
-        if ($('#difference').val() > tolerance) {
+        var diff = $('#difference').val();
+        if (Number(diff) > Number(tolerance)) {
           $('#difference').addClass('is-invalid');
         } else {
           $('#difference').removeClass('is-invalid');
