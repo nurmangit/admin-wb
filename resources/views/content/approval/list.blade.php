@@ -101,7 +101,9 @@
       "info": true,
       "autoWidth": false,
       "responsive": true,
-      "order": []
+      "order": [
+        [6, "asc"]
+      ]
     });
   });
 </script>
