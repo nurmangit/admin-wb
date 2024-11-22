@@ -107,6 +107,16 @@
         let startDate = $(this).val();
         $('#end_date').attr('min', startDate);
       });
+
+      $('#start_date').on('change', function () {
+          const date = new Date(this.value);
+          const formattedDate = ${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()};
+      });
+
+      $('#end_date').on('change', function () {
+          const date = new Date(this.value);
+          const formattedDate = ${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()};
+      });
     });
   </script>
   @endsection

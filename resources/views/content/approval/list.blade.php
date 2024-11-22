@@ -18,7 +18,7 @@
     <table id="approvalTable" class="table table-hover">
       <thead>
         <tr>
-          <th>PO / DO</th>
+          {{-- <th>PO / DO</th> --}}
           <th>Vehicle No</th>
           <th>Weight Netto</th>
           <th>Tolerance</th>
@@ -34,7 +34,7 @@
       <tbody class="table-border-bottom-0">
         @foreach($approvals as $approval)
         <tr>
-          <td>{{$approval->weight_bridge->po_do}}</td>
+          {{-- <td>{{$approval->weight_bridge->po_do}}</td> --}}
           <td>{{$approval->weight_bridge->vehicle->register_number ?? '-'}}</td>
           <td>{{$approval->weight_bridge->weight_netto}} KG</td>
           <td>{{$approval->weight_bridge->vehicle->vehicle_type->tolerance ?? '-'}} KG</td>

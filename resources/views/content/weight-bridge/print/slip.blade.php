@@ -63,7 +63,7 @@
             <td>Doc No:</td>
             <td>{{ $slip_no }}</td>
             <td>Date:</td>
-            <td>{{ $weight_in_date }}</td>
+            <td>{{ date('d-m-Y', strtotime($weight_in_date)) }}</td>
         </tr>
         <tr>
             <td>No Polisi / Transporter:</td>
@@ -94,7 +94,7 @@
             <td style="width: 40%;">Keluar (KG):</td>
             <td style="width: 15%;">{{ $weight_out }}</td>
             <td style="width: 20%;">Date Out:</td>
-            <td style="width: 25%;">{{ $weight_out_date }}</td>
+            <td style="width: 25%;">{{ date('d-m-Y', strtotime($weight_out_date)) }}</td>
         </tr>
         <tr>
             <td style="width: 40%;">Netto (KG):</td>
