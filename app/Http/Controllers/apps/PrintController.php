@@ -27,7 +27,7 @@ class PrintController extends Controller
 ", ['slipNo' => $slip->slip_no]);
 
     $totalWeight = DB::select("
-    SELECT SUM(T2.TotalNetWeight) AS TotalWeight 
+    SELECT SUM(T2.TotalNetWeight) AS TotalWeight
     FROM ShipHead AS T1
     LEFT JOIN ShipDtl AS T2 ON T1.PackNum = T2.PackNum AND T1.Company = T2.Company
     WHERE T1.NoDokumen_c = :slipNo
@@ -63,8 +63,14 @@ class PrintController extends Controller
     // Load the view and pass the data
     $pdf = PDF::loadView('content.weight-bridge.print.slip', $data);
 
-    // Set paper size (60x75 mm) and orientation
-    $pdf->setPaper([0, 0, 226.77, 283.46]); // Custom size in points (60mm x 75mm)
+    $defaultPaperHeight = 283;
+    if (count($spbDetails) > 6){
+      $paperHeight = ((count($spbDetails) - 6) * 20) + 10 + $defaultPaperHeight;
+    } else {
+      $paperHeight = $defaultPaperHeight;
+    }
+
+    $pdf->setPaper([0, 0, 226.77, $paperHeight]);
 
     // Output the PDF for download or inline view
     return $pdf->stream("slip_$slip->slip_no.pdf"); // or ->download('weighbridge_slip.pdf') for direct download
