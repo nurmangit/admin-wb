@@ -345,8 +345,7 @@ class WeightBridgeController extends Controller
 
         if ($validated['weighing_type'] == 'rm') {
             return redirect()
-                ->route('transaction.weight-bridge.receiving-material')
-                ->with('success', 'Weight OUT success.');
+                ->route('transaction.weight-bridge.printSlip', $weightBridge->uuid);
         } else {
             return redirect()
                 ->route('transaction.weight-bridge.printSlip', $weightBridge->uuid);
