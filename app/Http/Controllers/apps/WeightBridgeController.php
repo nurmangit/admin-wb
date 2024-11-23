@@ -10,6 +10,7 @@ use App\Models\Vehicle;
 use App\Models\WeightBridge;
 use App\Models\WeightBridgeApproval;
 use App\Utils\Generator;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
@@ -120,6 +121,8 @@ class WeightBridgeController extends Controller
         $slipNo = Generator::generateSlipNo(strtoupper($validated['weighing_type']));
         $currentDateTime = new DateTime();
         $currentDateTime = $currentDateTime->format('Y-m-d H:i:s');
+
+        DB::beginTransaction();
         try {
             // Get the secret from the environment variable
             $secret = env('DEVICE_SECRET');
@@ -170,7 +173,12 @@ class WeightBridgeController extends Controller
             $device->status = 'unstable';
             $device->used_at = $currentDateTime;
             $device->save();
+
+            DB::commit();
+
         } catch (\Throwable $th) {
+            DB::rollBack();
+
             if ($validated['weighing_type'] == 'rm') {
                 return redirect()
                     ->route('transaction.weight-bridge.receiving-material')
@@ -257,6 +265,8 @@ class WeightBridgeController extends Controller
 
         $currentDateTime = new DateTime();
         $currentDateTime = $currentDateTime->format('Y-m-d H:i:s');
+
+        DB::beginTransaction();
         try {
             $weightBridge->weight_out = $validated['weight_out'];
             $weightBridge->weight_out_date = $currentDateTime;
@@ -311,7 +321,12 @@ class WeightBridgeController extends Controller
             $device->save();
             $weightBridge->remark = $validated['remark'] ?? '';
             $weightBridge->save();
+
+            DB::commit();
+
         } catch (\Throwable $th) {
+            DB::rollBack();
+
             if ($validated['weighing_type'] == 'rm') {
                 return redirect()
                     ->route('transaction.weight-bridge.receiving-material')
