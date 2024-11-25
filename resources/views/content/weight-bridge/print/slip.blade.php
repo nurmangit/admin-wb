@@ -72,6 +72,7 @@ Netto (KG):{{$weight_netto}}Kg Time Out:{{ $weight_out_time }}
 Petugas Timbangan              Pengemudi
 <br>
 <br>
+(               )      (               )
 <br>
 <br>
 @if($weight_type == 'fg' and $status == 'FG-OUT')
@@ -84,6 +85,12 @@ DO/SPB No:           Dist Weight (KG)
                      -------------------
        Total Weight: {{ $total_weight }}
 @endif
+
+
+
+
+
+----------------------------------------
 </pre>
 </body>
 
