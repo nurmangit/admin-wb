@@ -52,11 +52,9 @@
 </head>
 
 <body>
-
-    <pre style="font-family: monospace; font-size: 6px; line-height: 1.2;" class="header">
-PT. KERAMINDO MEGAH PERKASA </br>TANGERANG
-    </pre>
     <pre style="font-family: monospace; font-size: 6px; line-height: 1.2;">
+PT. KERAMINDO MEGAH PERKASA </br>TANGERANG
+</br>
 SLIP TIMBANGAN
 ----------------------------------------
 No.Doc     :{{ $slip_no }} Date:{{ date('d-m-Y', strtotime($weight_in_date)) }}
