@@ -85,22 +85,22 @@
 
     <table class="table">
         <tr>
-            <td style="width: 40%;">Masuk (KG):</td>
-            <td style="width: 15%;">{{ $weight_in }}</td>
-            <td style="width: 20%;">Time In:</td>
-            <td style="width: 25%;">{{ $weight_in_time }}</td>
+            <td style="width: 40px;">Masuk (KG):</td>
+            <td style="width: 15px;">{{ $weight_in }}</td>
+            <td style="width: 20px;">Time In:</td>
+            <td style="width: 25px;">{{ $weight_in_time }}</td>
         </tr>
         <tr>
-            <td style="width: 40%;">Keluar (KG):</td>
-            <td style="width: 15%;">{{ $weight_out }}</td>
-            <td style="width: 20%;">Date Out:</td>
-            <td style="width: 25%;">{{ date('d-m-Y', strtotime($weight_out_date)) }}</td>
+            <td style="width: 40px;">Keluar (KG):</td>
+            <td style="width: 15px;">{{ $weight_out }}</td>
+            <td style="width: 20px;">Date Out:</td>
+            <td style="width: 25px;">{{ date('d-m-Y', strtotime($weight_out_date)) }}</td>
         </tr>
         <tr>
-            <td style="width: 40%;">Netto (KG):</td>
-            <td style="width: 15%;">{{ $weight_netto }}</td>
-            <td style="width: 20%;">Time Out:</td>
-            <td style="width: 25%;">{{ $weight_out_time }}</td>
+            <td style="width: 40px;">Netto (KG):</td>
+            <td style="width: 15px;">{{ $weight_netto }}</td>
+            <td style="width: 20px;">Time Out:</td>
+            <td style="width: 25px;">{{ $weight_out_time }}</td>
         </tr>
     </table>
 
