@@ -63,9 +63,9 @@ class PrintController extends Controller
     // Load the view and pass the data
     $pdf = PDF::loadView('content.weight-bridge.print.slip', $data);
 
-    $defaultPaperHeight = 223;
-    if (count($spbDetails) >= 1) {
-      $paperHeight = ((count($spbDetails) - 6) * 30) + 10 + $defaultPaperHeight;
+    $defaultPaperHeight = 243;
+    if (count($spbDetails) > 1) {
+      $paperHeight = ((count($spbDetails) - 1) * 30) + 10 + $defaultPaperHeight;
     } else {
       $paperHeight = $defaultPaperHeight;
     }
