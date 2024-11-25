@@ -28,7 +28,7 @@
         .table th,
         .table td {
             padding: 2px;
-            border: 0.2px solid black;
+            border: 1px solid black;
             text-align: left;
         }
 
