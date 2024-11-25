@@ -58,91 +58,40 @@
         <p class="doc-name">SLIP TIMBANGAN</p>
     </div>
 
-    <table class="table">
-        <tr>
-            <td>Doc No:</td>
-            <td>{{ $slip_no }}</td>
-            <td>Date:</td>
-            <td>{{ date('d-m-Y', strtotime($weight_in_date)) }}</td>
-        </tr>
-        <tr>
-            <td>No Polisi / Transporter:</td>
-            <td colspan="3">{{ $vehicle_no }} / {{ $transporter_name }}</td>
-        </tr>
-        <tr>
-            <td>Jenis Kendaraan:</td>
-            <td colspan="3">{{ $vehicle_type }}</td>
-        </tr>
-        <tr>
-            <td>Jenis Muatan:</td>
-            <td colspan="3">{{ ($weight_type == 'rm' ? 'Raw Material' : 'Finish Good') }}</td>
-        </tr>
-        <tr>
-            <td>Keterangan:</td>
-            <td colspan="3">{{ $remark }}</td>
-        </tr>
-    </table>
+    <pre style="font-family: monospace; font-size: 6px; line-height: 1.2;">
+-------------------------------------------------------   
+| No.Doc     : {{ $slip_no }}      Date: {{ date('d-m-Y', strtotime($weight_in_date)) }}     
+| No Polisi  : {{ $vehicle_no }}                               
+| Transporter: {{ $transporter_name }}                       
+------------------------------------------------------- 
+| Jenis Kendaraan: {{ $vehicle_type }}                      
+| Jenis Muatan   : {{ ($weight_type == 'rm' ? 'Raw Material' : 'Finish Good') }}                      
+| Keterangan     : {{$remark}}                      
+------------------------------------------------------- 
+| Masuk  (KG)    : {{$weight_in}} Kg  Time In: {{ $weight_in_time }}
+| Keluar (KG)    : {{$weight_out}} Kg  Date Out: {{ date('d-m-Y', strtotime($weight_out_date)) }}
+| Netto  (KG)    : {{$weight_netto}} Kg  Time Out: {{ $weight_out_time }}
+------------------------------------------------------- 
+Petugas Timbangan                   Pengemudi
 
-    <table class="table">
-        <tr>
-            <td style="width: 40px;">Masuk (KG) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</td>
-            <td style="width: 15px;">{{ $weight_in }}</td>
-            <td style="width: 20px;">Time In:</td>
-            <td style="width: 25px;">{{ $weight_in_time }}</td>
-        </tr>
-        <tr>
-            <td style="width: 40px;">Keluar (KG) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</td>
-            <td style="width: 15px;">{{ $weight_out }}</td>
-            <td style="width: 20px;">Date Out:</td>
-            <td style="width: 25px;">{{ date('d-m-Y', strtotime($weight_out_date)) }}</td>
-        </tr>
-        <tr>
-            <td style="width: 40px;">Netto (KG) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</td>
-            <td style="width: 15px;">{{ $weight_netto }}</td>
-            <td style="width: 20px;">Time Out:</td>
-            <td style="width: 25px;">{{ $weight_out_time }}</td>
-        </tr>
-    </table>
 
-    <table style="width: 100%;font-size:5px;">
-        <tr>
-            <td style="width: 70%;">Petugas Timbangan</td>
-            <td>Pengemudi</td>
-        </tr>
-    </table>
 
-    @if($weight_type == 'fg' and $status == 'FG-OUT')
-    <table style="width: 100%; font-size:5px;">
-        <tr>
-            <td style="width: 70%;">&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-        <tr>
-            <td>DO/SPB No:</td>
-            <td>Dist Weight (KG)</td>
-        </tr>
-        @foreach($spb_details as $spbDetail)
-        <tr>
-            <td>{{ $spbDetail->LegalNumber }}</td>
-            <td>{{ $spbDetail->TotalNetWeight }}</td>
-        </tr>
-        @endforeach
-    </table>
-    <table style="width: 100%; font-size:5px;">
-        <tr>
-            <td style="width: 70%;">&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-        <tr>
-            <td>Total</td>
-            <td>{{$total_weight}}</td>
-        </tr>
-    </table>
-    @endif
+
+
+
+@if($weight_type == 'fg' and $status == 'FG-OUT')
+DO/SPB No:                   Dist Weight (KG)
+--------------------------   -------------------------
+@foreach($spb_details as $spbDetail)
+{{ $spbDetail->LegalNumber }}             {{ $spbDetail->TotalNetWeight }}
+@endforeach
+
+                             -------------------------
+               Total Weight: {{ $total_weight }}
+@endif
+</pre>
+
+
 </body>
 
 </html>
