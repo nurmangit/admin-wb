@@ -53,25 +53,24 @@
 
 <body>
 
-    <div class="header">
-        <p class="title">PT. KERAMINDO MEGAH PERKASA </br> TANGERANG</p>
-        <p class="doc-name">SLIP TIMBANGAN</p>
-    </div>
-
+    <pre style="font-family: monospace; font-size: 6px; line-height: 1.2;" class="header">
+PT. KERAMINDO MEGAH PERKASA </br>TANGERANG
+    </pre>
     <pre style="font-family: monospace; font-size: 6px; line-height: 1.2;">
-----------------------------------------   
-No.Doc     :{{ $slip_no }} Date:{{ date('d-m-Y', strtotime($weight_in_date)) }}     
-No Polisi  :{{ $vehicle_no }}                               
-Transporter:{{ $transporter_name }}                       
+SLIP TIMBANGAN
 ----------------------------------------
-Jenis Kendaraan: {{ $vehicle_type }}                      
-Jenis Muatan   : {{ ($weight_type == 'rm' ? 'Raw Material' : 'Finish Good') }}                      
-Keterangan     : {{$remark}}                      
----------------------------------------- 
+No.Doc     :{{ $slip_no }} Date:{{ date('d-m-Y', strtotime($weight_in_date)) }}
+No Polisi  :{{ $vehicle_no }}
+Transporter:{{ $transporter_name }}
+----------------------------------------
+Jenis Kendaraan: {{ $vehicle_type }}
+Jenis Muatan   : {{ ($weight_type == 'rm' ? 'Raw Material' : 'Finish Good') }}
+Keterangan     : {{$remark}}
+----------------------------------------
 Masuk (KG):{{$weight_in}}Kg Time In:{{ $weight_in_time }}
 Keluar(KG):{{$weight_out}}Kg Date Out:{{ date('d-m-Y', strtotime($weight_out_date)) }}
 Netto (KG):{{$weight_netto}}Kg Time Out:{{ $weight_out_time }}
----------------------------------------- 
+----------------------------------------
 Petugas Timbangan              Pengemudi
 
 
