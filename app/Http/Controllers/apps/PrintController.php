@@ -65,7 +65,7 @@ class PrintController extends Controller
 
     $defaultPaperHeight = 223;
     if (count($spbDetails) > 1) {
-      $paperHeight = ((count($spbDetails) - 6) * 20) + 10 + $defaultPaperHeight;
+      $paperHeight = ((count($spbDetails) - 6) * 30) + 10 + $defaultPaperHeight;
     } else {
       $paperHeight = $defaultPaperHeight;
     }
