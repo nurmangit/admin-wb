@@ -59,20 +59,20 @@
     </div>
 
     <pre style="font-family: monospace; font-size: 6px; line-height: 1.2;">
--------------------------------------------------------   
-| No.Doc     : {{ $slip_no }}      Date: {{ date('d-m-Y', strtotime($weight_in_date)) }}     
-| No Polisi  : {{ $vehicle_no }}                               
-| Transporter: {{ $transporter_name }}                       
-------------------------------------------------------- 
-| Jenis Kendaraan: {{ $vehicle_type }}                      
-| Jenis Muatan   : {{ ($weight_type == 'rm' ? 'Raw Material' : 'Finish Good') }}                      
-| Keterangan     : {{$remark}}                      
-------------------------------------------------------- 
-| Masuk  (KG)    : {{$weight_in}} Kg  Time In: {{ $weight_in_time }}
-| Keluar (KG)    : {{$weight_out}} Kg  Date Out: {{ date('d-m-Y', strtotime($weight_out_date)) }}
-| Netto  (KG)    : {{$weight_netto}} Kg  Time Out: {{ $weight_out_time }}
-------------------------------------------------------- 
-Petugas Timbangan                   Pengemudi
+----------------------------------------   
+|No.Doc     :{{ $slip_no }} Date:{{ date('d-m-Y', strtotime($weight_in_date)) }}     
+|No Polisi  :{{ $vehicle_no }}                               
+|Transporter:{{ $transporter_name }}                       
+----------------------------------------
+|Jenis Kendaraan: {{ $vehicle_type }}                      
+|Jenis Muatan   : {{ ($weight_type == 'rm' ? 'Raw Material' : 'Finish Good') }}                      
+|Keterangan     : {{$remark}}                      
+---------------------------------------- 
+|Masuk (KG):{{$weight_in}}Kg Time In:{{ $weight_in_time }}
+|Keluar(KG):{{$weight_out}}Kg Date Out:{{ date('d-m-Y', strtotime($weight_out_date)) }}
+|Netto (KG):{{$weight_netto}}Kg Time Out:{{ $weight_out_time }}
+---------------------------------------- 
+Petugas Timbangan              Pengemudi
 
 
 
@@ -80,14 +80,14 @@ Petugas Timbangan                   Pengemudi
 
 
 @if($weight_type == 'fg' and $status == 'FG-OUT')
-DO/SPB No:                   Dist Weight (KG)
---------------------------   -------------------------
+DO/SPB No:           Dist Weight (KG)
+------------------   -------------------
 @foreach($spb_details as $spbDetail)
-{{ $spbDetail->LegalNumber }}             {{ $spbDetail->TotalNetWeight }}
+{{ $spbDetail->LegalNumber }}     {{ $spbDetail->TotalNetWeight }}
 @endforeach
 
-                             -------------------------
-               Total Weight: {{ $total_weight }}
+                     -------------------
+       Total Weight: {{ $total_weight }}
 @endif
 </pre>
 
