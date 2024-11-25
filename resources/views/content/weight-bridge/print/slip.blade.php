@@ -70,11 +70,11 @@ Keluar(KG):{{$weight_out}}Kg Date Out:{{ date('d-m-Y', strtotime($weight_out_dat
 Netto (KG):{{$weight_netto}}Kg Time Out:{{ $weight_out_time }}
 ----------------------------------------
 Petugas Timbangan              Pengemudi
-<br>
-<br>
+&nbsp;
+&nbsp;
 (               )      (               )
-<br>
-<br>
+&nbsp;
+&nbsp;
 @if($weight_type == 'fg' and $status == 'FG-OUT')
 DO/SPB No:           Dist Weight (KG)
 ------------------   -------------------
