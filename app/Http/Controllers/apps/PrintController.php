@@ -70,7 +70,8 @@ class PrintController extends Controller
       $paperHeight = $defaultPaperHeight;
     }
 
-    $pdf->setPaper([0, 0, 226.77, $paperHeight]);
+    $paperWidth = 75 * 2.834645669; // Convert 75mm to points
+    $pdf->setPaper([0, 0, $paperWidth, $paperHeight]);
 
     // Output the PDF for download or inline view
     return $pdf->stream("slip_$slip->slip_no.pdf"); // or ->download('weighbridge_slip.pdf') for direct download
