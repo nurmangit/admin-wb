@@ -53,8 +53,8 @@
 
 <body>
     <pre style="font-family: monospace; font-size: 6px; line-height: 1.2;">
-PT. KERAMINDO MEGAH PERKASA </br>TANGERANG
-</br>
+PT. KERAMINDO MEGAH PERKASA <br>TANGERANG
+<br>
 SLIP TIMBANGAN
 ----------------------------------------
 No.Doc     :{{ $slip_no }} Date:{{ date('d-m-Y', strtotime($weight_in_date)) }}
@@ -70,11 +70,10 @@ Keluar(KG):{{$weight_out}}Kg Date Out:{{ date('d-m-Y', strtotime($weight_out_dat
 Netto (KG):{{$weight_netto}}Kg Time Out:{{ $weight_out_time }}
 ----------------------------------------
 Petugas Timbangan              Pengemudi
-</br>
-</br>
-</br>
-</br>
-</br>
+<br>
+<br>
+<br>
+<br>
 @if($weight_type == 'fg' and $status == 'FG-OUT')
 DO/SPB No:           Dist Weight (KG)
 ------------------   -------------------
@@ -86,8 +85,6 @@ DO/SPB No:           Dist Weight (KG)
        Total Weight: {{ $total_weight }}
 @endif
 </pre>
-
-
 </body>
 
 </html>
