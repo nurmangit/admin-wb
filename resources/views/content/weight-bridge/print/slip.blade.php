@@ -8,20 +8,20 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            font-size: 8px;
+            font-size: 6px;
             /* Set the base font size */
         }
 
         .header,
         .footer {
-            font-size: 8px;
+            font-size: 6px;
             /* Smaller text for header/footer */
         }
 
         .table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 7px;
+            font-size: 5px;
             /* Smaller table text */
         }
 
@@ -39,7 +39,7 @@
         }
 
         .doc-name {
-            font-size: 8px;
+            font-size: 6px;
             font-weight: bolder;
             /* Slightly larger for the title */
         }
@@ -104,7 +104,7 @@
         </tr>
     </table>
 
-    <table style="width: 100%;font-size:7px;">
+    <table style="width: 100%;font-size:5px;">
         <tr>
             <td style="width: 70%;">Petugas Timbangan</td>
             <td>Pengemudi</td>
@@ -112,7 +112,7 @@
     </table>
 
     @if($weight_type == 'fg' and $status == 'FG-OUT')
-    <table style="width: 100%; font-size:7px;">
+    <table style="width: 100%; font-size:5px;">
         <tr>
             <td style="width: 70%;">&nbsp;</td>
             <td>&nbsp;</td>
@@ -132,7 +132,7 @@
         </tr>
         @endforeach
     </table>
-    <table style="width: 100%; font-size:7px;">
+    <table style="width: 100%; font-size:5px;">
         <tr>
             <td style="width: 70%;">&nbsp;</td>
             <td>&nbsp;</td>
