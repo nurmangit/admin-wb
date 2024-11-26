@@ -29,7 +29,7 @@
           <th>Name</th>
           <th>Code</th>
           <th>Tolerance</th>
-          <th>Capacity</th>
+          {{-- <th>Capacity</th> --}}
           <th>Actions</th>
         </tr>
       </thead>
@@ -39,7 +39,7 @@
           <td>{{ $vehicle_type->name }}</td>
           <td>{{ $vehicle_type->code }}</td>
           <td>{{ $vehicle_type->tolerance }}</td>
-          <td>{{ $vehicle_type->weight_standart }}</td>
+          {{-- <td>{{ $vehicle_type->weight_standart }}</td> --}}
           <td>
             <div class="d-flex">
               @can('edit vehicle_type')

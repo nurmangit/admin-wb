@@ -85,7 +85,7 @@
                 <input type="number" class="form-control" id="weight-netto" placeholder="Enter weight netto" disabled />
               </div>
               <!-- Weight Standart -->
-              <div class="mb-3">
+              <div class="mb-3 d-none">
                 <label class="form-label" for="weight-standart">Capacity</label>
                 <input type="number" class="form-control" id="weight-standart" placeholder="Enter weight standart" disabled />
               </div>
