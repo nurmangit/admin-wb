@@ -53,15 +53,19 @@
 
 <body>
     <pre style="font-family: monospace; font-size: 6px; line-height: 1.2;">
-PT. KERAMINDO MEGAH PERKASA <br>TANGERANG
+PT. KERAMINDO MEGAH PERTIWI <br>TANGERANG
 <br>
 SLIP TIMBANGAN
 ----------------------------------------
 No.Doc     :{{ $slip_no }} Date:{{ date('d-m-Y', strtotime($weight_in_date)) }}
 No Polisi  :{{ $vehicle_no }}
+@if($weight_type == "fg")
 Transporter:{{ $transporter_name }}
 ----------------------------------------
 Jenis Kendaraan: {{ $vehicle_type }}
+@else
+----------------------------------------
+@endif
 Jenis Muatan   : {{ ($weight_type == 'rm' ? 'Raw Material' : 'Finish Good') }}
 Keterangan     : {{$remark}}
 ----------------------------------------
