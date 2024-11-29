@@ -346,16 +346,41 @@ class WeightBridgeController extends Controller
             $weightBridge->difference = $difference;
             $weightBridge->transporter_name = $vehicle->transporter?->name ?? '';
             $weightBridge->update();
-            if ($difference > $tolerance) {
-                $weightBridgeApproval = WeightBridgeApproval::create([
+
+            // New logic for approval
+            // Standard Weight Per Tile
+            $stdWeightPerTile = 12;
+
+            $qtyTileDo = $weightStandart / $stdWeightPerTile;
+            $anomaly = $weightNetto / $weightStandart; // C
+
+            $stdWeightTiles = $stdWeightPerTile * $qtyTileDo;
+
+            $distWeight = $anomaly * $stdWeightTiles;
+
+            $avgDistWeight = $distWeight / $qtyTileDo;
+
+            if ($avgDistWeight != $stdWeightPerTile) {
+                WeightBridgeApproval::create([
                     'weight_bridge_uuid' => $weightBridge->uuid,
                 ]);
+
                 $weightBridge->status = 'WAITING FOR APPROVAL';
                 $weightBridge->update();
                 return redirect()
                     ->route('transaction.weight-bridge.finish-good')
                     ->with('warning', 'Weight OUT need approval.');
             }
+            // if ($difference > $tolerance) {
+            //     $weightBridgeApproval = WeightBridgeApproval::create([
+            //         'weight_bridge_uuid' => $weightBridge->uuid,
+            //     ]);
+            //     $weightBridge->status = 'WAITING FOR APPROVAL';
+            //     $weightBridge->update();
+            //     return redirect()
+            //         ->route('transaction.weight-bridge.finish-good')
+            //         ->with('warning', 'Weight OUT need approval.');
+            // }
         }
 
         if ($validated['weighing_type'] == 'rm') {
