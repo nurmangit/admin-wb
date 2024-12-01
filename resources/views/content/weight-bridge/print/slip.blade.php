@@ -82,12 +82,17 @@ Petugas Timbangan              Pengemudi
 @if($weight_type == 'fg' and $status == 'FG-OUT')
 DO/SPB No:           Dist Weight (KG)
 ------------------   -------------------
+@php
+  $totalWeight = 0;
+@endphp
 @foreach($spb_details as $spbDetail)
-{{ $spbDetail->LegalNumber }}     {{ $spbDetail->TotalNetWeight }}
+{{ $spbDetail->LegalNumber }}     {{ $spbDetail->TotalNetWeight * $spbDetail->NetWeight }}
+@php
+  $totalWeight += $spbDetail->TotalNetWeight * $spbDetail->NetWeight;
+@endphp
 @endforeach
-
                      -------------------
-       Total Weight: {{ $total_weight }}
+       Total Weight: {{ $totalWeight }}
 @endif
 
 

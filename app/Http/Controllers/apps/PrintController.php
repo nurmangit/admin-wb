@@ -16,24 +16,31 @@ class PrintController extends Controller
 {
   public function generateSlipPDF($uuid)
   {
+    // Declare @SlipNo NVARCHAR(MAX) = 'FG2411080006'
+
+    // select NoDokumen_c, LegalNumber, T2.OrderLine, T3.PartNum, T3.NetWeight from ShipHead T1
+    // left join ShipDtl T2 ON T1.Company = T2.Company AND T1.PackNum = T2.PackNum
+    // left join Part T3 On T2.Company = T3.Company AND T2.PartNum = T3.PartNum
+    // where NoDokumen_c = @SlipNo
     // Retrieve the data for the slip (replace with actual query)
     $slip = WeightBridge::findOrFail($uuid);
 
     $spbDetails = DB::select("
-    SELECT T1.LegalNumber, T2.TotalNetWeight
+    SELECT T1.LegalNumber, T2.TotalNetWeight, T2.OrderLine, T3.PartNum, T3.NetWeight
     FROM ShipHead AS T1
     LEFT JOIN ShipDtl AS T2 ON T1.PackNum = T2.PackNum AND T1.Company = T2.Company
+    LEFT JOIN Part T3 On T2.Company = T3.Company AND T2.PartNum = T3.PartNum
     WHERE T1.NoDokumen_c = :slipNo
 ", ['slipNo' => $slip->slip_no]);
 
-    $totalWeight = DB::select("
-    SELECT SUM(T2.TotalNetWeight) AS TotalWeight
-    FROM ShipHead AS T1
-    LEFT JOIN ShipDtl AS T2 ON T1.PackNum = T2.PackNum AND T1.Company = T2.Company
-    WHERE T1.NoDokumen_c = :slipNo
-    ", ['slipNo' => $slip->slip_no]);
+    // $totalWeight = DB::select("
+    // SELECT SUM(T2.TotalNetWeight) AS TotalWeight
+    // FROM ShipHead AS T1
+    // LEFT JOIN ShipDtl AS T2 ON T1.PackNum = T2.PackNum AND T1.Company = T2.Company
+    // WHERE T1.NoDokumen_c = :slipNo
+    // ", ['slipNo' => $slip->slip_no]);
 
-    $totalWeightValue = $totalWeight[0]->TotalWeight ?? 0;
+    // $totalWeightValue = $totalWeight[0]->TotalWeight ?? 0;
     // Define data to pass to the Blade view
     $data = [
       'slip_no' => $slip->slip_no,
@@ -57,7 +64,7 @@ class PrintController extends Controller
       'actual_weight' => $slip->actual_weight,
       'status' => $slip->status,
       'spb_details' => $spbDetails,
-      'total_weight' => $totalWeightValue
+      // 'total_weight' => $totalWeightValue
     ];
 
     // Load the view and pass the data
