@@ -175,7 +175,6 @@ class WeightBridgeController extends Controller
             $device->save();
 
             DB::commit();
-
         } catch (\Throwable $th) {
             DB::rollBack();
 
@@ -323,7 +322,6 @@ class WeightBridgeController extends Controller
             $weightBridge->save();
 
             DB::commit();
-
         } catch (\Throwable $th) {
             DB::rollBack();
 
@@ -342,7 +340,13 @@ class WeightBridgeController extends Controller
             $weightStandart = $weightBridge->vehicle->vehicle_type->weight_standart;
             $weightNetto = $validated['weight_out'] - $weightBridge->weight_in;
             $tolerance = $weightBridge->vehicle->vehicle_type->tolerance;
-            $difference = abs($weightNetto - $weightStandart);
+            $totalWeight = DB::select("
+            SELECT SUM(T2.TotalNetWeight) AS TotalWeight 
+            FROM ShipHead AS T1
+            LEFT JOIN ShipDtl AS T2 ON T1.PackNum = T2.PackNum AND T1.Company = T2.Company
+            WHERE T1.NoDokumen_c = :slipNo
+        ", ['slipNo' => $weightBridge->slip_no]);
+            $difference = abs($weightNetto - ($totalWeight[0]->TotalWeight ?? 0));
             $weightBridge->difference = $difference;
             $weightBridge->transporter_name = $vehicle->transporter?->name ?? '';
             $weightBridge->update();
