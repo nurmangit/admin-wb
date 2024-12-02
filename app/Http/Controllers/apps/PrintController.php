@@ -26,19 +26,24 @@ class PrintController extends Controller
     $slip = WeightBridge::findOrFail($uuid);
 
     $spbDetails = DB::select("
-    SELECT T1.LegalNumber, T2.TotalNetWeight, T2.OrderLine, T3.PartNum, T3.NetWeight
+    SELECT T1.LegalNumber, T2.TotalNetWeight, T2.OrderLine, T3.PartNum, T3.NetWeight as beratStandarPergenteng
     FROM ShipHead AS T1
     LEFT JOIN ShipDtl AS T2 ON T1.PackNum = T2.PackNum AND T1.Company = T2.Company
     LEFT JOIN Part T3 On T2.Company = T3.Company AND T2.PartNum = T3.PartNum
     WHERE T1.NoDokumen_c = :slipNo
 ", ['slipNo' => $slip->slip_no]);
 
-    // $totalWeight = DB::select("
-    // SELECT SUM(T2.TotalNetWeight) AS TotalWeight
-    // FROM ShipHead AS T1
-    // LEFT JOIN ShipDtl AS T2 ON T1.PackNum = T2.PackNum AND T1.Company = T2.Company
-    // WHERE T1.NoDokumen_c = :slipNo
-    // ", ['slipNo' => $slip->slip_no]);
+    $totalWeight = DB::select("
+    SELECT SUM(T2.TotalNetWeight) AS beratStandart
+    FROM ShipHead AS T1
+    LEFT JOIN ShipDtl AS T2 ON T1.PackNum = T2.PackNum AND T1.Company = T2.Company
+    WHERE T1.NoDokumen_c = :slipNo
+    ", ['slipNo' => $slip->slip_no]);
+
+
+    $totalBeratStandart = round($slip->weight_netto / $totalWeight[0]->beratStandart, 4);
+
+
 
     // $totalWeightValue = $totalWeight[0]->TotalWeight ?? 0;
     // Define data to pass to the Blade view
@@ -65,6 +70,7 @@ class PrintController extends Controller
       'status' => $slip->status,
       'spb_details' => $spbDetails,
       // 'total_weight' => $totalWeightValue
+      'total_berat_standart' => $totalBeratStandart
     ];
 
     // Load the view and pass the data
