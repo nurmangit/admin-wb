@@ -41,9 +41,10 @@ class PrintController extends Controller
     ", ['slipNo' => $slip->slip_no]);
 
 
-    $totalBeratStandart = round($slip->weight_netto / $totalWeight[0]->beratStandart, 4);
-
-
+    $totalBeratStandart = 0;
+    if ($slip->weight_type == 'fg') {
+      $totalBeratStandart = round($slip->weight_netto / $totalWeight[0]->beratStandart, 4);
+    }
 
     // $totalWeightValue = $totalWeight[0]->TotalWeight ?? 0;
     // Define data to pass to the Blade view
