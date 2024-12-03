@@ -39,9 +39,9 @@
             @enderror
           </div>
 
-          <label class="form-label" for="weight_standart">Capacity</label>
-          <div class="input-group mb-3">
-            <input type="number" min="1" class="form-control" id="weight_standart" name="weight_standart" placeholder="Tolerance" aria-describedby="weight_standart-suffix" required value="{{ old('weight_standart') }}" />
+          {{-- <label class="form-label" for="weight_standart">Capacity</label> --}}
+          <div class="input-group mb-3 d-none">
+            <input type="number" min="0" class="form-control" id="weight_standart" name="weight_standart" placeholder="Tolerance" aria-describedby="weight_standart-suffix" value="0" />
             <span class="input-group-text" id="weight_standart-suffix">KG</span>
             @error('weight_standart')
             <div class="invalid-feedback">{{ $message }}</div>
