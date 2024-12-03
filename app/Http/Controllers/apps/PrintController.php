@@ -40,10 +40,11 @@ class PrintController extends Controller
     WHERE T1.NoDokumen_c = :slipNo
     ", ['slipNo' => $slip->slip_no]);
 
-
     $totalBeratStandart = 0;
     if ($slip->weight_type == 'fg') {
-      $totalBeratStandart = round($slip->weight_netto / $totalWeight[0]->beratStandart, 4);
+        if ($totalWeight[0]->beratStandart != 0) {
+            $totalBeratStandart = round($slip->weight_netto / $totalWeight[0]->beratStandart, 4);
+        }
     }
 
     // $totalWeightValue = $totalWeight[0]->TotalWeight ?? 0;
