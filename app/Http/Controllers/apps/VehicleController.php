@@ -161,7 +161,7 @@ class VehicleController extends Controller
       $slipNo = $weightBridge->slip_no;
 
       $totalWeight = DB::select("
-        SELECT SUM(T2.TotalNetWeight) AS TotalWeight 
+        SELECT SUM(T2.TotalNetWeight) AS TotalWeight
         FROM ShipHead AS T1
         LEFT JOIN ShipDtl AS T2 ON T1.PackNum = T2.PackNum AND T1.Company = T2.Company
         WHERE T1.NoDokumen_c = :slipNo

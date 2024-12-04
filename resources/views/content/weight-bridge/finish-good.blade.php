@@ -270,10 +270,10 @@
       var weightIn = $('#weight-in').val();
       var tolerance = $('#tolerance').val();
       var weightOut = $(this).val();
-      var weightStandart = $('#weight-standart').val();
+      var weightStandartEpicor = $('#weight-standart-epicor').val();
       if (weightOut - weightIn >= 0) {
         $('#weight-netto').val(weightOut - weightIn);
-        $('#difference').val(Math.abs((weightOut - weightIn) - weightStandart));
+        $('#difference').val(Math.abs((weightOut - weightIn) - weightStandartEpicor));
         var diff = $('#difference').val();
         if (Number(diff) > Number(tolerance)) {
           $('#difference').addClass('is-invalid');
