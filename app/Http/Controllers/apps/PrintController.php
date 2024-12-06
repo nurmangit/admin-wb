@@ -42,9 +42,9 @@ class PrintController extends Controller
 
     $totalBeratStandart = 0;
     if ($slip->weight_type == 'fg') {
-        if ($totalWeight[0]->beratStandart != 0) {
-            $totalBeratStandart = round($slip->weight_netto / $totalWeight[0]->beratStandart, 4);
-        }
+      if ($totalWeight[0]->beratStandart != 0) {
+        $totalBeratStandart = round($slip->weight_netto / $totalWeight[0]->beratStandart, 6);
+      }
     }
 
     // $totalWeightValue = $totalWeight[0]->TotalWeight ?? 0;
