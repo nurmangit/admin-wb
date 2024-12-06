@@ -92,7 +92,7 @@ DO/SPB No:           Dist Weight (KG)
 @endphp
 @endforeach
                      -------------------
-       Total Weight: {{ (int)$totalWeight }}
+       Total Weight: {{ round($totalWeight) }}
 @endif
 
 
