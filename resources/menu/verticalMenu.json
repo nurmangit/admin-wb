@@ -19,30 +19,6 @@
       "slug": "master-data",
       "submenu": [
         {
-          "url": "master-data/vehicle",
-          "name": "Vehicle",
-          "slug": "master-data.vehicle.list",
-          "permission": "view vehicle"
-        },
-        {
-          "url": "master-data/vehicle-type",
-          "name": "Vehicle Type",
-          "slug": "master-data.vehicle-type.list",
-          "permission": "view vehicle_type"
-        },
-        {
-          "url": "master-data/transporter",
-          "name": "Transporter",
-          "slug": "master-data.transporter.list",
-          "permission": "view transporter"
-        },
-        {
-          "url": "master-data/transporter-rate",
-          "name": "Transporter Rate",
-          "slug": "master-data.transporter-rate.list",
-          "permission": "view transporter_rate"
-        },
-        {
           "url": "master-data/region",
           "name": "Region",
           "slug": "master-data.region.list",
@@ -53,6 +29,30 @@
           "name": "Area",
           "slug": "master-data.area.list",
           "permission": "view area"
+        },
+        {
+          "url": "master-data/transporter",
+          "name": "Transporter",
+          "slug": "master-data.transporter.list",
+          "permission": "view transporter"
+        },
+        {
+          "url": "master-data/vehicle-type",
+          "name": "Vehicle Type",
+          "slug": "master-data.vehicle-type.list",
+          "permission": "view vehicle_type"
+        },
+        {
+          "url": "master-data/vehicle",
+          "name": "Vehicle",
+          "slug": "master-data.vehicle.list",
+          "permission": "view vehicle"
+        },
+        {
+          "url": "master-data/transporter-rate",
+          "name": "Transporter Rate",
+          "slug": "master-data.transporter-rate.list",
+          "permission": "view transporter_rate"
         }
       ]
     },

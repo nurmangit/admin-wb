@@ -197,6 +197,14 @@ class ExportImportController extends Controller
                             if (str_contains($keyData, 'password')) {
                                 $tempData[$keyData]  = bcrypt($valData);
                             }
+
+                            if (str_contains($keyData, 'start_date')) {
+                                $tempData[$keyData] = \Carbon\Carbon::createFromFormat('d-m-Y', $valData)->format('Y-m-d');
+                            }
+
+                            if (str_contains($keyData, 'end_date')) {
+                                $tempData[$keyData] = \Carbon\Carbon::createFromFormat('d-m-Y', $valData)->format('Y-m-d');
+                            }
                         }
 
                         $requestClass = "App\Http\Requests\\" . $table . 'StoreRequest';
