@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\apps;
 
+use App\Models\Transporter;
+use Illuminate\Http\Request;
+use App\Models\VehicleTransporter;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AreaStoreRequest;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
+use Symfony\Component\Mailer\Transport;
 
 class ExportImportController extends Controller
 {
@@ -30,6 +33,10 @@ class ExportImportController extends Controller
 
         // Get the columns dynamically from the model's attributes
         $columns = (new ("App\\Models\\$table"))->getFillable(); // Assuming you're using fillable attributes
+
+        if ($table === 'Vehicle') {
+            $columns[] = 'transporter_multiple_code';
+        }
 
         $headerColumns = $columns;
 
@@ -66,6 +73,20 @@ class ExportImportController extends Controller
         $csvData = [];
         foreach ($data as $row) {
             $tempData = $row->only($columns);
+            if ($table === 'Vehicle') {
+                $transporters = Transporter::get();
+                $vehicleTransporters = VehicleTransporter::where('Key3', $row->uuid)->get();
+
+                $transporterCodes = [];
+                foreach ($vehicleTransporters as $vehicleTransporter) {
+                    $transporter = $transporters->where('uuid', $vehicleTransporter->transporter_uuid)->first();
+                    if ($transporter) {
+                        $transporterCodes[] = $transporter->ShortChar01;
+                    }
+                }
+
+                $tempData['transporter_multiple_code'] = implode(',', $transporterCodes);
+            }
             $tempDataUuidToRemove = [];
             foreach ($columns as $column) {
                 if (str_contains($column, '_uuid')) {
@@ -125,7 +146,9 @@ class ExportImportController extends Controller
         $modelClass = "App\\Models\\$table";
         $model = new $modelClass();
         $fillableColumn = $model->getFillable();
-
+        if ($modelClass === 'App\Models\Vehicle') {
+            $fillableColumn[] = 'transporter_multiple_code';
+        }
         $file = $request->file('file');
         $handle = fopen($file->getPathname(), 'r');
 
@@ -189,7 +212,26 @@ class ExportImportController extends Controller
                             continue;
                         }
 
-                        $modelClass::create($tempData);
+                        $modelV = $modelClass::create($tempData);
+
+                        if (array_key_exists('transporter_multiple_code', $tempData)) {
+                          $transporterCodes = explode(',', $tempData['transporter_multiple_code']);
+                          $transporterVehicles = [];
+
+                          foreach ($transporterCodes as $transporter) {
+                              $transporterVehicles[] = [
+                                  'vehicle_uuid' => $modelV->uuid,
+                                  'transporter_uuid' => Transporter::where('ShortChar01', $transporter)->firstOrFail()->uuid,
+                              ];
+                          }
+
+                          // Simpan data ke tabel `VehicleTransporter`
+                          foreach ($transporterVehicles as $transporterVehicle) {
+                              VehicleTransporter::create($transporterVehicle);
+                          }
+
+                          unset($tempData['transporter_multiple_code']);
+                      }
                         $processedRows++;
                     } else {
                         throw new \Exception("Mismatch between columns and values.");
@@ -239,6 +281,11 @@ class ExportImportController extends Controller
 
         // Get the columns dynamically from the model's attributes
         $columns = (new ("App\\Models\\$table"))->getFillable();
+
+        //add transporter_multiple_code
+        if ($table === 'Vehicle') {
+            $columns[] = 'transporter_multiple_code';
+        }
 
         $csvHeaders = [
             'Content-Type' => 'text/csv',

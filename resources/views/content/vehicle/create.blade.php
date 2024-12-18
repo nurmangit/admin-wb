@@ -27,7 +27,7 @@
             </div>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-3 d-none">
             <label class="form-label" for="status">Status <span class="text-danger">*</span></label>
             <select class="form-select @error('status') is-invalid @enderror" id="status" name="status" required>
               <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active</option>
@@ -44,6 +44,7 @@
               <option value="">--Select--</option>
               <option value="kuning" {{ old('type') == 'kuning' ? 'selected' : '' }}>Kuning</option>
               <option value="putih" {{ old('type') == 'putih' ? 'selected' : '' }}>Putih</option>
+              <option value="hitam" {{ old('type') == 'hitam' ? 'selected' : '' }}>Hitam</option>
             </select>
             @error('type')
             <div class="invalid-feedback">{{ $message }}</div>

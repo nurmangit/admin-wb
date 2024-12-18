@@ -30,7 +30,7 @@
           </div>
           <div class="mb-3">
             <label class="form-label" for="address">Address</label>
-            <textarea type="text" class="form-control" id="address" name="address" placeholder="Address" required value="{{ old('address') }}" rows="10"></textarea>
+            <textarea type="text" class="form-control" id="address" name="address" placeholder="Address" value="{{ old('address') }}" rows="10"></textarea>
             @error('address')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror

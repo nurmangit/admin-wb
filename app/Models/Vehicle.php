@@ -45,12 +45,11 @@ class Vehicle extends Model
 
 	protected $fillable = [
 		'register_number',
-		'status',
 		'type',
 		'vehicle_type_uuid',
 		'description',
 		'ownership',
-		'transporter_uuid'
+		'transporter_uuid',
 	];
 
 	public function vehicle_type()

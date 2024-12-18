@@ -27,7 +27,7 @@
             </div>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-3 d-none">
             <label class="form-label" for="status">Status <span class="text-danger">*</span></label>
             <select class="form-select @error('status') is-invalid @enderror" id="status" name="status" required>
               <option value="active" {{ $vehicle->status == 'active' ? 'selected' : '' }}>Active</option>
@@ -42,8 +42,9 @@
             <label class="form-label" for="type">Type of Plat <span class="text-danger">*</span></label>
             <select class="form-select @error('type') is-invalid @enderror" id="type" name="type" required>
               <option value="">-- select --</option>
-              <option value="kuning" {{ $vehicle->type == 'kuning' ? 'selected' : '' }}>Kuning</option>
-              <option value="putih" {{ $vehicle->type == 'putih' ? 'selected' : '' }}>Putih</option>
+              <option value="kuning" {{ trim($vehicle->type) == 'kuning' ? 'selected' : '' }}>Kuning</option>
+              <option value="putih" {{ trim($vehicle->type) == 'putih' ? 'selected' : '' }}>Putih</option>
+              <option value="hitam" {{ trim($vehicle->type) == 'hitam' ? 'selected' : '' }}>Hitam</option>
             </select>
             @error('type')
             <div class="invalid-feedback">{{ $message }}</div>

@@ -34,7 +34,7 @@
             <tr>
               <td>{{$raw_material->slip_no}}</td>
               <td>{{$raw_material->vehicle->register_number ?? $raw_material->vehicle_no}}</td>
-              <td>{{$raw_material->arrival_date}}</td>
+              <td>{{ date('d-m-Y H:i:s', strtotime($raw_material?->arrival_date)) }}</td>
               <td><span class="badge text-secondary bg-label-{{($raw_material->status == 'RM-OUT') ? 'success' : ($raw_material->status == 'RM-IN' ? 'warning' : 'danger')}} me-1">{{$raw_material->status}}</span></td>
               <td>
                 <div class="d-flex">
@@ -68,7 +68,7 @@
             <tr>
               <td>{{$finish_good->slip_no}}</td>
               <td>{{$finish_good->vehicle?->register_number ?? '-'}}</td>
-              <td>{{$finish_good?->arrival_date}}</td>
+              <td>{{ date('d-m-Y H:i:s', strtotime($finish_good?->arrival_date)) }}</td>
               <td><span class="badge text-secondary bg-label-{{($finish_good->status == 'FG-OUT') ? 'success' : ($finish_good->status == 'FG-IN' ? 'warning' : 'danger')}} me-1">{{$finish_good->status}}</span></td>
               <td>
                 <div class="d-flex">

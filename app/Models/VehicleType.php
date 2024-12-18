@@ -42,7 +42,6 @@ class VehicleType extends Model
 		'name',
 		'code',
 		'tolerance',
-		'weight_standart',
 	];
 
 	protected $casts = [
