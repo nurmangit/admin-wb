@@ -34,7 +34,7 @@
           <th>Vehicle Type</th>
           <th>Active Transporter</th>
           <th>Other Transporter</th>
-          <th>Status</th>
+          {{-- <th>Status</th> --}}
           <th>Actions</th>
         </tr>
       </thead>
@@ -56,11 +56,11 @@
               {{ Str::limit($transporterNames, 30) }}
             </span>
           </td>
-          <td>
+          {{-- <td>
             <span class="badge bg-label-{{ $vehicle->status == 'active' ? 'primary' : 'secondary' }}">
               {{ ucfirst($vehicle->status) }}
             </span>
-          </td>
+          </td> --}}
           <td>
             <div class="d-flex">
               @can('edit vehicle')
