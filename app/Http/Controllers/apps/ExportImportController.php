@@ -206,7 +206,7 @@ class ExportImportController extends Controller
                                 $tempData[$keyData] = \Carbon\Carbon::createFromFormat('d-m-Y', $valData)->format('Y-m-d');
                             }
 
-                            if (str_contains($keyData, 'type')) {
+                            if ($keyData === 'type') {
                                 $tempData[$keyData] = strtolower($valData);
                             }
                         }
@@ -229,8 +229,10 @@ class ExportImportController extends Controller
                         if (array_key_exists('transporter_multiple_code', $tempData)) {
                           $transporterCodes = explode(',', $tempData['transporter_multiple_code']);
                           $transporterVehicles = [];
-
                           foreach ($transporterCodes as $transporter) {
+                            if (empty($transporter)) {
+                                continue;
+                            }
                             try {
                                 $transporterVehicle = [
                                     'vehicle_uuid' => $modelV->uuid,
@@ -238,7 +240,7 @@ class ExportImportController extends Controller
                                 ];
                                 $transporterVehicles[] = $transporterVehicle;
                             } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-                                throw new \Exception("Transporter with code {$transporter} not found.");
+                                throw new \Exception("Multiple Transporter with code {$transporter} not found.");
                             }
                           }
 
