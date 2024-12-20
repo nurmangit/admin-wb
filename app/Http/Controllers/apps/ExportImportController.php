@@ -205,6 +205,10 @@ class ExportImportController extends Controller
                             if (str_contains($keyData, 'end_date')) {
                                 $tempData[$keyData] = \Carbon\Carbon::createFromFormat('d-m-Y', $valData)->format('Y-m-d');
                             }
+
+                            if (str_contains($keyData, 'type')) {
+                                $tempData[$keyData] = strtolower($valData);
+                            }
                         }
 
                         $requestClass = "App\Http\Requests\\" . $table . 'StoreRequest';
