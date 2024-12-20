@@ -227,13 +227,18 @@ class ExportImportController extends Controller
                           $transporterVehicles = [];
 
                           foreach ($transporterCodes as $transporter) {
-                              $transporterVehicles[] = [
-                                  'vehicle_uuid' => $modelV->uuid,
-                                  'transporter_uuid' => Transporter::where('ShortChar01', $transporter)->firstOrFail()->uuid,
-                              ];
+                            try {
+                                $transporterVehicle = [
+                                    'vehicle_uuid' => $modelV->uuid,
+                                    'transporter_uuid' => Transporter::where('ShortChar01', $transporter)->firstOrFail()->uuid,
+                                ];
+                                $transporterVehicles[] = $transporterVehicle;
+                            } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+                                throw new \Exception("Transporter with code {$transporter} not found.");
+                            }
                           }
 
-                          // Simpan data ke tabel `VehicleTransporter`
+                          // Save the data to the `VehicleTransporter
                           foreach ($transporterVehicles as $transporterVehicle) {
                               VehicleTransporter::create($transporterVehicle);
                           }
