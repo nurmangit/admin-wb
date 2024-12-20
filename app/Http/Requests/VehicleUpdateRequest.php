@@ -25,7 +25,7 @@ class VehicleUpdateRequest extends FormRequest
     {
         return [
             'status' => 'nullable|in:active,inactive,pending',
-            'type' => 'required|string|max:255|without_spaces|in:kuning,hitam,putih',
+            'type' => 'required|string|max:255|in:kuning,hitam,putih',
             'vehicle_type_uuid' => 'required|uuid',
             'description' => 'nullable|string',
             'transporter_uuid' => 'required|uuid',
