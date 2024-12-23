@@ -310,7 +310,6 @@
             weight_type: 'FG'
           },
           success: function(response) {
-            console.log(response.data);
             if (response.status != 'success') {
               $('#vehicle-no').addClass('is-invalid');
               $('#vehicle-type').val('');
