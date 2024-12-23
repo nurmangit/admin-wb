@@ -179,7 +179,7 @@ class VehicleController extends Controller
         'weight_standart' => $vehicle?->vehicle_type->weight_standart,
         'transporter_name' => $vehicle?->transporter?->name,
         'slip_no' => $weightBridge?->slip_no,
-        'weight_in' => $weightBridge?->weight_in,
+        'weight_in' => round($weightBridge?->weight_in),
         'weight_in_date' => $weightBridge?->weight_in_date,
         'remark' => $weightBridge?->remark,
         'status' => $weightBridge?->status,

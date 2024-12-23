@@ -60,7 +60,7 @@
               <!-- Weight In -->
               <div class="mb-3">
                 <label class="form-label" for="weight-in">Weight In</label>
-                <input disabled type="number" class="form-control  @error('weight_in') is-invalid @enderror" value="{{$weight_bridge->weight_in}}" name="weight_in" id="weight-in" placeholder="Enter weight in" />
+                <input disabled type="number" class="form-control  @error('weight_in') is-invalid @enderror" value="{{ round($weight_bridge->weight_in) }}" name="weight_in" id="weight-in" placeholder="Enter weight in" />
                 @error('weight_in')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -68,7 +68,7 @@
               <!-- Weight Out -->
               <div class="mb-3">
                 <label class="form-label" for="weight-out">Weight Out</label>
-                <input disabled type="number" class="form-control" name="weight_out" value="{{$weight_bridge->weight_out}}" id="weight-out" placeholder="Enter weight out" />
+                <input disabled type="number" class="form-control" name="weight_out" value="{{ round($weight_bridge->weight_out) }}" id="weight-out" placeholder="Enter weight out" />
               </div>
 
               <!-- Weight Netto -->
