@@ -84,11 +84,12 @@
                 <label class="form-label" for="weight-netto">Weight Netto</label>
                 <input type="number" class="form-control" id="weight-netto" placeholder="Enter weight netto" disabled />
               </div>
-              <!-- Weight Standart -->
+              <!-- Capacity -->
               <div class="mb-3 d-none">
                 <label class="form-label" for="weight-standart">Capacity</label>
                 <input type="number" class="form-control" id="weight-standart" placeholder="Enter weight standart" disabled />
               </div>
+              <!-- Weight Standart -->
               <div class="mb-3">
                 <label class="form-label" for="weight-standart-epicor">Weight Standart</label>
                 <input type="number" class="form-control" id="weight-standart-epicor" placeholder="Enter weight standart" disabled />
@@ -309,7 +310,7 @@
             weight_type: 'FG'
           },
           success: function(response) {
-
+            console.log(response.data);
             if (response.status != 'success') {
               $('#vehicle-no').addClass('is-invalid');
               $('#vehicle-type').val('');
