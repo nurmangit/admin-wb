@@ -45,6 +45,7 @@ class Vehicle extends Model
 
 	protected $fillable = [
 		'register_number',
+    'status',
 		'type',
 		'vehicle_type_uuid',
 		'description',

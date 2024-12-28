@@ -25,6 +25,7 @@ class VehicleStoreRequest extends FormRequest
     {
         return [
             'register_number' => 'required|max:255|unique:sqlsrv.Ice.UD101A,Character01',
+            'status' => 'required|in:active,inactive,pending',
             'type' => 'required|string|max:255|in:kuning,hitam,putih',
             'vehicle_type_uuid' => 'required|uuid',
             'transporter_uuid' => 'required|uuid',

@@ -29,10 +29,11 @@
 
           <div class="mb-3 d-none">
             <label class="form-label" for="status">Status <span class="text-danger">*</span></label>
-            <select class="form-select @error('status') is-invalid @enderror" id="status" name="status" required>
+            <input type="hidden" name="status" value="active">
+            {{-- <select class="form-select @error('status') is-invalid @enderror" id="status" name="status" required>
               <option value="active" {{ $vehicle->status == 'active' ? 'selected' : '' }}>Active</option>
               <option value="inactive" {{ $vehicle->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
-            </select>
+            </select> --}}
             @error('status')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
