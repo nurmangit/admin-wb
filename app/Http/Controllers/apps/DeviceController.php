@@ -43,6 +43,9 @@ class DeviceController extends Controller
     } else {
       $device->status = 'unstable';
     }
+    if ($weight == 0) {
+      $device->status = 'unstable';
+    }
 
     $device->updated_at = Carbon::now();
     // Save the updated device information
