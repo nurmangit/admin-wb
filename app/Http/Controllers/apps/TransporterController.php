@@ -5,6 +5,7 @@ namespace App\Http\Controllers\apps;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TransporterStoreRequest;
 use App\Http\Requests\TransporterUpdateRequest;
+use App\Models\Area;
 use App\Models\Transporter;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
@@ -23,12 +24,22 @@ class TransporterController extends Controller
 
   public function view()
   {
-    return view('content.transporter.create');
+    return view(
+      'content.transporter.create',
+      [
+        'areas' => Area::get()
+      ]
+    );
   }
 
   public function create()
   {
-    return view('content.transporter.create');
+    return view(
+      'content.transporter.create',
+      [
+        'areas' => Area::get()
+      ]
+    );
   }
 
   public function edit($uuid)
@@ -36,7 +47,8 @@ class TransporterController extends Controller
     return view(
       'content.transporter.edit',
       [
-        "transporter" => Transporter::findOrFail($uuid)
+        "transporter" => Transporter::findOrFail($uuid),
+        'areas' => Area::get()
       ]
     );
   }

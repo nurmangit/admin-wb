@@ -41,12 +41,18 @@ class Transporter extends Model
 	protected $fillable = [
 		'name',
 		'code',
-		'address'
+		'address',
+		'area_uuid'
 	];
 
 	public function vehicles()
 	{
 		return $this->hasMany(Vehicle::class, 'transporter_uuid');
+	}
+
+	public function area()
+	{
+		return $this->hasOne(Area::class, 'Key1', 'Key2');
 	}
 
 	protected static function boot()
@@ -58,6 +64,7 @@ class Transporter extends Model
 			'name' => 'Character01',
 			'code' => 'ShortChar01',
 			'address' => 'Character02',
+			'area_uuid' => 'Key2',
 			'created_at' => 'Date01',
 			'updated_at' => 'Date02',
 			'deleted_at' => 'Date03',

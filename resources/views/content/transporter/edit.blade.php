@@ -38,6 +38,19 @@
             @enderror
           </div>
 
+          <div class="mb-3">
+            <label class="form-label" for="area_uuid">Area <span class="text-danger">*</span></label>
+            <select class="form-select @error('area_uuid') is-invalid @enderror" id="area_uuid" name="area_uuid" required>
+              <option value="">-- select --</option>
+              @foreach ($areas as $area)
+              <option value="{{$area->uuid}}" {{ $transporter->area?->uuid == '$area->uuid' ? 'selected' : '' }}>{{$area->region?->name}} - {{$area->name}}</option>
+              @endforeach
+            </select>
+            @error('area_uuid')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+
           <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">Save</button>
           </div>
