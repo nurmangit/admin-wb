@@ -84,6 +84,12 @@
           "name": "Approval",
           "slug": "transaction.weight-bridge.approval.list",
           "permission": "view approval"
+        },
+        {
+          "url": "transaction/weight-bridge/report",
+          "name": "Transporter Report",
+          "slug": "transaction.weight-bridge.report",
+          "permission": "view report"
         }
       ]
     },

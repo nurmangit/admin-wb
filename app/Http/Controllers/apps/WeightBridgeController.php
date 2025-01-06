@@ -411,6 +411,22 @@ class WeightBridgeController extends Controller
         return view('content.weight-bridge.create');
     }
 
+    public function transporterReport()
+    {
+        $spbDetails = DB::select("
+        SELECT T1.LegalNumber, T2.TotalNetWeight, T2.OrderLine, T3.PartNum, T3.NetWeight as beratStandarPergenteng, T1.ShipDate
+        FROM ShipHead AS T1
+        LEFT JOIN ShipDtl AS T2 ON T1.PackNum = T2.PackNum AND T1.Company = T2.Company
+        LEFT JOIN Part T3 On T2.Company = T3.Company AND T2.PartNum = T3.PartNum
+       ");
+        return view(
+            'content.weight-bridge.report',
+            [
+                "reports" => $spbDetails
+            ]
+        );
+    }
+
     public function delete()
     {
         return view('content.weight-bridge.create');

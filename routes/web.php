@@ -92,12 +92,13 @@ Route::prefix('transaction')->name('transaction.')->middleware('auth')->group(fu
         Route::get('/finish-good', [WeightBridgeController::class, 'finishGood'])->name('finish-good')->middleware('can:view finish_good');
         Route::get('/approval', [ApprovalController::class, 'index'])->middleware('can:view approval')->name('approval.list');
         Route::post('/approval/approve/{approvalUuid}', [ApprovalController::class, 'approve'])
-          ->middleware('permission:approve|approve 2')
-          ->name('approval.approve');
+            ->middleware('permission:approve|approve 2')
+            ->name('approval.approve');
         Route::post('/approval/reject/{approvalUuid}', [ApprovalController::class, 'reject'])
-          ->middleware('permission:reject|reject 2')
-          ->name('approval.reject');
+            ->middleware('permission:reject|reject 2')
+            ->name('approval.reject');
         Route::post('/weight-in', [WeightBridgeController::class, 'weightIn'])->middleware('can:weight_in')->name('weightIn');
+        Route::get('/report', [WeightBridgeController::class, 'transporterReport'])->middleware('can:view report')->name('report');
         Route::post('/weight-out', [WeightBridgeController::class, 'weightOut'])->middleware('can:weight_out')->name('weightOut');
         route::get('/print/{uuid}/slip', [PrintController::class, 'generateSlipPDF'])->middleware('can:print_rw')->name('printSlip');
     });
