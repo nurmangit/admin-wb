@@ -413,12 +413,36 @@ class WeightBridgeController extends Controller
 
     public function transporterReport()
     {
-        $spbDetails = DB::select("
-        SELECT T1.LegalNumber, T2.TotalNetWeight, T2.OrderLine, T3.PartNum, T3.NetWeight as beratStandarPergenteng, T1.ShipDate
-        FROM ShipHead AS T1
-        LEFT JOIN ShipDtl AS T2 ON T1.PackNum = T2.PackNum AND T1.Company = T2.Company
-        LEFT JOIN Part T3 On T2.Company = T3.Company AND T2.PartNum = T3.PartNum
-       ");
+        $query = "
+        SELECT 
+        T1.LegalNumber as DoNo, 
+        T1.ShipDate as " . "'date'" . ", 
+        WB.Character08 as PlateNo,
+        VT.Character01 as VehicleGroup,
+        A.Character01 as Area,
+        T2.OurInventoryShipQty as Quantity,
+        WB.Character01 as WbDoc,
+        WB.Number04 as StdWeight,
+        WB.Number03 as Weight,
+        WB.Number05 as Var,
+        TR.Number02 as Rate,
+        T3.PartNum, 
+        T1.NoDokumen_c 
+      FROM 
+        ShipHead AS T1 
+        LEFT JOIN ShipDtl AS T2 ON T1.PackNum = T2.PackNum 
+        AND T1.Company = T2.Company 
+        LEFT JOIN Part T3 On T2.Company = T3.Company 
+        AND T2.PartNum = T3.PartNum 
+        LEFT JOIN Ice.UD100 WB On T1.NoDokumen_c = T1.NoDokumen_c 
+        INNER JOIN Ice.UD101A V On WB.Key2 = V.Key1 
+        INNER JOIN Ice.UD101 VT on V.Key2 = VT.Key1
+        INNER JOIN Ice.UD102 T on T.Character01 = WB.Character10
+        LEFT JOIN Ice.UD103A A on T.Key2 = A.Key1
+        LEFT JOIN Ice.UD102A TR on A.Key1 = TR.Key2
+        ";
+        
+        $spbDetails = DB::select($query);
         return view(
             'content.weight-bridge.report',
             [
