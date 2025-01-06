@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers\apps;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\WeightInRequest;
-use App\Http\Requests\WeightOutRequest;
+use PDO;
+use DateTime;
+use Carbon\Carbon;
+use App\Models\Area;
 use App\Models\Device;
 use App\Models\Vehicle;
-use App\Models\WeightBridge;
-use App\Models\WeightBridgeApproval;
 use App\Utils\Generator;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-use DateTime;
+use App\Models\Transporter;
+use App\Models\WeightBridge;
 use Illuminate\Http\Request;
-use PDO;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\WeightBridgeApproval;
+use App\Http\Requests\WeightInRequest;
+use App\Http\Requests\WeightOutRequest;
 
 class WeightBridgeController extends Controller
 {
@@ -341,7 +343,7 @@ class WeightBridgeController extends Controller
             $weightNetto = $validated['weight_out'] - $weightBridge->weight_in;
             $tolerance = $weightBridge->vehicle->vehicle_type->tolerance;
             $totalWeight = DB::select("
-            SELECT SUM(T2.TotalNetWeight) AS TotalWeight 
+            SELECT SUM(T2.TotalNetWeight) AS TotalWeight
             FROM ShipHead AS T1
             LEFT JOIN ShipDtl AS T2 ON T1.PackNum = T2.PackNum AND T1.Company = T2.Company
             WHERE T1.NoDokumen_c = :slipNo
@@ -411,42 +413,75 @@ class WeightBridgeController extends Controller
         return view('content.weight-bridge.create');
     }
 
-    public function transporterReport()
+    public function transporterReport(Request $request)
     {
         $query = "
-        SELECT 
-        T1.LegalNumber as DoNo, 
-        T1.ShipDate as " . "'date'" . ", 
-        WB.Character08 as PlateNo,
-        VT.Character01 as VehicleGroup,
-        A.Character01 as Area,
-        T2.OurInventoryShipQty as Quantity,
-        WB.Character01 as WbDoc,
-        WB.Number04 as StdWeight,
-        WB.Number03 as Weight,
-        WB.Number05 as Var,
-        TR.Number02 as Rate,
-        T3.PartNum, 
-        T1.NoDokumen_c 
-      FROM 
-        ShipHead AS T1 
-        LEFT JOIN ShipDtl AS T2 ON T1.PackNum = T2.PackNum 
-        AND T1.Company = T2.Company 
-        LEFT JOIN Part T3 On T2.Company = T3.Company 
-        AND T2.PartNum = T3.PartNum 
-        LEFT JOIN Ice.UD100 WB On T1.NoDokumen_c = T1.NoDokumen_c 
-        INNER JOIN Ice.UD101A V On WB.Key2 = V.Key1 
-        INNER JOIN Ice.UD101 VT on V.Key2 = VT.Key1
-        INNER JOIN Ice.UD102 T on T.Character01 = WB.Character10
-        LEFT JOIN Ice.UD103A A on T.Key2 = A.Key1
-        LEFT JOIN Ice.UD102A TR on A.Key1 = TR.Key2
+        SELECT
+        TOP 30
+          T1.LegalNumber as DoNo,
+          T1.ShipDate as "."'date'".",
+          WB.Character08 as PlateNo,
+          VT.Character01 as VehicleGroup,
+          A.Character01 as Area,
+          T2.OurInventoryShipQty as Quantity,
+          WB.Character01 as WbDoc,
+          WB.Number04 as StdWeight,
+          WB.Number03 as Weight,
+          WB.Number05 as Difference,
+          TR.Number02 as Rate,
+          T3.PartNum,
+          (WB.Number03 * TR.Number02) as Amount,
+          T.Character01 as TransporterName,
+          T.ShortChar01 as TransporterCode
+        FROM
+          ShipHead AS T1
+          LEFT JOIN ShipDtl AS T2 ON T1.PackNum = T2.PackNum
+          AND T1.Company = T2.Company
+          LEFT JOIN Part T3 On T2.Company = T3.Company
+          AND T2.PartNum = T3.PartNum
+          LEFT JOIN Ice.UD100 WB On T1.NoDokumen_c = T1.NoDokumen_c
+          INNER JOIN Ice.UD101A V On WB.Key2 = V.Key1
+          INNER JOIN Ice.UD101 VT on V.Key2 = VT.Key1
+          INNER JOIN Ice.UD102 T on T.Character01 = WB.Character10
+          LEFT JOIN Ice.UD103A A on T.Key2 = A.Key1
+          LEFT JOIN Ice.UD102A TR on A.Key1 = TR.Key2
+        WHERE WB.ShortChar01 = 'fg'
         ";
-        
+        // ORDER BY T.Character01 ASC, T1.ShipDate DESC
+
+        if ($request->has('period_from') && !empty($request->period_from)) {
+            $query .= "AND T1.ShipDate BETWEEN '" . $request->period_from . "' AND '" . $request->period_to . "'";
+        }
+
+        $query .= " ORDER BY T.Character01 ASC, T1.ShipDate DESC";
+
+        if(request()->has('transporter')) {
+            dd(request()->all());
+            $query .= "AND T.Character01 = '" . request()->transporter . "'";
+        }
+
+        // if(request()->has('area')) {
+        //     $query .= "AND A.Character01 = '" . request()->area . "'";
+        // }
+
+        // if(request()->has('vehicle')) {
+        //     $query .= "AND VT.Character01 = '" . request()->vehicle . "'";
+        // }
+
         $spbDetails = DB::select($query);
+        $data = [];
+        if($spbDetails) {
+            foreach($spbDetails as $spbDetail) {
+                $data[$spbDetail->TransporterName][] = $spbDetail;
+            }
+        }
         return view(
             'content.weight-bridge.report',
             [
-                "reports" => $spbDetails
+                "reports" => $data,
+                "transporters" => Transporter::all(),
+                "areas" => Area::select('Key1', 'Character01')->get(),
+                "vehicles" => Vehicle::select('Key1', 'Character01')->get(),
             ]
         );
     }
