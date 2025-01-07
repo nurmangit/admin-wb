@@ -14,7 +14,7 @@
   <div class="col mt-2">
     <div class="card">
       <h5 class="card-header">Transporter Report</h5>
-      <form action="{{ route('transaction.weight-bridge.report') }}" method="GET">
+      <form id="filter" action="{{ route('transaction.weight-bridge.report') }}" method="GET">
         {{-- @csrf --}}
         <div class="card-body -mb-10">
           <div class="accordion" id="filterAccordion">
@@ -24,6 +24,7 @@
                   Period Filter
                 </button>
               </h2>
+              <input type="hidden" id="export" name="export">
               <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne">
                 <div class="accordion-body">
                   <div class="row">
@@ -126,13 +127,23 @@
           </div>
 
           {{-- Submit Button --}}
-          <button type="submit" class="btn btn-primary mt-3">Apply Filter</button>
           <a type="button" href="{{ route('transaction.weight-bridge.report') }}" class="btn btn-secondary mt-3">Clear Filter</a>
+          <a type="button" id="btn-filter" class="btn btn-primary mt-3 text-white">Apply Filter</a>
+          <a type="button" id="btn-download-pdf" class="btn btn-success mt-3 text-white">Download PDF</a>
         </div>
       </form>
       {{-- // form filter --}}
       <div class="container-fluid py-3">
         <h4 class="text-center mb-4">PT KERAMINDO MEGAH PERTIWI<br>ESTIMATED PAYMENT TO TRANSPORTER</h4>
+        @php
+        // Initialize totals for the footer
+        $totalQuantity = 0;
+        $totalStdWeight = 0;
+        $totalWeight = 0;
+        $totalVar = 0;
+        $totalRate = 0;
+        $totalAmount = 0;
+        @endphp
         @foreach ($reports as $key => $report)
         <div class="table-responsive">
           <table class="table table-bordered table-sm">
@@ -176,74 +187,82 @@
 
             <!-- Body Section -->
             <tbody>
+              @php
+              $subtotalQuantity = 0;
+              $subtotalStdWeight = 0;
+              $subtotalWeight = 0;
+              $subtotalVar = 0;
+              $subtotalRate = 0;
+              $subtotalAmount = 0;
+              @endphp
+
               @foreach($report as $data)
+              @if($is_multi_transporter)
+              @php
+              $subtotalQuantity += $data->Quantity ?? 0;
+              $subtotalStdWeight += $data->StdWeight ?? 0;
+              $subtotalWeight += $data->Weight ?? 0;
+              $subtotalVar += $data->Difference ?? 0;
+              $subtotalRate += $data->Rate ?? 0;
+              $subtotalAmount += $data->Amount ?? 0;
+
+              // Accumulate into the footer totals
+              $totalQuantity += $data->Quantity ?? 0;
+              $totalStdWeight += $data->StdWeight ?? 0;
+              $totalWeight += $data->Weight ?? 0;
+              $totalVar += $data->Difference ?? 0;
+              $totalRate += $data->Rate ?? 0;
+              $totalAmount += $data->Amount ?? 0;
+              @endphp
+              @endif
               <tr class="small">
+                <td>{{ $data->DoNo ?? 'N/A' }}</td>
                 <td>
-                  <input type="text" class="form-control form-control-sm" value="{{ $data->DoNo ?? '' }}">
+                  {{ $data->date ? \Carbon\Carbon::parse(str_replace(':AM', ' AM', str_replace(':PM', ' PM', $data->date)))->format('d-m-Y') : '' }}
                 </td>
-                <td>
-                  <input type="date" class="form-control form-control-sm"
-                    value="{{ $data->date ? \Carbon\Carbon::parse(str_replace(':AM', ' AM', str_replace(':PM', ' PM', $data->date)))->format('Y-m-d') : '' }}">
-                </td>
-                <td class="table-cell-yellow">
-                  <input type="text" class="form-control form-control-sm bg-warning-subtle" value="{{ $data->PlateNo ?? '' }}">
-                </td>
-                <td class="table-cell-yellow">
-                  {{ $data->VehicleGroup ?? '' }}
-                </td>
-                <td class="table-cell-yellow">
-                  {{ $data->Area ?? '' }}
-                </td>
-                <td>
-                  <input type="number" class="form-control form-control-sm text-end" value="{{ $data->Quantity ?? '' }}">
-                </td>
-                <td>
-                  <input type="text" class="form-control form-control-sm" value="{{ $data->WbDoc ?? '' }}">
-                </td>
-                <td>
-                  <input type="number" class="form-control form-control-sm text-end" value="{{ $data->StdWeight ?? '' }}">
-                </td>
-                <td>
-                  <input type="number" class="form-control form-control-sm text-end" value="{{ $data->Weight ?? '' }}">
-                </td>
-                <td>
-                  <input type="number" class="form-control form-control-sm text-end" readonly value="{{ $data->Difference ?? '' }}">
-                </td>
-                <td>
-                  <input type="number" class="form-control form-control-sm text-end" value="{{ $data->Rate ?? '' }}">
-                </td>
-                <td>
-                  <input type="number" class="form-control form-control-sm text-end" readonly value="{{ $data->Amount ?? '' }}">
-                </td>
+                <td>{{ $data->PlateNo ?? 'N/A' }}</td>
+                <td>{{ $data->VehicleGroup ?? 'N/A' }}</td>
+                <td>{{ $data->Area ?? 'N/A' }}</td>
+                <td class="text-end">{{ number_format($data->Quantity ?? 0, 0) }}</td>
+                <td>{{ $data->WbDoc ?? 'N/A' }}</td>
+                <td class="text-end">{{ number_format($data->StdWeight ?? 0, 0) }}</td>
+                <td class="text-end">{{ number_format($data->Weight ?? 0, 0) }}</td>
+                <td class="text-end">{{ number_format($data->Difference ?? 0, 0) }}</td>
+                <td class="text-end">{{ number_format($data->Rate ?? 0, 0) }}</td>
+                <td class="text-end">{{ number_format($data->Amount ?? 0, 0) }}</td>
               </tr>
               @endforeach
 
               <!-- Subtotal Row -->
-              {{-- <tr class="table-secondary fw-bold small">
-                        <td colspan="5" class="text-end">Sub Total</td>
-                        <td class="text-end">{{ $subtotalQuantity }}</td>
-              <td></td>
-              <td class="text-end">{{ $subtotalStdWeight }}</td>
-              <td class="text-end">{{ $subtotalWeight }}</td>
-              <td class="text-end">{{ $subtotalVar }}</td>
-              <td class="text-end">{{ $subtotalRate }}</td>
-              <td class="text-end">{{ $subtotalAmount }}</td>
-              </tr> --}}
+              @if($is_multi_transporter)
+              <tr class="table-secondary fw-bold small">
+                <td colspan="5" class="text-end">Sub Total</td>
+                <td class="text-end">{{ number_format($subtotalQuantity, 0) }}</td>
+                <td></td>
+                <td class="text-end">{{ number_format($subtotalStdWeight, 0) }}</td>
+                <td class="text-end">{{ number_format($subtotalWeight, 0) }}</td>
+                <td class="text-end">{{ number_format($subtotalVar, 0) }}</td>
+                <td class="text-end">{{ number_format($subtotalRate, 0) }}</td>
+                <td class="text-end">{{ number_format($subtotalAmount, 0) }}</td>
+              </tr>
+              @endif
             </tbody>
 
             <!-- Footer Totals -->
-            <tfoot>
-              {{-- <tr class="table-dark fw-bold small">
-                        <td colspan="5" class="text-end">Total</td>
-                        <td class="text-end">{{ $totalQuantity }}</td>
+            @if($is_multi_transporter)
+            @if($loop->last)
+            <tr class="small">
+              <td colspan="5" class="text-end">Total</td>
+              <td class="text-end">{{ number_format($totalQuantity, 0) }}</td>
               <td></td>
-              <td class="text-end">{{ $totalStdWeight }}</td>
-              <td class="text-end">{{ $totalWeight }}</td>
-              <td class="text-end">{{ $totalVar }}</td>
-              <td class="text-end">{{ $totalRate }}</td>
-              <td class="text-end">{{ $totalAmount }}</td>
-              </tr> --}}
-            </tfoot>
+              <td class="text-end">{{ number_format($totalStdWeight, 0) }}</td>
+              <td class="text-end">{{ number_format($totalWeight, 0) }}</td>
+              <td class="text-end">{{ number_format($totalVar, 0) }}</td>
+              <td class="text-end">{{ number_format($totalRate, 0) }}</td>
+              <td class="text-end">{{ number_format($totalAmount, 0) }}</td>
+            </tr>
+            @endif
+            @endif
           </table>
         </div>
         @endforeach
@@ -293,6 +312,14 @@
       allowClear: true,
       multiple: true
     });
+    $('#btn-download-pdf').on('click', function() {
+      $('#export').val('PDF')
+      $('#filter').submit()
+    })
+    $('#btn-filter').on('click', function() {
+      $('#export').val(null)
+      $('#filter').submit()
+    })
     $('#btn-add').on('click', function() {
       // Get the value from the input field
       const doNumber = $('input[name="do_number_string"]').val();

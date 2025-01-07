@@ -18,6 +18,7 @@ use App\Models\WeightBridgeApproval;
 use App\Http\Requests\WeightInRequest;
 use App\Http\Requests\WeightOutRequest;
 use App\Models\VehicleType;
+use PDF;
 
 class WeightBridgeController extends Controller
 {
@@ -528,6 +529,24 @@ class WeightBridgeController extends Controller
                 $data[$spbDetail->TransporterName][] = $spbDetail;
             }
         }
+        $isMultipleTransporter = false;
+        if (count($data) > 1) {
+            $isMultipleTransporter = true;
+        }
+        if ($request->get('export') == 'PDF') {
+            $pdf = PDF::loadView('content.weight-bridge.print.report', [
+                "reports" => $data,
+                "transporters" => Transporter::all(),
+                "areas" => Area::select('Key1', 'Character01')->get(),
+                "vehicles" => Vehicle::select('Key1', 'Character01')->get(),
+                "vehicle_types" => VehicleType::select('Key1', 'Character01')->get(),
+                "is_multi_transporter" => $isMultipleTransporter
+            ])->setPaper('a4', 'landscape'); // Set paper size to A4 and orientation to landscape
+
+            // Output the PDF for download or inline view
+            return $pdf->stream("report.pdf");
+        }
+
         return view(
             'content.weight-bridge.report',
             [
@@ -536,6 +555,7 @@ class WeightBridgeController extends Controller
                 "areas" => Area::select('Key1', 'Character01')->get(),
                 "vehicles" => Vehicle::select('Key1', 'Character01')->get(),
                 "vehicle_types" => VehicleType::select('Key1', 'Character01')->get(),
+                "is_multi_transporter" => $isMultipleTransporter
             ]
         );
     }
