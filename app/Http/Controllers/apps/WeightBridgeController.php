@@ -17,6 +17,7 @@ use App\Http\Controllers\Controller;
 use App\Models\WeightBridgeApproval;
 use App\Http\Requests\WeightInRequest;
 use App\Http\Requests\WeightOutRequest;
+use App\Models\VehicleType;
 
 class WeightBridgeController extends Controller
 {
@@ -419,7 +420,7 @@ class WeightBridgeController extends Controller
         SELECT
         TOP 30
           T1.LegalNumber as DoNo,
-          T1.ShipDate as "."'date'".",
+          T1.ShipDate as " . "'date'" . ",
           WB.Character08 as PlateNo,
           VT.Character01 as VehicleGroup,
           A.Character01 as Area,
@@ -449,29 +450,81 @@ class WeightBridgeController extends Controller
         ";
         // ORDER BY T.Character01 ASC, T1.ShipDate DESC
 
-        if ($request->has('period_from') && !empty($request->period_from)) {
+        if ($request->get('period_from') != null && $request->get('period_to') != null) {
             $query .= "AND T1.ShipDate BETWEEN '" . $request->period_from . "' AND '" . $request->period_to . "'";
+        }
+
+        if ($request->get('transporter') != null) {
+            $transporterArr = $request->get('transporter');
+            $transporterStr = '';
+            foreach ($transporterArr as $value) {
+                if ($value) {
+                    $transporterStr .= "'$value',";
+                }
+            }
+            if ($transporterStr != '') {
+                $query .= "AND T.Key1 in(" . rtrim($transporterStr, ',') . ")";
+            }
+        }
+        // dd($query);
+
+        if ($request->get('area') != null) {
+            $areaArr = $request->get('area');
+            $areaStr = '';
+            foreach ($areaArr as $value) {
+                if ($value) {
+                    $areaStr .= "'$value',";
+                }
+            }
+            if ($areaStr != '') {
+                $query .= "AND A.Key1 in(" . rtrim($areaStr, ',') . ")";
+            }
+        }
+
+        if ($request->get('area') != null) {
+            $areaArr = $request->get('area');
+            $areaStr = '';
+            foreach ($areaArr as $value) {
+                if ($value) {
+                    $areaStr .= "'$value',";
+                }
+            }
+            if ($areaStr != '') {
+                $query .= "AND A.Key1 in(" . rtrim($areaStr, ',') . ")";
+            }
+        }
+        if ($request->get('do_number') != null) {
+            $doNumberArr = $request->get('do_number');
+            $doNumberStr = '';
+            foreach ($doNumberArr as $value) {
+                if ($value) {
+                    $doNumberStr .= "'$value',";
+                }
+            }
+            if ($doNumberStr != '') {
+                $query .= "AND  T1.LegalNumber in(" . rtrim($doNumberStr, ',') . ")";
+            }
+        }
+        if ($request->get('spb') != null) {
+            $spbArr = $request->get('spb');
+            $spbStr = '';
+            foreach ($spbArr as $value) {
+                if ($value) {
+                    $spbStr .= "'$value',";
+                }
+            }
+            if ($spbStr != '') {
+                $query .= "AND  WB.Character01 in(" . rtrim($spbStr, ',') . ")";
+            }
         }
 
         $query .= " ORDER BY T.Character01 ASC, T1.ShipDate DESC";
 
-        if(request()->has('transporter')) {
-            dd(request()->all());
-            $query .= "AND T.Character01 = '" . request()->transporter . "'";
-        }
-
-        // if(request()->has('area')) {
-        //     $query .= "AND A.Character01 = '" . request()->area . "'";
-        // }
-
-        // if(request()->has('vehicle')) {
-        //     $query .= "AND VT.Character01 = '" . request()->vehicle . "'";
-        // }
-
+        // dd($query);
         $spbDetails = DB::select($query);
         $data = [];
-        if($spbDetails) {
-            foreach($spbDetails as $spbDetail) {
+        if ($spbDetails) {
+            foreach ($spbDetails as $spbDetail) {
                 $data[$spbDetail->TransporterName][] = $spbDetail;
             }
         }
@@ -482,6 +535,7 @@ class WeightBridgeController extends Controller
                 "transporters" => Transporter::all(),
                 "areas" => Area::select('Key1', 'Character01')->get(),
                 "vehicles" => Vehicle::select('Key1', 'Character01')->get(),
+                "vehicle_types" => VehicleType::select('Key1', 'Character01')->get(),
             ]
         );
     }

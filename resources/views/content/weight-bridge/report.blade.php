@@ -47,10 +47,9 @@
               </h2>
               <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
                 <div class="accordion-body">
-                  <select class="form-select" name="transporter[]" id="transporter">
-                    <option value="">Select Transporter</option>
+                  <select class="form-select w-100" name="transporter[]" id="transporter">
                     @foreach ($transporters as $transporter)
-                      <option value="{{ $transporter->id }}">{{ $transporter->name }}</option>
+                    <option value="{{ $transporter->uuid }}">{{ $transporter->name }}</option>
                     @endforeach
                   </select>
                 </div>
@@ -66,9 +65,8 @@
               <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
                 <div class="accordion-body">
                   <select name="area[]" id="area" class="form-select">
-                    <option value="">Select Area</option>
                     @foreach ($areas as $area)
-                      <option value="{{ $area->id }}">{{ $area->name }}</option>
+                    <option value="{{ $area->uuid }}">{{ $area->name }}</option>
                     @endforeach
                   </select>
                 </div>
@@ -84,137 +82,171 @@
               <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour">
                 <div class="accordion-body">
                   <select name="vehicle_group[]" id="vehicle_group" class="form-select">
-                    <option value="">Select Vehicle Group</option>
-                    @foreach ($vehicles as $group)
-                      <option value="{{ $group->id }}">{{ $group->name }}</option>
+                    @foreach ($vehicle_types as $group)
+                    <option value="{{ $group->uuid }}">{{ $group->name }}</option>
                     @endforeach
                   </select>
                 </div>
               </div>
             </div>
-
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingFive">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                  D/O Number
+                </button>
+              </h2>
+              <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive">
+                <div class="accordion-body">
+                  <select name="do_number[]" id="do_number" class="form-select">
+                  </select>
+                  <div class="row mt-2">
+                    <div class="col"><input type="text" class="form-control" name="do_number_string" placeholder="D/O Number"></div>
+                    <div class="col"><button type="button" class="btn btn-primary" id="btn-add">Add</button></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingSix">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                  SPB
+                </button>
+              </h2>
+              <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix">
+                <div class="accordion-body">
+                  <select name="spb[]" id="spb" class="form-select">
+                  </select>
+                  <div class="row mt-2">
+                    <div class="col"><input type="text" class="form-control" name="spb_string" placeholder="SPB"></div>
+                    <div class="col"><button type="button" class="btn btn-primary" id="btn-add-spb">Add</button></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           {{-- Submit Button --}}
           <button type="submit" class="btn btn-primary mt-3">Apply Filter</button>
+          <a type="button" href="{{ route('transaction.weight-bridge.report') }}" class="btn btn-secondary mt-3">Clear Filter</a>
         </div>
       </form>
       {{-- // form filter --}}
       <div class="container-fluid py-3">
         <h4 class="text-center mb-4">PT KERAMINDO MEGAH PERTIWI<br>ESTIMATED PAYMENT TO TRANSPORTER</h4>
-          @foreach ($reports as $key => $report)
-          <div class="table-responsive">
-            <table class="table table-bordered table-sm">
-                <!-- Header Section -->
-                <thead class="sticky-header">
-                    <tr>
-                        <th colspan="2">
-                            <div class="row g-0">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label class="small">Kode Suplier</label>
-                                        <input type="text" readonly
-                                         value="{{ $report[0]->TransporterCode ?? '' }}"  class="form-control form-control-sm">
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label class="small">Nama Transporter</label>
-                                        <input readonly type="text" value="{{ $key ?? '' }}" class="form-control form-control-sm">
-                                    </div>
-                                </div>
-                            </div>
-                        </th>
-                        <th colspan="10"></th>
-                    </tr>
-                    <tr class="text-center small">
-                        <th>D/O NO</th>
-                        <th>Date</th>
-                        <th>Plate NO</th>
-                        <th>Vehicle Group</th>
-                        <th>Area</th>
-                        <th>Quantity</th>
-                        <th>WB.Doc</th>
-                        <th>STD Weight (Kg)</th>
-                        <th>Weight(Kg)</th>
-                        <th>Var(Kg)</th>
-                        <th>Rate</th>
-                        <th>Amount(Rp)</th>
-                    </tr>
-                </thead>
+        @foreach ($reports as $key => $report)
+        <div class="table-responsive">
+          <table class="table table-bordered table-sm">
+            <!-- Header Section -->
+            <thead class="sticky-header">
+              <tr>
+                <th colspan="2">
+                  <div class="row g-0">
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label class="small">Kode Suplier</label>
+                        <input type="text" readonly
+                          value="{{ $report[0]->TransporterCode ?? '' }}" class="form-control form-control-sm">
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label class="small">Nama Transporter</label>
+                        <input readonly type="text" value="{{ $key ?? '' }}" class="form-control form-control-sm">
+                      </div>
+                    </div>
+                  </div>
+                </th>
+                <th colspan="10"></th>
+              </tr>
+              <tr class="text-center small">
+                <th>D/O NO</th>
+                <th>Date</th>
+                <th>Plate NO</th>
+                <th>Vehicle Group</th>
+                <th>Area</th>
+                <th>Quantity</th>
+                <th>WB.Doc</th>
+                <th>STD Weight (Kg)</th>
+                <th>Weight(Kg)</th>
+                <th>Var(Kg)</th>
+                <th>Rate</th>
+                <th>Amount(Rp)</th>
+              </tr>
+            </thead>
 
-                <!-- Body Section -->
-                <tbody>
-                    @foreach($report as $data)
-                    <tr class="small">
-                        <td>
-                            <input type="text" class="form-control form-control-sm" value="{{ $data->DoNo ?? '' }}">
-                        </td>
-                        <td>
-                            <input type="date" class="form-control form-control-sm" value="{{ $data->date ?? '' }}">
-                        </td>
-                        <td class="table-cell-yellow">
-                            <input type="text" class="form-control form-control-sm bg-warning-subtle" value="{{ $data->PlateNo ?? '' }}">
-                        </td>
-                        <td class="table-cell-yellow">
-                            {{ $data->VehicleGroup ?? '' }}
-                        </td>
-                        <td class="table-cell-yellow">
-                            {{ $data->Area ?? '' }}
-                        </td>
-                        <td>
-                            <input type="number" class="form-control form-control-sm text-end" value="{{ $data->Quantity ?? '' }}">
-                        </td>
-                        <td>
-                            <input type="text" class="form-control form-control-sm" value="{{ $data->WbDoc ?? '' }}">
-                        </td>
-                        <td>
-                            <input type="number" class="form-control form-control-sm text-end" value="{{ $data->StdWeight ?? '' }}">
-                        </td>
-                        <td>
-                            <input type="number" class="form-control form-control-sm text-end" value="{{ $data->Weight ?? '' }}">
-                        </td>
-                        <td>
-                            <input type="number" class="form-control form-control-sm text-end" readonly value="{{ $data->Difference ?? '' }}">
-                        </td>
-                        <td>
-                            <input type="number" class="form-control form-control-sm text-end" value="{{ $data->Rate ?? '' }}">
-                        </td>
-                        <td>
-                            <input type="number" class="form-control form-control-sm text-end" readonly value="{{ $data->Amount ?? '' }}">
-                        </td>
-                    </tr>
-                    @endforeach
+            <!-- Body Section -->
+            <tbody>
+              @foreach($report as $data)
+              <tr class="small">
+                <td>
+                  <input type="text" class="form-control form-control-sm" value="{{ $data->DoNo ?? '' }}">
+                </td>
+                <td>
+                  <input type="date" class="form-control form-control-sm"
+                    value="{{ $data->date ? \Carbon\Carbon::parse(str_replace(':AM', ' AM', str_replace(':PM', ' PM', $data->date)))->format('Y-m-d') : '' }}">
+                </td>
+                <td class="table-cell-yellow">
+                  <input type="text" class="form-control form-control-sm bg-warning-subtle" value="{{ $data->PlateNo ?? '' }}">
+                </td>
+                <td class="table-cell-yellow">
+                  {{ $data->VehicleGroup ?? '' }}
+                </td>
+                <td class="table-cell-yellow">
+                  {{ $data->Area ?? '' }}
+                </td>
+                <td>
+                  <input type="number" class="form-control form-control-sm text-end" value="{{ $data->Quantity ?? '' }}">
+                </td>
+                <td>
+                  <input type="text" class="form-control form-control-sm" value="{{ $data->WbDoc ?? '' }}">
+                </td>
+                <td>
+                  <input type="number" class="form-control form-control-sm text-end" value="{{ $data->StdWeight ?? '' }}">
+                </td>
+                <td>
+                  <input type="number" class="form-control form-control-sm text-end" value="{{ $data->Weight ?? '' }}">
+                </td>
+                <td>
+                  <input type="number" class="form-control form-control-sm text-end" readonly value="{{ $data->Difference ?? '' }}">
+                </td>
+                <td>
+                  <input type="number" class="form-control form-control-sm text-end" value="{{ $data->Rate ?? '' }}">
+                </td>
+                <td>
+                  <input type="number" class="form-control form-control-sm text-end" readonly value="{{ $data->Amount ?? '' }}">
+                </td>
+              </tr>
+              @endforeach
 
-                    <!-- Subtotal Row -->
-                    {{-- <tr class="table-secondary fw-bold small">
+              <!-- Subtotal Row -->
+              {{-- <tr class="table-secondary fw-bold small">
                         <td colspan="5" class="text-end">Sub Total</td>
                         <td class="text-end">{{ $subtotalQuantity }}</td>
-                        <td></td>
-                        <td class="text-end">{{ $subtotalStdWeight }}</td>
-                        <td class="text-end">{{ $subtotalWeight }}</td>
-                        <td class="text-end">{{ $subtotalVar }}</td>
-                        <td class="text-end">{{ $subtotalRate }}</td>
-                        <td class="text-end">{{ $subtotalAmount }}</td>
-                    </tr> --}}
-                </tbody>
+              <td></td>
+              <td class="text-end">{{ $subtotalStdWeight }}</td>
+              <td class="text-end">{{ $subtotalWeight }}</td>
+              <td class="text-end">{{ $subtotalVar }}</td>
+              <td class="text-end">{{ $subtotalRate }}</td>
+              <td class="text-end">{{ $subtotalAmount }}</td>
+              </tr> --}}
+            </tbody>
 
-                <!-- Footer Totals -->
-                <tfoot>
-                    {{-- <tr class="table-dark fw-bold small">
+            <!-- Footer Totals -->
+            <tfoot>
+              {{-- <tr class="table-dark fw-bold small">
                         <td colspan="5" class="text-end">Total</td>
                         <td class="text-end">{{ $totalQuantity }}</td>
-                        <td></td>
-                        <td class="text-end">{{ $totalStdWeight }}</td>
-                        <td class="text-end">{{ $totalWeight }}</td>
-                        <td class="text-end">{{ $totalVar }}</td>
-                        <td class="text-end">{{ $totalRate }}</td>
-                        <td class="text-end">{{ $totalAmount }}</td>
-                    </tr> --}}
-                </tfoot>
-            </table>
-          </div>
-          @endforeach
+              <td></td>
+              <td class="text-end">{{ $totalStdWeight }}</td>
+              <td class="text-end">{{ $totalWeight }}</td>
+              <td class="text-end">{{ $totalVar }}</td>
+              <td class="text-end">{{ $totalRate }}</td>
+              <td class="text-end">{{ $totalAmount }}</td>
+              </tr> --}}
+            </tfoot>
+          </table>
+        </div>
+        @endforeach
       </div>
       {{-- <div class="table-responsive text-nowrap p-4">
         @dd($reports)
@@ -237,13 +269,71 @@
       "autoWidth": false,
       "responsive": true
     });
-    $('#accordion').on('shown.bs.collapse', function () {
-        $('#transporter').select2({
-            placeholder: 'Select a transporter',
-            allowClear: true,
-            multiple: true
-        });
+    $('#transporter').val(null).trigger('change');
+    $('#transporter').select2({
+      placeholder: 'Select a transporter',
+      allowClear: true,
+      multiple: true
     });
+    $('#area').val(null).trigger('change');
+    $('#area').select2({
+      placeholder: 'Select a area',
+      allowClear: true,
+      multiple: true
+    });
+    $('#vehicle_group').val(null).trigger('change');
+    $('#vehicle_group').select2({
+      placeholder: 'Select a vehicle group',
+      allowClear: true,
+      multiple: true
+    });
+    $('#do_number').val(null).trigger('change');
+    $('#do_number').select2({
+      placeholder: 'Empty',
+      allowClear: true,
+      multiple: true
+    });
+    $('#btn-add').on('click', function() {
+      // Get the value from the input field
+      const doNumber = $('input[name="do_number_string"]').val();
+
+      if (doNumber) {
+        // Create a new option
+        const newOption = new Option(doNumber, doNumber, false, true);
+
+        // Add the new option to the select element
+        $('#do_number').append(newOption).trigger('change');
+        // Clear the input field
+        $('input[name="do_number_string"]').val('');
+      } else {
+        alert('Please enter a D/O Number to add.');
+      }
+    });
+    $('#spb').val(null).trigger('change');
+    $('#spb').select2({
+      placeholder: 'Empty',
+      allowClear: true,
+      multiple: true
+    });
+    $('#btn-add-spb').on('click', function() {
+      // Get the value from the input field
+      const doNumber = $('input[name="spb_string"]').val();
+
+      if (doNumber) {
+        // Create a new option
+        const newOption = new Option(doNumber, doNumber, false, true);
+
+        // Add the new option to the select element
+        $('#spb').append(newOption).trigger('change');
+        // Clear the input field
+        $('input[name="spb_string"]').val('');
+      } else {
+        alert('Please enter a SPB to add.');
+      }
+    });
+    // $('#accordion').on('shown.bs.collapse', function() {
+
+    // });
   });
 </script>
 @endsection
