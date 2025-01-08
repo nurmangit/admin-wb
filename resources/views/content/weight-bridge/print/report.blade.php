@@ -158,7 +158,7 @@
                     </td>
                     <td>{{ $data->PlateNo ?? 'N/A' }}</td>
                     <td>{{ $data->VehicleGroup ?? 'N/A' }}</td>
-                    <td>{{ $data->Area ?? 'N/A' }}</td>
+                    <td>{{ !empty($data->Area) ? $data->Area : 'N/A' }}</td>
                     <td>{{ number_format($data->Quantity ?? 0, 0) }}</td>
                     <td>{{ $data->WbDoc ?? 'N/A' }}</td>
                     <td>{{ number_format($data->StdWeight ?? 0, 0) }}</td>

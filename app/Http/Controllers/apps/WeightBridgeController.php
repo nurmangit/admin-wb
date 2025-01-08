@@ -422,9 +422,9 @@ class WeightBridgeController extends Controller
         TOP 30
           T1.LegalNumber as DoNo,
           T1.ShipDate as " . "'date'" . ",
+          T1.WBArea_c as Area,
           WB.Character08 as PlateNo,
           VT.Character01 as VehicleGroup,
-          A.Character01 as Area,
           T2.OurInventoryShipQty as Quantity,
           WB.Character01 as WbDoc,
           WB.Number04 as StdWeight,
@@ -447,14 +447,18 @@ class WeightBridgeController extends Controller
           INNER JOIN Ice.UD102 T on T.Character01 = WB.Character10
           LEFT JOIN Ice.UD103A A on T.Key2 = A.Key1
           LEFT JOIN Ice.UD102A TR on A.Key1 = TR.Key2
-        WHERE WB.ShortChar01 = 'fg'
+        WHERE
+          WB.ShortChar01 = 'fg'
+          AND T1.ReadyToInvoice = 1
         ";
         // ORDER BY T.Character01 ASC, T1.ShipDate DESC
 
+        // filter by date
         if ($request->get('period_from') != null && $request->get('period_to') != null) {
             $query .= "AND T1.ShipDate BETWEEN '" . $request->period_from . "' AND '" . $request->period_to . "'";
         }
 
+        // filter by transporter
         if ($request->get('transporter') != null) {
             $transporterArr = $request->get('transporter');
             $transporterStr = '';
@@ -467,33 +471,36 @@ class WeightBridgeController extends Controller
                 $query .= "AND T.Key1 in(" . rtrim($transporterStr, ',') . ")";
             }
         }
-        // dd($query);
 
+        // filter by area
         if ($request->get('area') != null) {
             $areaArr = $request->get('area');
             $areaStr = '';
             foreach ($areaArr as $value) {
                 if ($value) {
-                    $areaStr .= "'$value',";
+                  $areaStr .= "'" . strtolower($value) . "',";
                 }
             }
             if ($areaStr != '') {
-                $query .= "AND A.Key1 in(" . rtrim($areaStr, ',') . ")";
+              $query .= "AND LOWER(T1.WBArea_c) in(" . rtrim($areaStr, ',') . ")";
             }
         }
 
-        if ($request->get('area') != null) {
-            $areaArr = $request->get('area');
-            $areaStr = '';
-            foreach ($areaArr as $value) {
+        // filter by vehicle group
+        if ($request->get('vehicle_group') != null) {
+            $vehicleGroupArr = $request->get('vehicle_group');
+            $vehicleGroupStr = '';
+            foreach ($vehicleGroupArr as $value) {
                 if ($value) {
-                    $areaStr .= "'$value',";
+                    $vehicleGroupStr .= "'$value',";
                 }
             }
-            if ($areaStr != '') {
-                $query .= "AND A.Key1 in(" . rtrim($areaStr, ',') . ")";
+            if ($vehicleGroupStr != '') {
+                $query .= "AND VT.Key1 in(" . rtrim($vehicleGroupStr, ',') . ")";
             }
         }
+
+        // filter by register number
         if ($request->get('do_number') != null) {
             $doNumberArr = $request->get('do_number');
             $doNumberStr = '';
@@ -506,22 +513,9 @@ class WeightBridgeController extends Controller
                 $query .= "AND  T1.LegalNumber in(" . rtrim($doNumberStr, ',') . ")";
             }
         }
-        if ($request->get('spb') != null) {
-            $spbArr = $request->get('spb');
-            $spbStr = '';
-            foreach ($spbArr as $value) {
-                if ($value) {
-                    $spbStr .= "'$value',";
-                }
-            }
-            if ($spbStr != '') {
-                $query .= "AND  WB.Character01 in(" . rtrim($spbStr, ',') . ")";
-            }
-        }
 
         $query .= " ORDER BY T.Character01 ASC, T1.ShipDate DESC";
 
-        // dd($query);
         $spbDetails = DB::select($query);
         $data = [];
         if ($spbDetails) {

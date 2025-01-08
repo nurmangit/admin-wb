@@ -67,7 +67,7 @@
                 <div class="accordion-body">
                   <select name="area[]" id="area" class="form-select">
                     @foreach ($areas as $area)
-                    <option value="{{ $area->uuid }}">{{ $area->name }}</option>
+                    <option value="{{ $area->name }}">{{ $area->name }}</option>
                     @endforeach
                   </select>
                 </div>
@@ -103,23 +103,6 @@
                   <div class="row mt-2">
                     <div class="col"><input type="text" class="form-control" name="do_number_string" placeholder="D/O Number"></div>
                     <div class="col"><button type="button" class="btn btn-primary" id="btn-add">Add</button></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="headingSix">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-                  SPB
-                </button>
-              </h2>
-              <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix">
-                <div class="accordion-body">
-                  <select name="spb[]" id="spb" class="form-select">
-                  </select>
-                  <div class="row mt-2">
-                    <div class="col"><input type="text" class="form-control" name="spb_string" placeholder="SPB"></div>
-                    <div class="col"><button type="button" class="btn btn-primary" id="btn-add-spb">Add</button></div>
                   </div>
                 </div>
               </div>
@@ -222,7 +205,7 @@
                 </td>
                 <td>{{ $data->PlateNo ?? 'N/A' }}</td>
                 <td>{{ $data->VehicleGroup ?? 'N/A' }}</td>
-                <td>{{ $data->Area ?? 'N/A' }}</td>
+                <td>{{ !empty($data->Area) ? $data->Area : 'N/A' }}</td>
                 <td class="text-end">{{ number_format($data->Quantity ?? 0, 0) }}</td>
                 <td>{{ $data->WbDoc ?? 'N/A' }}</td>
                 <td class="text-end">{{ number_format($data->StdWeight ?? 0, 0) }}</td>
