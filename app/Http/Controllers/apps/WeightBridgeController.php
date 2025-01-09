@@ -526,8 +526,6 @@ class WeightBridgeController extends Controller
         if (count($data) > 1) {
             $isMultipleTransporter = true;
         }
-
-        dd($data);
         if ($request->get('export') == 'PDF') {
             $pdf = PDF::loadView('content.weight-bridge.print.report', [
                 "reports" => $data,
