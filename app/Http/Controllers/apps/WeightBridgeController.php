@@ -418,7 +418,7 @@ class WeightBridgeController extends Controller
     public function transporterReport(Request $request)
     {
         $query = "
-        SELECT
+        SELECT DISTINCT
         TOP 30
           T1.LegalNumber as DoNo,
           T1.ShipDate as 'date',
