@@ -421,7 +421,7 @@ class WeightBridgeController extends Controller
         SELECT DISTINCT
         TOP 30
           T1.LegalNumber as DoNo,
-          T1.ShipDate as 'date',
+          T1.ShipDate as " . "'date'" . ",
           WB.Character08 as PlateNo,
           VT.Character01 as VehicleGroup,
           T1.WBArea_c as Area,
