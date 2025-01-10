@@ -419,9 +419,8 @@ class WeightBridgeController extends Controller
     {
         $query = "
         SELECT
-        TOP 30
           T1.LegalNumber as DoNo,
-          T1.ShipDate as " . "'date'" . ",
+          T1.ShipDate as 'date',
           WB.Character08 as PlateNo,
           VT.Character01 as VehicleGroup,
           T1.WBArea_c as Area,
@@ -432,7 +431,7 @@ class WeightBridgeController extends Controller
           WB.Number05 as Difference,
           TR.Number02 as Rate,
           T3.PartNum,
-          (T2.OurInventoryShipQty * WB.Number03) as Amount,
+          (WB.Number03 * TR.Number02) as Amount,
           T.Character01 as TransporterName,
           T.ShortChar01 as TransporterCode
         FROM
@@ -441,11 +440,12 @@ class WeightBridgeController extends Controller
           AND T1.Company = T2.Company
           LEFT JOIN Part T3 On T2.Company = T3.Company
           AND T2.PartNum = T3.PartNum
-          LEFT JOIN Ice.UD100 WB On T1.Company = T1.Company
-          INNER JOIN Ice.UD101A V On WB.Key2 = V.Key1 AND T1.VehicleNo_c = V.Character01
+          LEFT JOIN Ice.UD100 WB On T1.NoDokumen_c = T1.NoDokumen_c
+          INNER JOIN Ice.UD101A V On WB.Key2 = V.Key1
           INNER JOIN Ice.UD101 VT on V.Key2 = VT.Key1
           INNER JOIN Ice.UD102 T on T.Character01 = WB.Character10
-          INNER JOIN Ice.UD102A TR on V.Key2 = TR.childKey1
+          LEFT JOIN Ice.UD103A A on T.Key2 = A.Key1
+          LEFT JOIN Ice.UD102A TR on A.Key1 = TR.Key2
         WHERE
           T1.WBType_c in ('fg','')
           AND T1.ReadyToInvoice = 1
