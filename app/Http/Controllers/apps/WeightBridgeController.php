@@ -419,6 +419,7 @@ class WeightBridgeController extends Controller
     {
         $query = "
         SELECT
+        TOP 30
           T1.LegalNumber as DoNo,
           T1.ShipDate as 'date',
           WB.Character08 as PlateNo,
