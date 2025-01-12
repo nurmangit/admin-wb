@@ -418,40 +418,40 @@ class WeightBridgeController extends Controller
     public function transporterReport(Request $request)
     {
         $query = "
-        SELECT DISTINCT
-        TOP 30
-          T1.LegalNumber as DoNo,
-          T1.ShipDate as " . "'date'" . ",
-          WB.Character08 as PlateNo,
-          VT.Character01 as VehicleGroup,
-          T1.WBArea_c as Area,
-          T2.OurInventoryShipQty as Quantity,
-          WB.Character01 as WbDoc,
-          WB.Number04 as StdWeight,
-          WB.Number03 as Weight,
-          WB.Number05 as Difference,
-          TR.Number02 as Rate,
-          T3.PartNum,
-          (WB.Number03 * TR.Number02) as Amount,
-          T.Character01 as TransporterName,
-          T.ShortChar01 as TransporterCode
+        SELECT
+            T1.LegalNumber AS DoNo,
+            T1.ShipDate AS " . "'date'" . ",
+            T1.VehicleNo_c AS PlateNo,
+            T5.Character01 AS VehicleGroup,
+            T1.WBArea_c AS Area,
+            T3.SellingInventoryShipQty AS Quantity,
+            T1.NoDokumen_c AS WbDoc,
+            T2.Number04 AS StdWeight,
+            T2.Number05 AS Weight,
+            T6.Number03 AS Rate,
+            (COALESCE(T6.Number03, 0) * COALESCE(T2.Number03, 0)) AS Amount,
+            T10.CommercialBrand,
+            T7.Character01 AS TransporterName,
+            T7.ShortChar01 AS TransporterCode
         FROM
-          ShipHead AS T1
-          LEFT JOIN ShipDtl AS T2 ON T1.PackNum = T2.PackNum
-          AND T1.Company = T2.Company
-          LEFT JOIN Part T3 On T2.Company = T3.Company
-          AND T2.PartNum = T3.PartNum
-          LEFT JOIN Ice.UD100 WB On T1.NoDokumen_c = T1.NoDokumen_c
-          INNER JOIN Ice.UD101A V On WB.Key2 = V.Key1
-          INNER JOIN Ice.UD101 VT on V.Key2 = VT.Key1
-          INNER JOIN Ice.UD102 T on T.Character01 = WB.Character10
-          LEFT JOIN Ice.UD103A A on T.Key2 = A.Key1
-          LEFT JOIN Ice.UD102A TR on A.Key1 = TR.Key2
+            ShipHead T1
+            LEFT JOIN Ice.UD100 T2 ON T1.Company = T2.Company AND T1.NoDokumen_c = T2.Character01
+            LEFT JOIN ShipDtl T3 ON T1.Company = T3.Company AND T1.PackNum = T3.PackNum
+            --JOIN OrderDtl T11 On T3.OrderLine = T11.OrderLine
+            LEFT JOIN Part T10 ON T3.PartNum = T10.PartNum
+            LEFT JOIN Ice.UD101A T4 ON T2.Key2 = T4.Key1 AND T1.VehicleNo_c = T4.Character01
+            LEFT JOIN Ice.UD101 T5 ON T4.Key2 = T5.Key1
+            LEFT JOIN Ice.UD102 T7 ON T7.Character01 = T2.Character10
+            LEFT JOIN Ice.UD102A T6 ON T4.Key2 = T6.ChildKey1 AND T6.Key2 = T7.Key2
+            LEFT JOIN Ice.UD103A T8 ON T6.Key2 = T8.Key1
         WHERE
-          T1.WBType_c in ('fg','')
-          AND T1.ReadyToInvoice = 1
+            T1.Company = 'KMP'
+            AND T1.WBType_c in ('fg','')
+            AND T1.NoDokumen_c <> ''
+            AND T1.ReadyToInvoice = 1
+            AND T10.CommercialBrand IS NOT NULL
+            AND T10.CommercialBrand <> ''
         ";
-        // ORDER BY T.Character01 ASC, T1.ShipDate DESC
 
         // filter by date
         if ($request->get('period_from') != null && $request->get('period_to') != null) {
@@ -468,7 +468,7 @@ class WeightBridgeController extends Controller
                 }
             }
             if ($transporterStr != '') {
-                $query .= "AND T.Key1 in(" . rtrim($transporterStr, ',') . ")";
+                $query .= "AND T7.Key1 in(" . rtrim($transporterStr, ',') . ")";
             }
         }
 
@@ -496,7 +496,7 @@ class WeightBridgeController extends Controller
                 }
             }
             if ($vehicleGroupStr != '') {
-                $query .= "AND VT.Key1 in(" . rtrim($vehicleGroupStr, ',') . ")";
+                $query .= "AND T5.Key1 in(" . rtrim($vehicleGroupStr, ',') . ")";
             }
         }
 
@@ -514,7 +514,7 @@ class WeightBridgeController extends Controller
             }
         }
 
-        $query .= " ORDER BY T.Character01 ASC, T1.ShipDate DESC";
+        $query .= " ORDER BY T7.Character01 ASC, T1.ShipDate DESC";
 
         $spbDetails = DB::select($query);
         $data = [];
