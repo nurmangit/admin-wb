@@ -48,7 +48,7 @@
               <!-- Tolerance -->
               <div class="mb-3">
                 <label class="form-label" for="tolerance">Tolerance</label>
-                <input disabled type="number" class="form-control" value="{{$weight_bridge->vehicle?->vehicle_type->tolerance}}" id="tolerance" placeholder="Enter tolerance" />
+                <input disabled type="number" class="form-control" value="{{ number_format($weight_bridge->vehicle?->vehicle_type->tolerance, 2) }}" id="tolerance" placeholder="Enter tolerance" />
               </div>
               <!-- Transporter Name -->
               <div class="mb-3">
@@ -60,7 +60,7 @@
               <!-- Weight In -->
               <div class="mb-3">
                 <label class="form-label" for="weight-in">Weight In</label>
-                <input disabled type="number" class="form-control  @error('weight_in') is-invalid @enderror" value="{{ round($weight_bridge->weight_in ) }}" name="weight_in" id="weight-in" placeholder="Enter weight in" />
+                <input disabled type="text" class="form-control  @error('weight_in') is-invalid @enderror" value="{{ number_format($weight_bridge->weight_in, 2) }}" name="weight_in" id="weight-in" placeholder="Enter weight in" />
                 @error('weight_in')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -68,19 +68,19 @@
               <!-- Weight Out -->
               <div class="mb-3">
                 <label class="form-label" for="weight-out">Weight Out</label>
-                <input disabled type="number" class="form-control" name="weight_out" value="{{ round($weight_bridge->weight_out) }}" id="weight-out" placeholder="Enter weight out" />
+                <input disabled type="text" class="form-control" name="weight_out" value="{{ number_format($weight_bridge->weight_out, 2) }}" id="weight-out" placeholder="Enter weight out" />
               </div>
 
               <!-- Weight Netto -->
               <div class="mb-3">
                 <label class="form-label" for="weight-netto">Weight Netto</label>
-                <input disabled type="number" class="form-control" id="weight-netto" value="{{$weight_bridge->weight_netto}}" placeholder="Enter weight netto" disabled />
+                <input disabled type="text" class="form-control" id="weight-netto" value="{{number_format($weight_bridge->weight_netto, 2)}}" placeholder="Enter weight netto" disabled />
               </div>
 
               <!-- Weight Standart -->
               <div class="mb-3">
                 <label class="form-label" for="weight-standart">Weight Standart</label>
-                <input disabled type="number" class="form-control" id="weight-standart" value="{{$weight_bridge->vehicle?->vehicle_type->weight_standart}}" placeholder="Enter weight standart" disabled />
+                <input disabled type="number" class="form-control" id="weight-standart" value="{{ number_format($weight_bridge->weight_standart, 2) }}" placeholder="Enter weight standart" disabled />
               </div>
               <!-- Remark -->
               <div class="mb-3">
@@ -106,7 +106,7 @@
               <!-- Difference -->
               <div class="mb-3">
                 <label class="form-label" for="difference">Difference</label>
-                <input disabled type="text" class="form-control" id="difference" value="{{($weight_bridge->difference)}}" placeholder="Enter Difference" disabled />
+                <input disabled type="text" class="form-control" id="difference" value="{{ number_format($weight_bridge->difference, 2) }}" placeholder="Enter Difference" disabled />
               </div>
             </div>
           </div>

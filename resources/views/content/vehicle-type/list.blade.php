@@ -38,7 +38,7 @@
         <tr>
           <td>{{ $vehicle_type->name }}</td>
           <td>{{ $vehicle_type->code }}</td>
-          <td>{{ round($vehicle_type->tolerance) }}</td>
+          <td>{{ number_format($vehicle_type->tolerance, 2) }}</td>
           {{-- <td>{{ $vehicle_type->weight_standart }}</td> --}}
           <td>
             <div class="d-flex">

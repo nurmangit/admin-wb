@@ -69,9 +69,9 @@ Jenis Kendaraan: {{ $vehicle_type }}
 Jenis Muatan   : {{ ($weight_type == 'rm' ? 'Raw Material' : 'Finish Good') }}
 Keterangan     : {{$remark}}
 ----------------------------------------
-Masuk (KG):{{$weight_in}}Kg Time In:{{ $weight_in_time }}
-Keluar(KG):{{$weight_out}}Kg Date Out:{{ date('d-m-Y', strtotime($weight_out_date)) }}
-Netto (KG):{{$weight_netto}}Kg Time Out:{{ $weight_out_time }}
+Masuk (KG):{{ number_format($weight_in) }}Kg Time In:{{ $weight_in_time }}
+Keluar(KG):{{ number_format($weight_out) }}Kg Date Out:{{ date('d-m-Y', strtotime($weight_out_date)) }}
+Netto (KG):{{ number_format($weight_netto) }}Kg Time Out:{{ $weight_out_time }}
 ----------------------------------------
 Petugas Timbangan              Pengemudi
 &nbsp;
@@ -86,13 +86,13 @@ DO/SPB No:           Dist Weight (KG)
   $totalWeight = 0;
 @endphp
 @foreach($spb_details as $spbDetail)
-{{ $spbDetail->LegalNumber }}     {{ round($spbDetail->TotalNetWeight * $total_berat_standart) }}
+{{ $spbDetail->LegalNumber }}     {{ number_format(round($spbDetail->TotalNetWeight * $total_berat_standart)) }}
 @php
   $totalWeight += $spbDetail->TotalNetWeight * $total_berat_standart;
 @endphp
 @endforeach
                      -------------------
-       Total Weight: {{ round($totalWeight) }}
+       Total Weight: {{ number_format(round($totalWeight)) }}
 @endif
 
 
