@@ -175,16 +175,16 @@ class VehicleController extends Controller
       "message" => "Data Found!",
       "data" => [
         'vehicle_type' => $vehicle?->vehicle_type->name,
-        'tolerance' => round($vehicle?->vehicle_type->tolerance),
-        'weight_standart' => round($vehicle?->vehicle_type->weight_standart),
+        'tolerance' => ($vehicle?->vehicle_type->tolerance),
+        'weight_standart' => $vehicle?->vehicle_type->weight_standart,
         'transporter_name' => $vehicle?->transporter?->name,
         'slip_no' => $weightBridge?->slip_no,
-        'weight_in' => round($weightBridge?->weight_in),
+        'weight_in' => $weightBridge?->weight_in,
         'weight_in_date' => $weightBridge?->weight_in_date,
         'remark' => $weightBridge?->remark,
         'status' => $weightBridge?->status,
         'device_status' => $deviceData->status ?? false,
-        'total_weight_value' => round($totalWeightValue),
+        'total_weight_value' => ($totalWeightValue),
         'route_print' => $routePrint,
       ]
     ];
