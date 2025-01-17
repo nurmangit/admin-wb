@@ -418,39 +418,48 @@ class WeightBridgeController extends Controller
     public function transporterReport(Request $request)
     {
         $query = "
-        SELECT
-            T1.LegalNumber AS DoNo,
-            T1.ShipDate AS " . "'date'" . ",
-            T1.VehicleNo_c AS PlateNo,
-            T5.Character01 AS VehicleGroup,
-            T1.WBArea_c AS Area,
-            T3.SellingInventoryShipQty AS Quantity,
-            T1.NoDokumen_c AS WbDoc,
-            T2.Number04 AS StdWeight,
-            T2.Number05 AS Weight,
-            T6.Number03 AS Rate,
-            (COALESCE(T6.Number03, 0) * COALESCE(T2.Number03, 0)) AS Amount,
-            T10.CommercialBrand,
-            T7.Character01 AS TransporterName,
-            T7.ShortChar01 AS TransporterCode
-        FROM
-            ShipHead T1
-            LEFT JOIN Ice.UD100 T2 ON T1.Company = T2.Company AND T1.NoDokumen_c = T2.Character01
-            LEFT JOIN ShipDtl T3 ON T1.Company = T3.Company AND T1.PackNum = T3.PackNum
-            --JOIN OrderDtl T11 On T3.OrderLine = T11.OrderLine
-            LEFT JOIN Part T10 ON T3.PartNum = T10.PartNum
-            LEFT JOIN Ice.UD101A T4 ON T2.Key2 = T4.Key1 AND T1.VehicleNo_c = T4.Character01
-            LEFT JOIN Ice.UD101 T5 ON T4.Key2 = T5.Key1
-            LEFT JOIN Ice.UD102 T7 ON T7.Character01 = T2.Character10
-            LEFT JOIN Ice.UD102A T6 ON T4.Key2 = T6.ChildKey1 AND T6.Key2 = T7.Key2
-            LEFT JOIN Ice.UD103A T8 ON T6.Key2 = T8.Key1
-        WHERE
-            T1.Company = 'KMP'
-            AND T1.WBType_c in ('fg','')
-            AND T1.NoDokumen_c <> ''
-            AND T1.ReadyToInvoice = 1
-            AND T10.CommercialBrand IS NOT NULL
-            AND T10.CommercialBrand <> ''
+          SELECT DISTINCT
+              T1.TranDocTypeID AS KodeSPB,
+              T1.LegalNumber AS DoNo,
+              T1.ShipDate AS 'date',
+              T1.VehicleNo_c AS PlateNo,
+              T1.VehicleType_c AS VehicleGroup,
+              T1.WBArea_c AS Area,
+              SUM(T2.OurInventoryShipQty) AS Quantity,
+              T1.NoDokumen_c AS WbDoc,
+              SUM(T2.TotalNetWeight) AS StdWeight,
+              T4.Number03,
+              T4.Number05 AS Weight,
+              T9.Number02 AS Rate,
+              (T4.Number03 * T9.Number02) AS Amount,
+              T1.ReffCity_c AS TransporterName,
+              T1.KwitnsiNo_c AS Kwitansi_NO,
+              CASE
+            WHEN T1.TranDocTypeID LIKE 'PK.%'
+            OR T1.TranDocTypeID LIKE 'PF.%' THEN 'KANMURI'
+            WHEN T1.TranDocTypeID LIKE 'LG.%' THEN 'GRACEWOOD'
+            ELSE 'Produk Lain'
+            END AS Produk
+          FROM
+              ShipHead T1
+          INNER JOIN
+              ShipDtl T2 ON T1.PackNum = T2.PackNum
+          LEFT JOIN
+              Ice.UD100 T4 ON T1.NoDokumen_c = T4.Character01
+          LEFT JOIN
+              Ice.UD101A T5 ON T1.VehicleNo_c = T5.Character01
+          LEFT JOIN
+              Ice.UD101 T6 ON T1.VehicleType_c = T6.Character01
+          LEFT JOIN
+              Ice.UD102 T7 ON T1.ReffCity_c = T7.Character01
+          LEFT JOIN
+              Ice.UD103A T8 ON T1.WBArea_c = T8.Character01
+          LEFT JOIN
+              Ice.UD102A T9 ON T8.Key1 = T9.Key2 AND T9.ChildKey1 = T6.Key1
+          WHERE
+              T1.ReadyToInvoice = 1
+              AND T1.Company = 'KMP'
+              AND T1.NoDokumen_c <> ''
         ";
 
         // filter by date
@@ -468,7 +477,7 @@ class WeightBridgeController extends Controller
                 }
             }
             if ($transporterStr != '') {
-                $query .= "AND T7.Key1 in(" . rtrim($transporterStr, ',') . ")";
+                $query .= "AND T7.Key1 IN (" . rtrim($transporterStr, ',') . ")";
             }
         }
 
@@ -496,7 +505,7 @@ class WeightBridgeController extends Controller
                 }
             }
             if ($vehicleGroupStr != '') {
-                $query .= "AND T5.Key1 in(" . rtrim($vehicleGroupStr, ',') . ")";
+                $query .= "AND T6.Key1 in(" . rtrim($vehicleGroupStr, ',') . ")";
             }
         }
 
@@ -514,7 +523,21 @@ class WeightBridgeController extends Controller
             }
         }
 
-        $query .= " ORDER BY T7.Character01 ASC, T1.ShipDate DESC";
+        $query .= "GROUP BY
+                  T1.TranDocTypeID,
+                  T1.LegalNumber,
+                  T1.ShipDate,
+                  T1.NoDokumen_c,
+                  T1.VehicleNo_c,
+                  T1.VehicleType_c,
+                  T1.ReffCity_c,
+                  T1.WBArea_c,
+                  T4.Number03,
+                  T4.Number05,
+                  T9.Number02,
+                  T1.KwitnsiNo_c";
+
+        $query .= " ORDER BY T1.ReffCity_c ASC, T1.ShipDate DESC";
 
         $spbDetails = DB::select($query);
         $data = [];
