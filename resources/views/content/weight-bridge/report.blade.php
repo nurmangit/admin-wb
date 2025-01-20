@@ -185,7 +185,7 @@
               $subtotalQuantity += $data->Quantity ?? 0;
               $subtotalStdWeight += $data->StdWeight ?? 0;
               $subtotalWeight += $data->Weight ?? 0;
-              $subtotalVar += $data->VarKag ?? 0;
+              $subtotalVar += $data->VarKg ?? 0;
               $subtotalRate += $data->Rate ?? 0;
               $subtotalAmount += $data->Amount ?? 0;
 
@@ -193,7 +193,7 @@
               $totalQuantity += $data->Quantity ?? 0;
               $totalStdWeight += $data->StdWeight ?? 0;
               $totalWeight += $data->Weight ?? 0;
-              $totalVar += $data->VarKag ?? 0;
+              $totalVar += $data->VarKg ?? 0;
               $totalRate += $data->Rate ?? 0;
               $totalAmount += $data->Amount ?? 0;
               @endphp
@@ -297,12 +297,21 @@
     });
     $('#btn-download-pdf').on('click', function() {
       $('#export').val('PDF')
+      addUrlParamsToForm('#filter');
       $('#filter').submit()
-    })
+    });
     $('#btn-filter').on('click', function() {
       $('#export').val(null)
       $('#filter').submit()
     })
+    function addUrlParamsToForm(formSelector) {
+        var urlParams = new URLSearchParams(window.location.search);
+        urlParams.forEach(function(value, key) {
+            if (!$(formSelector).find('input[name="' + key + '"]').length) {
+                $(formSelector).append('<input type="hidden" name="' + key + '" value="' + value + '">');
+            }
+        });
+    }
     $('#btn-add').on('click', function() {
       // Get the value from the input field
       const doNumber = $('input[name="do_number_string"]').val();

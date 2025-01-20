@@ -138,7 +138,7 @@
                 $subtotalQuantity += $data->Quantity ?? 0;
                 $subtotalStdWeight += $data->StdWeight ?? 0;
                 $subtotalWeight += $data->Weight ?? 0;
-                $subtotalVar += $data->VarKag ?? 0;
+                $subtotalVar += $data->VarKg ?? 0;
                 $subtotalRate += $data->Rate ?? 0;
                 $subtotalAmount += $data->Amount ?? 0;
 
@@ -146,7 +146,7 @@
                 $totalQuantity += $data->Quantity ?? 0;
                 $totalStdWeight += $data->StdWeight ?? 0;
                 $totalWeight += $data->Weight ?? 0;
-                $totalVar += $data->VarKag ?? 0;
+                $totalVar += $data->VarKg ?? 0;
                 $totalRate += $data->Rate ?? 0;
                 $totalAmount += $data->Amount ?? 0;
                 @endphp
@@ -163,7 +163,7 @@
                     <td>{{ $data->WbDoc ?? 'N/A' }}</td>
                     <td>{{ number_format($data->StdWeight ?? 0, 0) }}</td>
                     <td>{{ number_format($data->Weight ?? 0, 0) }}</td>
-                    <td>{{ number_format($data->VarKag ?? 0, 0) }}</td>
+                    <td>{{ number_format($data->VarKg ?? 0, 0) }}</td>
                     <td>{{ number_format($data->Rate ?? 0, 0) }}</td>
                     <td>{{ number_format($data->Amount ?? 0, 0) }}</td>
                 </tr>

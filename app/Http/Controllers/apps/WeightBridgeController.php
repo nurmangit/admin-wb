@@ -417,6 +417,7 @@ class WeightBridgeController extends Controller
 
     public function transporterReport(Request $request)
     {
+        $hasFilter = false;
         $query = "
           SELECT DISTINCT
               T1.TranDocTypeID AS KodeSPB,
@@ -465,6 +466,7 @@ class WeightBridgeController extends Controller
         // filter by date
         if ($request->get('period_from') != null && $request->get('period_to') != null) {
             $query .= "AND T1.ShipDate BETWEEN '" . $request->period_from . "' AND '" . $request->period_to . "'";
+            $hasFilter = true;
         }
 
         // filter by transporter
@@ -478,6 +480,7 @@ class WeightBridgeController extends Controller
             }
             if ($transporterStr != '') {
                 $query .= "AND T7.Key1 IN (" . rtrim($transporterStr, ',') . ")";
+                $hasFilter = true;
             }
         }
 
@@ -492,6 +495,7 @@ class WeightBridgeController extends Controller
             }
             if ($areaStr != '') {
               $query .= "AND LOWER(T1.WBArea_c) in(" . rtrim($areaStr, ',') . ")";
+              $hasFilter = true;
             }
         }
 
@@ -506,6 +510,7 @@ class WeightBridgeController extends Controller
             }
             if ($vehicleGroupStr != '') {
                 $query .= "AND T6.Key1 in(" . rtrim($vehicleGroupStr, ',') . ")";
+                $hasFilter = true;
             }
         }
 
@@ -520,6 +525,7 @@ class WeightBridgeController extends Controller
             }
             if ($doNumberStr != '') {
                 $query .= "AND  T1.LegalNumber in(" . rtrim($doNumberStr, ',') . ")";
+                $hasFilter = true;
             }
         }
 
@@ -550,6 +556,7 @@ class WeightBridgeController extends Controller
         if (count($data) > 1) {
             $isMultipleTransporter = true;
         }
+        // dd($data);
         if ($request->get('export') == 'PDF') {
             $pdf = PDF::loadView('content.weight-bridge.print.report', [
                 "reports" => $data,
@@ -567,7 +574,7 @@ class WeightBridgeController extends Controller
         return view(
             'content.weight-bridge.report',
             [
-                "reports" => $data,
+                "reports" => $hasFilter ? $data : [],
                 "transporters" => Transporter::all(),
                 "areas" => Area::select('Key1', 'Character01')->get(),
                 "vehicles" => Vehicle::select('Key1', 'Character01')->get(),
