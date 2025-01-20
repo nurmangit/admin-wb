@@ -210,7 +210,7 @@
                 <td>{{ $data->WbDoc ?? 'N/A' }}</td>
                 <td class="text-end">{{ number_format($data->StdWeight ?? 0, 0) }}</td>
                 <td class="text-end">{{ number_format($data->Weight ?? 0, 0) }}</td>
-                <td class="text-end">{{ number_format($data->Difference ?? 0, 0) }}</td>
+                <td class="text-end">{{ number_format($data->VarKg ?? 0, 0) }}</td>
                 <td class="text-end">{{ number_format($data->Rate ?? 0, 0) }}</td>
                 <td class="text-end">{{ number_format($data->Amount ?? 0, 0) }}</td>
               </tr>
