@@ -273,6 +273,7 @@ class WeightBridgeController extends Controller
         try {
             $weightBridge->weight_out = $validated['weight_out'];
             $weightBridge->weight_out_date = $currentDateTime;
+            $weightBridge->weight_standart = $validated['weight_standart_epicor'];
             $weightBridge->weight_out_by = 'admin';
             if ($validated['weighing_type'] == 'rm') {
                 if ($validated['weight_out'] > $weightBridge->weight_in) {
