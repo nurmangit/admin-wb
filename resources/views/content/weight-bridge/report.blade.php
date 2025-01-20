@@ -185,7 +185,7 @@
               $subtotalQuantity += $data->Quantity ?? 0;
               $subtotalStdWeight += $data->StdWeight ?? 0;
               $subtotalWeight += $data->Weight ?? 0;
-              $subtotalVar += $data->Difference ?? 0;
+              $subtotalVar += $data->VarKag ?? 0;
               $subtotalRate += $data->Rate ?? 0;
               $subtotalAmount += $data->Amount ?? 0;
 
@@ -193,7 +193,7 @@
               $totalQuantity += $data->Quantity ?? 0;
               $totalStdWeight += $data->StdWeight ?? 0;
               $totalWeight += $data->Weight ?? 0;
-              $totalVar += $data->Difference ?? 0;
+              $totalVar += $data->VarKag ?? 0;
               $totalRate += $data->Rate ?? 0;
               $totalAmount += $data->Amount ?? 0;
               @endphp
