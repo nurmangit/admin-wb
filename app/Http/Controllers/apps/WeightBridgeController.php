@@ -418,7 +418,7 @@ class WeightBridgeController extends Controller
 
     public function transporterReport(Request $request)
     {
-        $hasFilter = false;
+        $hasFilter = true;
         $query = "
           SELECT DISTINCT
               T1.TranDocTypeID AS KodeSPB,
@@ -570,6 +570,133 @@ class WeightBridgeController extends Controller
 
             // Output the PDF for download or inline view
             return $pdf->stream("report.pdf");
+        }
+
+        if ($request->get('export') == 'CSV') {
+          $fileName = 'report.csv';
+          $headers = [
+              "Content-type" => "text/csv",
+              "Content-Disposition" => "attachment; filename=$fileName",
+              "Pragma" => "no-cache",
+              "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+              "Expires" => "0",
+          ];
+
+          // Open output stream
+          $callback = function () use ($data, $isMultipleTransporter) {
+              $file = fopen('php://output', 'w');
+
+              $grandTotalQuantity = 0;
+              $grandTotalStdWeight = 0;
+              $grandTotalWeight = 0;
+              $grandTotalVar = 0;
+              $grandTotalRate = 0;
+              $grandTotalAmount = 0;
+
+              foreach ($data as $key => $report) {
+                  $subTotalQuantity = 0;
+                  $subTotalStdWeight = 0;
+                  $subTotalWeight = 0;
+                  $subTotalVar = 0;
+                  $subTotalRate = 0;
+                  $subTotalAmount = 0;
+
+                  // Write "Kode Suplier" and "Nama Transporter"
+                  fputcsv($file, ['Kode Suplier:', $report[0]->TransporterCode ?? 'N/A']);
+                  fputcsv($file, ['Nama Transporter:', $key ?? 'N/A']);
+
+                  // Write headers
+                  fputcsv($file, [
+                      'D/O NO',
+                      'Date',
+                      'Plate NO',
+                      'Vehicle Group',
+                      'Area',
+                      'Quantity',
+                      'WB.Doc',
+                      'STD Weight (Kg)',
+                      'Weight (Kg)',
+                      'Var (Kg)',
+                      'Rate',
+                      'Amount (Rp)',
+                  ]);
+
+                  // Write data rows
+                  foreach ($report as $row) {
+                      // Accumulate subtotals
+                      $subTotalQuantity += $row->Quantity ?? 0;
+                      $subTotalStdWeight += $row->StdWeight ?? 0;
+                      $subTotalWeight += $row->Weight ?? 0;
+                      $subTotalVar += $row->VarKg ?? 0;
+                      $subTotalRate += $row->Rate ?? 0;
+                      $subTotalAmount += $row->Amount ?? 0;
+
+                      fputcsv($file, [
+                          $row->DoNo ?? 'N/A',
+                          $row->date ? \Carbon\Carbon::parse(str_replace(':AM', ' AM', str_replace(':PM', ' PM', $row->date)))->format('d-m-Y') : '',
+                          $row->PlateNo ?? 'N/A',
+                          $row->VehicleGroup ?? 'N/A',
+                          !empty($row->Area) ? $row->Area : 'N/A',
+                          number_format($row->Quantity, 0),
+                          $row->WbDoc ?? 'N/A',
+                          number_format($row->StdWeight ?? 0, 0),
+                          number_format($row->Weight ?? 0, 0),
+                          number_format($row->VarKg ?? 0, 0),
+                          number_format($row->Rate ?? 0, 0),
+                          number_format($row->Amount, 0),
+                      ]);
+                  }
+
+                  // Write subtotals for the group
+                  // fputcsv($file, []);
+                  fputcsv($file, [
+                      '',
+                      '',
+                      '',
+                      '',
+                      'Subtotal:',
+                      number_format($subTotalQuantity, 0),
+                      '',
+                      number_format($subTotalStdWeight, 0),
+                      number_format($subTotalWeight, 0),
+                      number_format($subTotalVar, 0),
+                      number_format($subTotalRate, 0),
+                      number_format($subTotalAmount, 0),
+                  ]);
+
+                  // Update grand totals
+                  $grandTotalQuantity += $subTotalQuantity;
+                  $grandTotalStdWeight += $subTotalStdWeight;
+                  $grandTotalWeight += $subTotalWeight;
+                  $grandTotalVar += $subTotalVar;
+                  $grandTotalRate += $subTotalRate;
+                  $grandTotalAmount += $subTotalAmount;
+
+                  // Add a blank line to separate each transporter group
+                  fputcsv($file, []);
+              }
+
+              // Write grand totals
+              fputcsv($file, []);
+              fputcsv($file, [
+                  '',
+                  '',
+                  '',
+                  '',
+                  'Grand Total:',
+                  number_format($grandTotalQuantity, 0),
+                  '',
+                  number_format($grandTotalStdWeight, 0),
+                  number_format($grandTotalWeight, 0),
+                  number_format($grandTotalVar, 0),
+                  number_format($grandTotalRate, 0),
+                  number_format($grandTotalAmount, 0),
+              ]);
+
+              fclose($file);
+          };
+
+          return response()->stream($callback, 200, $headers);
         }
 
         return view(
