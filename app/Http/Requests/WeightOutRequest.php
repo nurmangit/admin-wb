@@ -29,6 +29,7 @@ class WeightOutRequest extends FormRequest
             'remark' => 'nullable|string|max:50',
             'po_do' => 'nullable|string|max:255',
             'weighing_type' => 'required|in:rm,fg',
+            'weight_standart_epicor' => 'required',
         ];
     }
 }

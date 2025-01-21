@@ -92,7 +92,10 @@
               <!-- Weight Standart -->
               <div class="mb-3">
                 <label class="form-label" for="weight-standart-epicor">Weight Standart</label>
-                <input type="number" class="form-control" id="weight-standart-epicor" placeholder="Enter weight standart" disabled />
+                <input type="number" class="form-control  @error('weight_standart_epicor') is-invalid @enderror" name="weight_standart_epicor" id="weight-standart-epicor" placeholder="Enter weight standart" readonly />
+                @error('weight_standart_epicor')
+                  <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
               </div>
               <!-- Remark -->
               <div class="mb-3">

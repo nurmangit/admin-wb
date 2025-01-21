@@ -113,6 +113,7 @@
           <a type="button" href="{{ route('transaction.weight-bridge.report') }}" class="btn btn-secondary mt-3">Clear Filter</a>
           <a type="button" id="btn-filter" class="btn btn-primary mt-3 text-white">Apply Filter</a>
           <a type="button" id="btn-download-pdf" class="btn btn-success mt-3 text-white">Download PDF</a>
+          <a type="button" id="btn-download-csv" class="btn btn-info mt-3 text-white">Download CSV</a>
         </div>
       </form>
       {{-- // form filter --}}
@@ -297,6 +298,11 @@
     });
     $('#btn-download-pdf').on('click', function() {
       $('#export').val('PDF')
+      addUrlParamsToForm('#filter');
+      $('#filter').submit()
+    });
+    $('#btn-download-csv').on('click', function() {
+      $('#export').val('CSV')
       addUrlParamsToForm('#filter');
       $('#filter').submit()
     });
