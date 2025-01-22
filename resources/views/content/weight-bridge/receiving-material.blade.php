@@ -66,7 +66,7 @@
               <!-- Weight Netto -->
               <div class="mb-3">
                 <label class="form-label" for="weight-netto">Weight Netto</label>
-                <input type="number" class="form-control" id="weight-netto" placeholder="Enter weight netto" disabled />
+                <input type="number" class="form-control  @error('weight_standart_epicor') is-invalid @enderror" name="weight_standart_epicor" id="weight-netto" placeholder="Enter weight netto" readonly />
               </div>
               <!-- Remark -->
               <div class="mb-3">
