@@ -97,7 +97,7 @@
             <tr>
                 <th colspan="1" style="background: white;">
                     <div class="small text-start">
-                        <strong>Nama Transporter:</strong>
+                        <strong>Nama Suplier:</strong>
                     </div>
                 </th>
                 <th colspan="5" style="background: white;">

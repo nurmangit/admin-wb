@@ -418,9 +418,10 @@ class WeightBridgeController extends Controller
 
     public function transporterReport(Request $request)
     {
-        $hasFilter = true;
+        $hasFilter = false;
         $query = "
           SELECT DISTINCT
+              T7.ShortChar01 AS TransporterCode,
               T1.TranDocTypeID AS KodeSPB,
               T1.LegalNumber AS DoNo,
               T1.ShipDate AS 'date',
@@ -531,6 +532,7 @@ class WeightBridgeController extends Controller
         }
 
         $query .= "GROUP BY
+                  T7.ShortChar01,
                   T1.TranDocTypeID,
                   T1.LegalNumber,
                   T1.ShipDate,
@@ -603,7 +605,7 @@ class WeightBridgeController extends Controller
 
                   // Write "Kode Suplier" and "Nama Transporter"
                   fputcsv($file, ['Kode Suplier:', $report[0]->TransporterCode ?? 'N/A']);
-                  fputcsv($file, ['Nama Transporter:', $key ?? 'N/A']);
+                  fputcsv($file, ['Nama Suplier:', $key ?? 'N/A']);
 
                   // Write headers
                   fputcsv($file, [
