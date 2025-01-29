@@ -85,7 +85,7 @@ class DeviceController extends Controller
     $lastUpdateTime = Carbon::parse($dateString);
     $currentTime = Carbon::now();
 
-    if ($currentTime->diffInSeconds($lastUpdateTime) < 7 && (int)$device->current_weight != 0) {
+    if ($currentTime->diffInSeconds($lastUpdateTime) > 7 && (int)$device->current_weight != 0) {
       $device->status = 'stable';
       $device->save();
     }
