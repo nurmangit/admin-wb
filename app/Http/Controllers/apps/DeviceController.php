@@ -47,7 +47,7 @@ class DeviceController extends Controller
       $device->status = 'unstable';
     }
 
-    $device->updated_at = Carbon::now();
+    $device->last_update = Carbon::now();
     // Save the updated device information
     $device->save();
 
@@ -81,17 +81,23 @@ class DeviceController extends Controller
       );
     }
 
-    // Return success response with the device's current weight and status
-    return response()->json(
-      [
-        "status" => "success",
-        "message" => "Device details retrieved!",
-        "data" => [
-          "current_weight" => (int)$device->current_weight,
-          "status" => $device->status
-        ]
-      ],
-      200
-    );
+    $dateString = $device->last_update;
+    $lastUpdateTime = Carbon::parse($dateString);
+    $currentTime = Carbon::now();
+
+    if ($currentTime->diffInSeconds($lastUpdateTime) < 5 && (int)$device->current_weight != 0) {
+      $device->status = 'stable';
+      $device->save();
+    }
+
+    return response()->json([
+      "status" => "success",
+      "message" => "Device details retrieved!",
+      "data" => [
+        "current_weight" => (int)$device->current_weight,
+        "status" => $device->status,
+        "time" => $lastUpdateTime->toDateTimeString(),
+      ]
+    ], 200);
   }
 }

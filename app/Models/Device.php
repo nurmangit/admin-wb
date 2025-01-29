@@ -53,6 +53,7 @@ class Device extends Model
 			'current_weight' => 'Number01',
 			'previous_weight' => 'Number02',
 			'used_at' => 'Character04',
+			'last_update' => 'Character05',
 			'created_at' => 'Date02',
 			'updated_at' => 'Date03',
 			'deleted_at' => 'Date04',
