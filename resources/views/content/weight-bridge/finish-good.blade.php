@@ -94,7 +94,7 @@
                 <label class="form-label" for="weight-standart-epicor">Weight Standart</label>
                 <input type="number" class="form-control  @error('weight_standart_epicor') is-invalid @enderror" name="weight_standart_epicor" id="weight-standart-epicor" placeholder="Enter weight standart" readonly />
                 @error('weight_standart_epicor')
-                  <div class="invalid-feedback">{{ $message }}</div>
+                <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
               </div>
               <!-- Remark -->
@@ -219,7 +219,7 @@
           stopAllFetchIntervals();
           fetchIntervals.push(setInterval(function() {
             fetchDeviceDetails(fetchType);
-          }, 2000));
+          }, 3000));
         }
         if (fetchType === 'in') {
           $('#weight-in').attr('disabled', false);
@@ -355,13 +355,13 @@
                 fetchType = 'out';
                 fetchIntervals.push(setInterval(function() {
                   fetchDeviceDetails('out');
-                }, 2000));
+                }, 3000));
               } else {
                 // Call the fetch function every 1 second
                 fetchType = 'in';
                 fetchIntervals.push(setInterval(function() {
                   fetchDeviceDetails('in');
-                }, 2000));
+                }, 3000));
                 $('#weightOutBtn').attr('disabled', true);
                 $('#weight-out').attr('disabled', true)
               }

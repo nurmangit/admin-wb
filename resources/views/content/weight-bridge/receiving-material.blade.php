@@ -190,7 +190,7 @@
           stopAllFetchIntervals();
           fetchIntervals.push(setInterval(function() {
             fetchDeviceDetails(fetchType);
-          }, 2000));
+          }, 3000));
         }
         if (fetchType === 'in') {
           $('#weight-in').attr('disabled', false);
@@ -314,13 +314,13 @@
                 fetchType = 'out';
                 fetchIntervals.push(setInterval(function() {
                   fetchDeviceDetails(fetchType);
-                }, 2000));
+                }, 3000));
               } else {
                 // Call the fetch function every 1 second
                 fetchType = 'in';
                 fetchIntervals.push(setInterval(function() {
                   fetchDeviceDetails(fetchType);
-                }, 2000));
+                }, 3000));
                 $('#po_do').attr('disabled', true);
                 $('#weightOutBtn').attr('disabled', true);
                 $('#weight-out').attr('disabled', true)
