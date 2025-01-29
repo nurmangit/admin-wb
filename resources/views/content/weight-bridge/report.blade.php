@@ -145,7 +145,7 @@
                     </div>
                     <div class="col-12">
                       <div class="form-group">
-                        <label class="small">Nama Transporter</label>
+                        <label class="small">Nama Suplier</label>
                         <input readonly type="text" value="{{ $key ?? '' }}" class="form-control form-control-sm">
                       </div>
                     </div>

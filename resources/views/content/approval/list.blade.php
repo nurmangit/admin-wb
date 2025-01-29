@@ -38,7 +38,7 @@
           <td>{{$approval->weight_bridge->vehicle->register_number ?? '-'}}</td>
           <td>{{$approval->weight_bridge->weight_netto}} KG</td>
           <td>{{$approval->weight_bridge->vehicle->vehicle_type->tolerance ?? '-'}} KG</td>
-          <td>{{$approval->weight_bridge->vehicle->vehicle_type->weight_standart ?? '-'}} KG</td>
+          <td>{{$approval->weight_bridge->weight_standart ?? '-'}} KG</td>
           <td class="text-danger">{{$approval->weight_bridge->difference}} KG</td>
           <td>{{$approval->weight_bridge->weight_out_date}}</td>
           <td><span class="badge fw-bold text-secondary bg-label-{{ (($approval->is_approve == true) ? 'success' : (($approval->is_reject == true) ? 'danger' : 'warning'))}}">{{$approval->weight_bridge->status}}</span></td>
