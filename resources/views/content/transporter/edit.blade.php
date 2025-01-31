@@ -38,6 +38,13 @@
             @enderror
           </div>
 
+          <div class="mb-3">
+            <label class="form-label" for="contact_person">Contact Person</label>
+            <input type="text" class="form-control" id="contact_person" name="contact_person" placeholder="Contact Person" value="{{ old('contact_person', $transporter->contact_person) }}" />
+            @error('contact_person')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
+          </div>
           {{-- <div class="mb-3">
             <label class="form-label" for="area_uuid">Area <span class="text-danger">*</span></label>
 

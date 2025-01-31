@@ -16,14 +16,14 @@ use Yajra\Auditable\AuditableWithDeletesTrait;
 
 /**
  * Class Transporter
- * 
+ *
  * @property string $uuid
  * @property string $name
  * @property string $code
  * @property string $address
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property Collection|Vehicle[] $vehicles
  *
  * @package App\Models
@@ -42,7 +42,8 @@ class Transporter extends Model
 		'name',
 		'code',
 		'address',
-		'area_uuid'
+		'area_uuid',
+    'contact_person'
 	];
 
 	public function vehicles()
@@ -64,6 +65,7 @@ class Transporter extends Model
 			'name' => 'Character01',
 			'code' => 'ShortChar01',
 			'address' => 'Character02',
+      'contact_person' => 'Character03',
 			'area_uuid' => 'Key2',
 			'created_at' => 'Date01',
 			'updated_at' => 'Date02',

@@ -27,6 +27,7 @@ class TransporterStoreRequest extends FormRequest
             'code' => 'required|max:50|unique:sqlsrv.Ice.UD102,ShortChar01',
             'name' => 'required|max:255',
             'address' => 'nullable',
+            'contact_person' => 'nullable',
         ];
     }
 }
