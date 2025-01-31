@@ -58,7 +58,7 @@ PT. KERAMINDO MEGAH PERTIWI <br>TANGERANG
 SLIP TIMBANGAN
 ----------------------------------------
 No.Doc     :{{ $slip_no }} Date:{{ date('d-m-Y', strtotime($weight_in_date)) }}
-No Polisi  :{{ $vehicle_no }}
+No Polisi  :{{ $vehicle_no }}           > {{ ($status == 'FG-OUT' || $status == 'RM-OUT') ? 'Keluar' : 'Masuk' }}
 @if($weight_type == "fg")
 Transporter:{{ $transporter_name }}
 ----------------------------------------
@@ -80,19 +80,19 @@ Petugas Timbangan              Pengemudi
 &nbsp;
 &nbsp;
 @if($weight_type == 'fg' and $status == 'FG-OUT')
-DO/SPB No:           Dist Weight (KG)
-------------------   -------------------
+DO/SPB No:         Dist Weight (KG)
+------------------ -------------------
 @php
   $totalWeight = 0;
 @endphp
 @foreach($spb_details as $spbDetail)
-{{ $spbDetail->LegalNumber }}      {{ number_format(round($spbDetail->TotalNetWeight * $total_berat_standart)) }}
+{{ str_pad($spbDetail->LegalNumber, 18) }} {{ str_pad(number_format(round($spbDetail->TotalNetWeight * $total_berat_standart)), 10, ' ', STR_PAD_LEFT) }}
 @php
   $totalWeight += $spbDetail->TotalNetWeight * $total_berat_standart;
 @endphp
 @endforeach
-                     -------------------
-       Total Weight: {{ number_format(round($totalWeight)) }}
+------------------- -------------------
+{{ str_pad('Total Weight:', 18) }} {{ str_pad(number_format(round($totalWeight)), 10, ' ', STR_PAD_LEFT) }}
 @endif
 
 
