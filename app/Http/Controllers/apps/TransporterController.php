@@ -57,9 +57,8 @@ class TransporterController extends Controller
   {
     $transporter = Transporter::findOrFail($uuid);
     $validated = $request->validated();
-    if (!isset($validated['address'])) {
-      $validated['address'] = '';
-    }
+    $validated['address'] = $validated['address'] ?? '';
+    $validated['contact_person'] = $validated['contact_person'] ?? '';
     $transporter->update($validated);
     return redirect()->route(
       'master-data.transporter.edit',
@@ -84,9 +83,8 @@ class TransporterController extends Controller
   public function store(TransporterStoreRequest $request)
   {
     $validated = $request->validated();
-    if (!isset($validated['address'])) {
-      $validated['address'] = '';
-    }
+    $validated['address'] = $validated['address'] ?? '';
+    $validated['contact_person'] = $validated['contact_person'] ?? '';
     Transporter::create($validated);
     return redirect()->route('master-data.transporter.list')->with('success', 'Transporter created successfully');
   }
