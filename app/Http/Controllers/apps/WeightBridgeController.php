@@ -24,8 +24,14 @@ class WeightBridgeController extends Controller
 {
     public function index()
     {
-        $weightBridgeRawMaterial = WeightBridge::where('ShortChar01', 'rm')->get();
-        $weightBridgeFinishGood = WeightBridge::where('ShortChar01', 'fg')->get();
+      $weightBridgeRawMaterial = WeightBridge::where('ShortChar01', 'rm')
+          ->orderByRaw('CAST(Character09 AS DATETIME) DESC')
+          ->get();
+
+      $weightBridgeFinishGood = WeightBridge::where('ShortChar01', 'fg')
+          ->orderByRaw('CAST(Character09 AS DATETIME) DESC')
+          ->get();
+
         return view('content.weight-bridge.list', [
             'raw_materials' => $weightBridgeRawMaterial,
             'finish_goods' => $weightBridgeFinishGood,
