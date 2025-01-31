@@ -134,6 +134,16 @@
     let queryKey = 'type';
     let queryValue = '';
 
+    // Define the function to format numbers
+    function formatNumber(value, decimals) {
+      return parseFloat(value).toFixed(decimals);
+    }
+
+    // Function to normalize formatted numbers
+    function normalizeNumber(value) {
+      return parseFloat(value);
+    }
+
     function fetchDeviceDetails(type) {
       $.ajax({
         url: "{{ route('device.detail') }}", // The URL to the controller method
@@ -142,7 +152,7 @@
           // Assuming your response has a 'data' field with 'current_weight' and 'status'
           if (response.status === "success") {
             // Update the value of the input field with the current weight
-            $(`#weight-${type}`).val(response.data.current_weight);
+            $(`#weight-${type}`).val(formatNumber(response.data.current_weight, 2));
             $(`#weight-${type}`).trigger('input');
             if (response.data.status == 'stable') {
               $(`#weight-${type}-feedback-valid`).text('Weight Stable');
@@ -244,7 +254,8 @@
       var weightOut = $(this).val();
       if (weightIn - weightOut >= 0) {
         $('#weight-out').removeClass('is-invalid')
-        $('#weight-netto').val(weightIn - weightOut);
+        var weightNetto = formatNumber(weightIn - weightOut, 2);
+        $('#weight-netto').val(weightNetto);
       } else {
         $('#weight-netto').val('');
         $('#weight-out').addClass('is-invalid')
@@ -301,7 +312,7 @@
               $('#weight-in').attr('disabled', false);
               if (response.data.status == 'RM-IN') {
                 $('#weightInBtn').attr('disabled', true);
-                $('#weight-in').val(response.data.weight_in);
+                $('#weight-in').val(formatNumber(response.data.weight_in, 2));
                 $('#date-weight-in').val(response.data.weight_in_date);
                 $('#weight-bridge-slip-no').val(response.data.slip_no);
                 $('#remark').val(response.data.remark);

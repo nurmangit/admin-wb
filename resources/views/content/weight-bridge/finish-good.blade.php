@@ -162,6 +162,16 @@
     let queryKey = 'type';
     let queryValue = '';
 
+    // Define the function to format numbers
+    function formatNumber(value, decimals) {
+      return parseFloat(value).toFixed(decimals);
+    }
+
+    // Function to normalize formatted numbers
+    function normalizeNumber(value) {
+      return parseFloat(value);
+    }
+
     function fetchDeviceDetails(type) {
       $.ajax({
         url: "{{ route('device.detail') }}", // The URL to the controller method
@@ -170,7 +180,7 @@
           // Assuming your response has a 'data' field with 'current_weight' and 'status'
           if (response.status === "success") {
             // Update the value of the input field with the current weight
-            $(`#weight-${type}`).val(response.data.current_weight);
+            $(`#weight-${type}`).val(formatNumber(response.data.current_weight, 2));
             $(`#weight-${type}`).trigger('input');
             if (response.data.status == 'stable') {
               $(`#weight-${type}-feedback-valid`).text('Weight Stable');
@@ -276,8 +286,12 @@
       var weightOut = $(this).val();
       var weightStandartEpicor = $('#weight-standart-epicor').val();
       if (weightOut - weightIn >= 0) {
-        $('#weight-netto').val(weightOut - weightIn);
-        $('#difference').val(Math.abs((weightOut - weightIn) - weightStandartEpicor));
+        var weightNetto = formatNumber(weightOut - weightIn, 2);
+        $('#weight-netto').val(weightNetto);
+
+        var difference = Math.abs((weightOut - weightIn) - weightStandartEpicor);
+        $('#difference').val(formatNumber(difference, 2));
+
         var diff = $('#difference').val();
         if (Number(diff) > Number(tolerance)) {
           $('#difference').addClass('is-invalid');
@@ -288,7 +302,6 @@
         $('#weight-netto').val('');
       }
     });
-
 
     $('#btn-print').on('click', function() {
       event.preventDefault();
@@ -338,11 +351,11 @@
               $('#weight-standart').val(response.data.weight_standart);
               $('#tolerance').val(response.data.tolerance);
               $('#transporter-name').val(response.data.transporter_name);
-              $('#weight-standart-epicor').val(response.data.total_weight_value);
+              $('#weight-standart-epicor').val(formatNumber(response.data.total_weight_value, 2));
               $('#weight-in').attr('disabled', false);
               if (response.data.status == 'FG-IN') {
                 $('#weightInBtn').attr('disabled', true);
-                $('#weight-in').val(response.data.weight_in);
+                $('#weight-in').val(formatNumber(response.data.weight_in, 2));
                 $('#date-weight-in').val(response.data.weight_in_date);
                 $('#weight-bridge-slip-no').val(response.data.slip_no);
                 $('#remark').val(response.data.remark);

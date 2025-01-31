@@ -175,8 +175,8 @@ class VehicleController extends Controller
       "message" => "Data Found!",
       "data" => [
         'vehicle_type' => $vehicle?->vehicle_type->name,
-        'tolerance' => ($vehicle?->vehicle_type->tolerance),
-        'weight_standart' => $vehicle?->vehicle_type->weight_standart,
+        'tolerance' => number_format($vehicle?->vehicle_type->tolerance, 2),
+        'weight_standart' => number_format($vehicle?->vehicle_type->weight_standart, 2),
         'transporter_name' => $vehicle?->transporter?->name,
         'slip_no' => $weightBridge?->slip_no,
         'weight_in' => $weightBridge?->weight_in,
