@@ -86,13 +86,13 @@ DO/SPB No:         Dist Weight (KG)
   $totalWeight = 0;
 @endphp
 @foreach($spb_details as $spbDetail)
-{{ str_pad($spbDetail->LegalNumber, 18) }} {{ str_pad(number_format(round($spbDetail->TotalNetWeight * $total_berat_standart)), 10, ' ', STR_PAD_LEFT) }}
+{{ str_pad($spbDetail->LegalNumber, 18) }} {{ sprintf('%10s', number_format(($spbDetail->TotalNetWeight * $total_berat_standart), 2, '.', ',')) }}
 @php
   $totalWeight += $spbDetail->TotalNetWeight * $total_berat_standart;
 @endphp
 @endforeach
 ------------------- -------------------
-{{ str_pad('Total Weight:', 18) }} {{ str_pad(number_format(round($totalWeight)), 10, ' ', STR_PAD_LEFT) }}
+{{ str_pad('Total Weight:', 18) }} {{ sprintf('%10s', number_format($totalWeight, 2, '.', ',')) }}
 @endif
 
 

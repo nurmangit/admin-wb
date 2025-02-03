@@ -434,21 +434,21 @@ class WeightBridgeController extends Controller
               T1.VehicleNo_c AS PlateNo,
               T1.VehicleType_c AS VehicleGroup,
               T1.WBArea_c AS Area,
-              SUM(T2.OurInventoryShipQty) AS Quantity,
               T1.NoDokumen_c AS WbDoc,
-              SUM(T2.TotalNetWeight) AS StdWeight,
-              T4.Number03 As Weight,
-              T4.Number05 AS VarKg,
-              T9.Number02 AS Rate,
-              (T4.Number03 * T9.Number02) AS Amount,
               T1.ReffCity_c AS TransporterName,
               T1.KwitnsiNo_c AS Kwitansi_NO,
               CASE
-            WHEN T1.TranDocTypeID LIKE 'PK.%'
-            OR T1.TranDocTypeID LIKE 'PF.%' THEN 'KANMURI'
-            WHEN T1.TranDocTypeID LIKE 'LG.%' THEN 'GRACEWOOD'
-            ELSE 'Produk Lain'
-            END AS Produk
+                WHEN T1.TranDocTypeID LIKE 'PK.%'
+                OR T1.TranDocTypeID LIKE 'PF.%' THEN 'KANMURI'
+                WHEN T1.TranDocTypeID LIKE 'LG.%' THEN 'GRACEWOOD'
+                ELSE 'Other Product'
+              END AS Product,
+              SUM(T2.OurInventoryShipQty) AS Quantity,
+              SUM(T2.TotalNetWeight) AS StdWeight,
+              (T1.VolumeDimensi_c / NULLIF(T10.beratStandart, 0.000)) * T2.TotalNetWeight AS Weight,
+              ((T1.VolumeDimensi_c / NULLIF(T10.beratStandart, 0.000)) * T2.TotalNetWeight) - SUM(T2.TotalNetWeight) AS VarKg,
+              T9.Number02 AS Rate,
+              ((T1.VolumeDimensi_c / NULLIF(T10.beratStandart, 0.000)) * T2.TotalNetWeight * T9.Number02) AS Amount
           FROM
               ShipHead T1
           INNER JOIN
@@ -465,6 +465,21 @@ class WeightBridgeController extends Controller
               Ice.UD103A T8 ON T1.WBArea_c = T8.Character01
           LEFT JOIN
               Ice.UD102A T9 ON T8.Key1 = T9.Key2 AND T9.ChildKey1 = T6.Key1
+          LEFT JOIN (
+              SELECT
+                  T1.Company,
+                  NoDokumen_c,
+                  SUM(T2.TotalNetWeight) AS beratStandart
+              FROM
+                  ShipHead AS T1
+              LEFT JOIN
+                  ShipDtl AS T2 ON T1.PackNum = T2.PackNum AND T1.Company = T2.Company
+              WHERE
+                  NoDokumen_c <> ''
+              GROUP BY
+                  T1.Company,
+                  NoDokumen_c
+          ) T10 ON T1.Company = T10.Company AND T1.NoDokumen_c = T10.NoDokumen_c
           WHERE
               T1.ReadyToInvoice = 1
               AND T1.Company = 'KMP'
@@ -537,6 +552,31 @@ class WeightBridgeController extends Controller
             }
         }
 
+        // filter by product
+        if ($request->get('product') != null) {
+            $productArr = $request->get('product');
+            $productStr = '';
+            foreach ($productArr as $value) {
+                if ($value) {
+                    if ($value == 'OTHER_PRODUCTS') {
+                        $value = 'Other Product';
+                    }
+                    $productStr .= "'$value',";
+                }
+            }
+            if ($productStr != '') {
+                $query .= " AND (
+                                CASE
+                                    WHEN T1.TranDocTypeID LIKE 'PK.%'
+                                    OR T1.TranDocTypeID LIKE 'PF.%' THEN 'KANMURI'
+                                    WHEN T1.TranDocTypeID LIKE 'LG.%' THEN 'GRACEWOOD'
+                                    ELSE 'Other Product'
+                                END
+                            ) IN (" . rtrim($productStr, ',') . ")";
+                $hasFilter = true;
+            }
+        }
+
         $query .= "GROUP BY
                   T7.ShortChar01,
                   T1.TranDocTypeID,
@@ -548,9 +588,13 @@ class WeightBridgeController extends Controller
                   T1.ReffCity_c,
                   T1.WBArea_c,
                   T4.Number03,
+                  T4.Number04,
                   T4.Number05,
                   T9.Number02,
-                  T1.KwitnsiNo_c";
+                  T1.KwitnsiNo_c,
+                  T10.beratStandart,
+                  T1.VolumeDimensi_c,
+                  T2.TotalNetWeight";
 
         $query .= " ORDER BY T1.ReffCity_c ASC, T1.ShipDate DESC";
 
@@ -573,10 +617,14 @@ class WeightBridgeController extends Controller
                 "areas" => Area::select('Key1', 'Character01')->get(),
                 "vehicles" => Vehicle::select('Key1', 'Character01')->get(),
                 "vehicle_types" => VehicleType::select('Key1', 'Character01')->get(),
-                "is_multi_transporter" => $isMultipleTransporter
-            ])->setPaper('a4', 'landscape'); // Set paper size to A4 and orientation to landscape
+                "is_multi_transporter" => $isMultipleTransporter,
+                "current_date_time" => now()->format('d-m-Y H:i:s')
+            ])->setPaper('a4', 'landscape')
+            ->setOption('isHtml5ParserEnabled', true)
+            ->setOption('isPhpEnabled', true)
+            ->setOption('isRemoteEnabled', true);
 
-            // Output the PDF for download or inline view
+
             return $pdf->stream("report.pdf");
         }
 
@@ -620,6 +668,7 @@ class WeightBridgeController extends Controller
                       'Plate NO',
                       'Vehicle Group',
                       'Area',
+                      'Product',
                       'Quantity',
                       'WB.Doc',
                       'STD Weight (Kg)',
@@ -640,17 +689,18 @@ class WeightBridgeController extends Controller
                       $subTotalAmount += $row->Amount ?? 0;
 
                       fputcsv($file, [
-                          $row->DoNo ?? 'N/A',
-                          $row->date ? \Carbon\Carbon::parse(str_replace(':AM', ' AM', str_replace(':PM', ' PM', $row->date)))->format('d-m-Y') : '',
-                          $row->PlateNo ?? 'N/A',
-                          $row->VehicleGroup ?? 'N/A',
+                          empty($row->DoNo) ? 'N/A' : $row->DoNo,
+                          $row->date ? \Carbon\Carbon::parse(str_replace(':AM', ' AM', str_replace(':PM', ' PM', $row->date)))->format('d-m-Y') : 'N/A',
+                          empty($row->PlateNo) ? 'N/A' : $row->PlateNo,
+                          empty($row->VehicleGroup) ? 'N/A' : $row->VehicleGroup,
                           !empty($row->Area) ? $row->Area : 'N/A',
+                          empty($row->Product) ? 'N/A' : $row->Product,
                           number_format($row->Quantity, 0),
-                          $row->WbDoc ?? 'N/A',
-                          number_format($row->StdWeight ?? 0, 0),
-                          number_format($row->Weight ?? 0, 0),
-                          number_format($row->VarKg ?? 0, 0),
-                          number_format($row->Rate ?? 0, 0),
+                          empty($row->WbDoc) ? 'N/A' : $row->WbDoc,
+                          number_format($row->StdWeight ?? 0, 2),
+                          number_format($row->Weight ?? 0, 2),
+                          number_format($row->VarKg ?? 0, 2),
+                          number_format($row->Rate ?? 0, 2),
                           number_format($row->Amount, 0),
                       ]);
                   }
@@ -662,13 +712,14 @@ class WeightBridgeController extends Controller
                       '',
                       '',
                       '',
+                      '',
                       'Subtotal:',
                       number_format($subTotalQuantity, 0),
                       '',
-                      number_format($subTotalStdWeight, 0),
-                      number_format($subTotalWeight, 0),
-                      number_format($subTotalVar, 0),
-                      number_format($subTotalRate, 0),
+                      number_format($subTotalStdWeight, 2),
+                      number_format($subTotalWeight, 2),
+                      number_format($subTotalVar, 2),
+                      number_format($subTotalRate, 2),
                       number_format($subTotalAmount, 0),
                   ]);
 
@@ -687,6 +738,7 @@ class WeightBridgeController extends Controller
               // Write grand totals
               fputcsv($file, []);
               fputcsv($file, [
+                  '',
                   '',
                   '',
                   '',

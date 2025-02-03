@@ -107,6 +107,22 @@
                 </div>
               </div>
             </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingSix">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                  Product
+                </button>
+              </h2>
+              <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix">
+                <div class="accordion-body">
+                  <select name="product[]" id="product" class="form-select">
+                    <option value="KANMURI">KANMURI</option>
+                    <option value="GRACEWOOD">GRACEWOOD</option>
+                    <option value="OTHER_PRODUCTS">OTHER PRODUCTS</option>
+                  </select>
+                </div>
+              </div>
+            </div>
           </div>
 
           {{-- Submit Button --}}
@@ -134,19 +150,19 @@
             <!-- Header Section -->
             <thead class="sticky-header">
               <tr>
-                <th colspan="2">
+                <th colspan="3">
                   <div class="row g-0">
-                    <div class="col-6">
+                    <div class="col-12">
                       <div class="form-group">
                         <label class="small">Kode Suplier</label>
                         <input type="text" readonly
-                          value="{{ $report[0]->TransporterCode ?? '' }}" class="form-control form-control-sm">
+                          value="{{ $report[0]->TransporterCode ?? 'N/A' }}" class="form-control form-control-sm">
                       </div>
                     </div>
                     <div class="col-12">
                       <div class="form-group">
                         <label class="small">Nama Suplier</label>
-                        <input readonly type="text" value="{{ $key ?? '' }}" class="form-control form-control-sm">
+                        <input readonly type="text" value="{{ empty($key) ? 'N/A' : $key }}" class="form-control form-control-sm">
                       </div>
                     </div>
                   </div>
@@ -159,6 +175,7 @@
                 <th>Plate NO</th>
                 <th>Vehicle Group</th>
                 <th>Area</th>
+                <th>Product</th>
                 <th>Quantity</th>
                 <th>WB.Doc</th>
                 <th>STD Weight (Kg)</th>
@@ -204,29 +221,30 @@
                 <td>
                   {{ $data->date ? \Carbon\Carbon::parse(str_replace(':AM', ' AM', str_replace(':PM', ' PM', $data->date)))->format('d-m-Y') : '' }}
                 </td>
-                <td>{{ $data->PlateNo ?? 'N/A' }}</td>
-                <td>{{ $data->VehicleGroup ?? 'N/A' }}</td>
-                <td>{{ !empty($data->Area) ? $data->Area : 'N/A' }}</td>
+                <td>{{ empty($data->PlateNo) ? 'N/A' : $data->PlateNo }}</td>
+                <td>{{ empty($data->VehicleGroup) ? 'N/A' : $data->VehicleGroup }}</td>
+                <td>{{ empty($data->Area) ? 'N/A' : $data->Area }}</td>
+                <td>{{ empty($data->Product) ? 'N/A' : $data->Product }}</td>
                 <td class="text-end">{{ number_format($data->Quantity ?? 0, 0) }}</td>
                 <td>{{ $data->WbDoc ?? 'N/A' }}</td>
-                <td class="text-end">{{ number_format($data->StdWeight ?? 0, 0) }}</td>
-                <td class="text-end">{{ number_format($data->Weight ?? 0, 0) }}</td>
-                <td class="text-end">{{ number_format($data->VarKg ?? 0, 0) }}</td>
-                <td class="text-end">{{ number_format($data->Rate ?? 0, 0) }}</td>
-                <td class="text-end">{{ number_format($data->Amount ?? 0, 0) }}</td>
+                <td class="text-end">{{ number_format($data->StdWeight ?? 0, 2) }}</td>
+                <td class="text-end">{{ number_format($data->Weight ?? 0, 2) }}</td>
+                <td class="text-end">{{ number_format($data->VarKg ?? 0, 2) }}</td>
+                <td class="text-end">{{ number_format($data->Rate ?? 0, 2) }}</td>
+                <td class="text-end">{{ number_format($data->Amount ?? 0, 2) }}</td>
               </tr>
               @endforeach
 
               <!-- Subtotal Row -->
               @if($is_multi_transporter)
               <tr class="table-secondary fw-bold small">
-                <td colspan="5" class="text-end">Sub Total</td>
+                <td colspan="6" class="text-end">Sub Total</td>
                 <td class="text-end">{{ number_format($subtotalQuantity, 0) }}</td>
                 <td></td>
-                <td class="text-end">{{ number_format($subtotalStdWeight, 0) }}</td>
-                <td class="text-end">{{ number_format($subtotalWeight, 0) }}</td>
-                <td class="text-end">{{ number_format($subtotalVar, 0) }}</td>
-                <td class="text-end">{{ number_format($subtotalRate, 0) }}</td>
+                <td class="text-end">{{ number_format($subtotalStdWeight, 2) }}</td>
+                <td class="text-end">{{ number_format($subtotalWeight, 2) }}</td>
+                <td class="text-end">{{ number_format($subtotalVar, 2) }}</td>
+                <td class="text-end">{{ number_format($subtotalRate, 2) }}</td>
                 <td class="text-end">{{ number_format($subtotalAmount, 0) }}</td>
               </tr>
               @endif
@@ -236,13 +254,13 @@
             @if($is_multi_transporter)
             @if($loop->last)
             <tr class="small">
-              <td colspan="5" class="text-end">Total</td>
+              <td colspan="6" class="text-end">Total</td>
               <td class="text-end">{{ number_format($totalQuantity, 0) }}</td>
               <td></td>
-              <td class="text-end">{{ number_format($totalStdWeight, 0) }}</td>
-              <td class="text-end">{{ number_format($totalWeight, 0) }}</td>
-              <td class="text-end">{{ number_format($totalVar, 0) }}</td>
-              <td class="text-end">{{ number_format($totalRate, 0) }}</td>
+              <td class="text-end">{{ number_format($totalStdWeight, 2) }}</td>
+              <td class="text-end">{{ number_format($totalWeight, 2) }}</td>
+              <td class="text-end">{{ number_format($totalVar, 2) }}</td>
+              <td class="text-end">{{ number_format($totalRate, 2) }}</td>
               <td class="text-end">{{ number_format($totalAmount, 0) }}</td>
             </tr>
             @endif
@@ -293,6 +311,12 @@
     $('#do_number').val(null).trigger('change');
     $('#do_number').select2({
       placeholder: 'Empty',
+      allowClear: true,
+      multiple: true
+    });
+    $('#product').val(null).trigger('change');
+    $('#product').select2({
+      placeholder: 'Select a product',
       allowClear: true,
       multiple: true
     });

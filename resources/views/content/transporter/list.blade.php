@@ -30,7 +30,8 @@
           <th>Code</th>
           <th>Name</th>
           <th>Address</th>
-          <th>Contact Person</th>
+          <th>Contact Name</th>
+          <th>Phone</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -40,7 +41,8 @@
           <td>{{ $transporter->code }}</td>
           <td>{{ $transporter->name }}</td>
           <td>{{ $transporter->address }}</td>
-          <td>{{ $transporter->contact_person }}</td>
+          <td>{{ $transporter->contact_name }}</td>
+          <td>{{ $transporter->phone }}</td>
           <td>
             <div class="d-flex">
               @can('edit transporter')

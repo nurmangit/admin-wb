@@ -97,7 +97,7 @@
       "info": true,
       "autoWidth": false,
       "responsive": true,
-      "order": [[2, "desc"]]
+      "order": []
     });
     $('#rmTable').DataTable({
       "paging": true,
@@ -107,7 +107,7 @@
       "info": true,
       "autoWidth": false,
       "responsive": true,
-      "order": [[2, "desc"]]
+      "order": []
     });
   });
 </script>

@@ -26,7 +26,8 @@ class TransporterUpdateRequest extends FormRequest
         return [
             'name' => 'required|max:255',
             'address' => 'nullable',
-            'contact_person' => 'nullable',
+            'contact_name' => 'nullable',
+            'phone' => 'nullable',
             // 'area_uuid' => 'required|uuid',
         ];
     }

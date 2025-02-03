@@ -43,7 +43,8 @@ class Transporter extends Model
 		'code',
 		'address',
 		'area_uuid',
-    'contact_person'
+    'contact_name',
+    'phone'
 	];
 
 	public function vehicles()
@@ -65,7 +66,8 @@ class Transporter extends Model
 			'name' => 'Character01',
 			'code' => 'ShortChar01',
 			'address' => 'Character02',
-      'contact_person' => 'Character03',
+      'contact_name' => 'Character03',
+      'phone' => 'Character04',
 			'area_uuid' => 'Key2',
 			'created_at' => 'Date01',
 			'updated_at' => 'Date02',
