@@ -115,10 +115,12 @@
                         <strong>Kode Suplier:</strong>
                     </div>
                 </th>
-                <th colspan="5" style="background: white;">
+                <th colspan="4" style="background: white;">
                     <div class="small text-start">
                         <strong>{{ $report[0]->TransporterCode ?? 'N/A' }}</strong>
                     </div>
+                </th>
+                <th colspan="1" style="background: white; border: none;">
                 </th>
             </tr>
             <tr>
@@ -127,10 +129,13 @@
                         <strong>Nama Suplier:</strong>
                     </div>
                 </th>
-                <th colspan="5" style="background: white;">
+                <th colspan="4" style="background: white;">
                     <div class="small text-start">
                         <strong>{{ empty($key) ? 'N/A' : $key }}</strong>
                     </div>
+                </th>
+                <th colspan="1" style="background: white; border: none;">
+                </th>
                 </th>
             </tr>
             <tr>
@@ -139,7 +144,7 @@
                 <th class="small border" style="width: 70px;">Plate NO</th>
                 <th class="small border" style="width: 70px;">Vehicle Group</th>
                 <th class="small border" style="width: 90px;">Area</th>
-                <th class="small border" style="width: 90px;">Product</th>
+                <th class="small border" style="width: 90px;">Kwitansi NO</th>
                 <th class="small border" style="width: 70px;">Quantity</th>
                 <th class="small border" style="width: 70px;">WB.Doc</th>
                 <th class="small border" style="width: 70px;">STD Weight (Kg)</th>
@@ -187,7 +192,7 @@
                     <td>{{ empty($data->PlateNo) ? 'N/A' : $data->PlateNo }}</td>
                     <td>{{ empty($data->VehicleGroup) ? 'N/A' : $data->VehicleGroup }}</td>
                     <td>{{ empty($data->Area) ? 'N/A' : $data->Area }}</td>
-                    <td>{{ empty($data->Product) ? 'N/A' : $data->Product }}</td>
+                    <td>{{ empty($data->Kwitansi_NO) ? 'N/A' : $data->Kwitansi_NO }}</td>
                     <td>{{ number_format($data->Quantity ?? 0, 0) }}</td>
                     <td>{{ empty($data->WbDoc) ? 'N/A' : $data->WbDoc }}</td>
                     <td>{{ number_format($data->StdWeight ?? 0, 2) }}</td>

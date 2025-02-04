@@ -424,7 +424,7 @@ class WeightBridgeController extends Controller
 
     public function transporterReport(Request $request)
     {
-        $hasFilter = false;
+        $hasFilter = true;
         $query = "
           SELECT DISTINCT
               T7.ShortChar01 AS TransporterCode,
@@ -668,7 +668,7 @@ class WeightBridgeController extends Controller
                       'Plate NO',
                       'Vehicle Group',
                       'Area',
-                      'Product',
+                      'Kwitansi NO',
                       'Quantity',
                       'WB.Doc',
                       'STD Weight (Kg)',
@@ -694,7 +694,7 @@ class WeightBridgeController extends Controller
                           empty($row->PlateNo) ? 'N/A' : $row->PlateNo,
                           empty($row->VehicleGroup) ? 'N/A' : $row->VehicleGroup,
                           !empty($row->Area) ? $row->Area : 'N/A',
-                          empty($row->Product) ? 'N/A' : $row->Product,
+                          empty($row->Kwitansi_NO) ? 'N/A' : $row->Kwitansi_NO,
                           number_format($row->Quantity, 0),
                           empty($row->WbDoc) ? 'N/A' : $row->WbDoc,
                           number_format($row->StdWeight ?? 0, 2),

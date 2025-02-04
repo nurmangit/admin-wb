@@ -175,7 +175,7 @@
                 <th>Plate NO</th>
                 <th>Vehicle Group</th>
                 <th>Area</th>
-                <th>Product</th>
+                <th>Kwitansi NO</th>
                 <th>Quantity</th>
                 <th>WB.Doc</th>
                 <th>STD Weight (Kg)</th>
@@ -224,7 +224,7 @@
                 <td>{{ empty($data->PlateNo) ? 'N/A' : $data->PlateNo }}</td>
                 <td>{{ empty($data->VehicleGroup) ? 'N/A' : $data->VehicleGroup }}</td>
                 <td>{{ empty($data->Area) ? 'N/A' : $data->Area }}</td>
-                <td>{{ empty($data->Product) ? 'N/A' : $data->Product }}</td>
+                <td>{{ empty($data->Kwitansi_NO) ? 'N/A' : $data->Kwitansi_NO }}</td>
                 <td class="text-end">{{ number_format($data->Quantity ?? 0, 0) }}</td>
                 <td>{{ $data->WbDoc ?? 'N/A' }}</td>
                 <td class="text-end">{{ number_format($data->StdWeight ?? 0, 2) }}</td>
