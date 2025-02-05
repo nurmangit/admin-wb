@@ -719,7 +719,7 @@ class WeightBridgeController extends Controller
                       '',
                       '',
                       '',
-                      'Subtotal:',
+                      ($isMultipleTransporter ? 'Sub ' : '') . 'Total',
                       number_format($subTotalQuantity, 0),
                       '',
                       number_format($subTotalStdWeight, 2),
@@ -743,21 +743,23 @@ class WeightBridgeController extends Controller
 
               // Write grand totals
               fputcsv($file, []);
-              fputcsv($file, [
-                  '',
-                  '',
-                  '',
-                  '',
-                  '',
-                  'Grand Total:',
-                  number_format($grandTotalQuantity, 0),
-                  '',
-                  number_format($grandTotalStdWeight, 0),
-                  number_format($grandTotalWeight, 0),
-                  number_format($grandTotalVar, 0),
-                  number_format($grandTotalRate, 0),
-                  number_format($grandTotalAmount, 0),
-              ]);
+              if ($isMultipleTransporter) {
+                  fputcsv($file, [
+                      '',
+                      '',
+                      '',
+                      '',
+                      '',
+                      'Total:',
+                      number_format($grandTotalQuantity, 0),
+                      '',
+                      number_format($grandTotalStdWeight, 2),
+                      number_format($grandTotalWeight, 2),
+                      number_format($grandTotalVar, 2),
+                      number_format($grandTotalRate, 2),
+                      number_format($grandTotalAmount, 0),
+                  ]);
+              }
 
               fclose($file);
           };
