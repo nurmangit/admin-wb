@@ -201,8 +201,9 @@
                 </tr>
                 @endforeach
                 <!-- Subtotal Row -->
+
                 <tr class="table-secondary fw-bold small" style="background: #f4f4f4;">
-                    <td colspan="6" class="text-end">Sub Total</td>
+                    <td colspan="6" class="text-end">@if($is_multi_transporter)Sub @endif Total</td>
                     <td class="text-start">{{ number_format($subtotalQuantity, 0) }}</td>
                     <td></td>
                     <td class="text-start">{{ number_format($subtotalStdWeight, 2) }}</td>
@@ -213,6 +214,7 @@
                 </tr>
             </tbody>
             <!-- Footer Totals -->
+            @if($is_multi_transporter)
             @if($loop->last)
             <tr class="table-dark fw-bold small" style="background: #f4f4f4;">
                 <td colspan="6" class="text-end">Total</td>
@@ -224,6 +226,7 @@
                 <td class="text-start">{{ number_format($totalRate, 2) }}</td>
                 <td class="text-start">{{ number_format($totalAmount, 0) }}</td>
             </tr>
+            @endif
             @endif
         </table>
         @endforeach
