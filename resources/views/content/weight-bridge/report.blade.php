@@ -145,7 +145,7 @@
         $totalAmount = 0;
         @endphp
         @foreach ($reports as $key => $report)
-        <div class="table-responsive">
+        <div class="table-responsive mt-5">
           <table class="table table-bordered table-sm">
             <!-- Header Section -->
             <thead class="sticky-header">

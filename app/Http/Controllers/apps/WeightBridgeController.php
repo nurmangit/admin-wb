@@ -426,65 +426,68 @@ class WeightBridgeController extends Controller
     {
         $hasFilter = true;
         $query = "
-          SELECT DISTINCT
-              T7.ShortChar01 AS TransporterCode,
-              T1.TranDocTypeID AS KodeSPB,
-              T1.LegalNumber AS DoNo,
-              T1.ShipDate AS 'date',
-              T1.VehicleNo_c AS PlateNo,
-              T1.VehicleType_c AS VehicleGroup,
-              T1.WBArea_c AS Area,
-              T1.NoDokumen_c AS WbDoc,
-              T1.ReffCity_c AS TransporterName,
-              T1.KwitnsiNo_c AS Kwitansi_NO,
-              CASE
-                WHEN T1.TranDocTypeID LIKE 'PK.%'
-                OR T1.TranDocTypeID LIKE 'PF.%' THEN 'KANMURI'
-                WHEN T1.TranDocTypeID LIKE 'LG.%' THEN 'GRACEWOOD'
-                ELSE 'Other Product'
-              END AS Product,
-              SUM(T2.OurInventoryShipQty) AS Quantity,
-              SUM(T2.TotalNetWeight) AS StdWeight,
-              (T1.VolumeDimensi_c / NULLIF(T10.beratStandart, 0.000)) * T2.TotalNetWeight AS Weight,
-              ((T1.VolumeDimensi_c / NULLIF(T10.beratStandart, 0.000)) * T2.TotalNetWeight) - SUM(T2.TotalNetWeight) AS VarKg,
-              T9.Number02 AS Rate,
-              ((T1.VolumeDimensi_c / NULLIF(T10.beratStandart, 0.000)) * T2.TotalNetWeight * T9.Number02) AS Amount
-          FROM
-              ShipHead T1
-          INNER JOIN
-              ShipDtl T2 ON T1.PackNum = T2.PackNum
-          LEFT JOIN
-              Ice.UD100 T4 ON T1.NoDokumen_c = T4.Character01
-          LEFT JOIN
-              Ice.UD101A T5 ON T1.VehicleNo_c = T5.Character01
-          LEFT JOIN
-              Ice.UD101 T6 ON T1.VehicleType_c = T6.Character01
-          LEFT JOIN
-              Ice.UD102 T7 ON T1.ReffCity_c = T7.Character01
-          LEFT JOIN
-              Ice.UD103A T8 ON T1.WBArea_c = T8.Character01
-          LEFT JOIN
-              Ice.UD102A T9 ON T8.Key1 = T9.Key2 AND T9.ChildKey1 = T6.Key1
-          LEFT JOIN (
-              SELECT
-                  T1.Company,
-                  NoDokumen_c,
-                  SUM(T2.TotalNetWeight) AS beratStandart
+          SELECT
+              TransporterCode, KodeSPB, DoNo, date, WbDoc, PlateNo, VehicleGroup, TransporterName, Area, Product,
+              SUM(Quantity) Quantity, SUM(StdWeight) StdWeight, SUM(Netto) Weight, SUM(VarKg) VarKg, Rate, SUM(Amount) Amount, Kwitansi_NO
+          FROM (
+              SELECT DISTINCT
+                  T7.ShortChar01 AS TransporterCode,
+                  T1.TranDocTypeID AS KodeSPB,
+                  T1.LegalNumber AS DoNo,
+                  T1.ShipDate AS 'date',
+                  T1.NoDokumen_c AS WbDoc,
+                  T1.VehicleNo_c AS PlateNo,
+                  T1.VehicleType_c AS VehicleGroup,
+                  T1.ReffCity_c AS TransporterName,
+                  T1.WBArea_c AS Area,
+                  CASE
+                      WHEN T1.TranDocTypeID LIKE 'PK.%' OR T1.TranDocTypeID LIKE 'PF.%' THEN 'KANMURI'
+                      WHEN T1.TranDocTypeID LIKE 'LG.%' THEN 'GRACEWOOD'
+                      ELSE 'Other Product'
+                  END AS Product,
+                  SUM(T2.OurInventoryShipQty) AS Quantity,
+                  SUM(T2.TotalNetWeight) AS StdWeight,
+                  (T1.VolumeDimensi_c / NULLIF(T10.beratStandart, 0.000)) * T2.TotalNetWeight AS Netto,
+                  ((T1.VolumeDimensi_c / NULLIF(T10.beratStandart, 0.000)) * T2.TotalNetWeight - T2.TotalNetWeight) AS VarKg,
+                  T9.Number02 AS Rate,
+                  ((T1.VolumeDimensi_c / NULLIF(T10.beratStandart, 0.000)) * T2.TotalNetWeight * T9.Number02) AS Amount,
+                  T1.KwitnsiNo_c AS Kwitansi_NO
               FROM
-                  ShipHead AS T1
+                  ShipHead T1
+              INNER JOIN
+                  ShipDtl T2 ON T1.PackNum = T2.PackNum
               LEFT JOIN
-                  ShipDtl AS T2 ON T1.PackNum = T2.PackNum AND T1.Company = T2.Company
+                  Ice.UD100 T4 ON T1.NoDokumen_c = T4.Character01
+              LEFT JOIN
+                  Ice.UD101A T5 ON T1.VehicleNo_c = T5.Character01
+              LEFT JOIN
+                  Ice.UD101 T6 ON T1.VehicleType_c = T6.Character01
+              LEFT JOIN
+                  Ice.UD102 T7 ON T1.ReffCity_c = T7.Character01
+              LEFT JOIN
+                  Ice.UD103A T8 ON T1.WBArea_c = T8.Character01
+              LEFT JOIN
+                  Ice.UD102A T9 ON T8.Key1 = T9.Key2 AND T9.ChildKey1 = T6.Key1
+              LEFT JOIN (
+                  SELECT
+                      T1.Company,
+                      NoDokumen_c,
+                      SUM(T2.TotalNetWeight) AS beratStandart
+                  FROM
+                      ShipHead AS T1
+                  LEFT JOIN
+                      ShipDtl AS T2 ON T1.PackNum = T2.PackNum AND T1.Company = T2.Company
+                  WHERE
+                      NoDokumen_c <> ''
+                  GROUP BY
+                      T1.Company,
+                      NoDokumen_c
+              ) T10 ON T1.Company = T10.Company AND T1.NoDokumen_c = T10.NoDokumen_c
               WHERE
-                  NoDokumen_c <> ''
-              GROUP BY
-                  T1.Company,
-                  NoDokumen_c
-          ) T10 ON T1.Company = T10.Company AND T1.NoDokumen_c = T10.NoDokumen_c
-          WHERE
-              T1.ReadyToInvoice = 1
-              AND T1.Company = 'KMP'
-              AND T1.NoDokumen_c <> ''
-        ";
+                  T1.ReadyToInvoice = 1
+                  AND T1.Company = 'KMP'
+                  AND T1.NoDokumen_c <> ''
+            ";
 
         // filter by date
         if ($request->get('period_from') != null && $request->get('period_to') != null) {
@@ -594,9 +597,12 @@ class WeightBridgeController extends Controller
                   T1.KwitnsiNo_c,
                   T10.beratStandart,
                   T1.VolumeDimensi_c,
-                  T2.TotalNetWeight";
+                  T2.TotalNetWeight
+          ) T1
+          GROUP BY
+              TransporterCode, KodeSPB, DoNo, date, WbDoc, PlateNo, VehicleGroup, TransporterName, Area, Product, Rate, Kwitansi_NO";
 
-        $query .= " ORDER BY T1.ReffCity_c ASC, T1.ShipDate DESC";
+        $query .= " ORDER BY TransporterName ASC, date DESC";
 
         $spbDetails = DB::select($query);
         $data = [];
