@@ -198,7 +198,6 @@
               @endphp
 
               @foreach($report as $data)
-              @if($is_multi_transporter)
               @php
               $subtotalQuantity += $data->Quantity ?? 0;
               $subtotalStdWeight += $data->StdWeight ?? 0;
@@ -215,7 +214,6 @@
               $totalRate += $data->Rate ?? 0;
               $totalAmount += $data->Amount ?? 0;
               @endphp
-              @endif
               <tr class="small">
                 <td>{{ $data->DoNo ?? 'N/A' }}</td>
                 <td>
@@ -236,7 +234,6 @@
               @endforeach
 
               <!-- Subtotal Row -->
-              @if($is_multi_transporter)
               <tr class="table-secondary fw-bold small">
                 <td colspan="6" class="text-end">Sub Total</td>
                 <td class="text-end">{{ number_format($subtotalQuantity, 0) }}</td>
@@ -247,11 +244,9 @@
                 <td class="text-end">{{ number_format($subtotalRate, 2) }}</td>
                 <td class="text-end">{{ number_format($subtotalAmount, 0) }}</td>
               </tr>
-              @endif
             </tbody>
 
             <!-- Footer Totals -->
-            @if($is_multi_transporter)
             @if($loop->last)
             <tr class="small">
               <td colspan="6" class="text-end">Total</td>
@@ -263,7 +258,6 @@
               <td class="text-end">{{ number_format($totalRate, 2) }}</td>
               <td class="text-end">{{ number_format($totalAmount, 0) }}</td>
             </tr>
-            @endif
             @endif
           </table>
         </div>
