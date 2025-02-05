@@ -424,7 +424,7 @@ class WeightBridgeController extends Controller
 
     public function transporterReport(Request $request)
     {
-        $hasFilter = true;
+        $hasFilter = false;
         $query = "
           SELECT
               TransporterCode, KodeSPB, DoNo, date, WbDoc, PlateNo, VehicleGroup, TransporterName, Area, Product,
