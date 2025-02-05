@@ -128,8 +128,8 @@
           {{-- Submit Button --}}
           <a type="button" href="{{ route('transaction.weight-bridge.report') }}" class="btn btn-secondary mt-3">Clear Filter</a>
           <a type="button" id="btn-filter" class="btn btn-primary mt-3 text-white">Apply Filter</a>
-          <a type="button" id="btn-download-pdf" class="btn btn-success mt-3 text-white">Download PDF</a>
-          <a type="button" id="btn-download-csv" class="btn btn-info mt-3 text-white">Download CSV</a>
+          <button type="button" data-type="PDF" class="export-btn btn btn-success mt-3 text-white">Download PDF</button>
+          <button type="button" data-type="CSV" class="export-btn btn btn-info mt-3 text-white">Download CSV</button>
         </div>
       </form>
       {{-- // form filter --}}
@@ -175,7 +175,6 @@
                 <th>Plate NO</th>
                 <th>Vehicle Group</th>
                 <th>Area</th>
-                <th>Kwitansi NO</th>
                 <th>Quantity</th>
                 <th>WB.Doc</th>
                 <th>STD Weight (Kg)</th>
@@ -183,6 +182,7 @@
                 <th>Var(Kg)</th>
                 <th>Rate</th>
                 <th>Amount(Rp)</th>
+                <th>Kwitansi NO</th>
               </tr>
             </thead>
 
@@ -222,7 +222,6 @@
                 <td>{{ empty($data->PlateNo) ? 'N/A' : $data->PlateNo }}</td>
                 <td>{{ empty($data->VehicleGroup) ? 'N/A' : $data->VehicleGroup }}</td>
                 <td>{{ empty($data->Area) ? 'N/A' : $data->Area }}</td>
-                <td>{{ empty($data->Kwitansi_NO) ? 'N/A' : $data->Kwitansi_NO }}</td>
                 <td class="text-end">{{ number_format($data->Quantity ?? 0, 0) }}</td>
                 <td>{{ $data->WbDoc ?? 'N/A' }}</td>
                 <td class="text-end">{{ number_format($data->StdWeight ?? 0, 2) }}</td>
@@ -230,12 +229,13 @@
                 <td class="text-end">{{ number_format($data->VarKg ?? 0, 2) }}</td>
                 <td class="text-end">{{ number_format($data->Rate ?? 0, 2) }}</td>
                 <td class="text-end">{{ number_format($data->Amount ?? 0, 2) }}</td>
+                <td>{{ empty($data->Kwitansi_NO) ? 'N/A' : $data->Kwitansi_NO }}</td>
               </tr>
               @endforeach
 
               <!-- Subtotal Row -->
               <tr class="table-secondary fw-bold small">
-                <td colspan="6" class="text-end">@if($is_multi_transporter)Sub @endif Total</td>
+                <td colspan="5" class="text-end">@if($is_multi_transporter)Sub @endif Total</td>
                 <td class="text-end">{{ number_format($subtotalQuantity, 0) }}</td>
                 <td></td>
                 <td class="text-end">{{ number_format($subtotalStdWeight, 2) }}</td>
@@ -243,6 +243,7 @@
                 <td class="text-end">{{ number_format($subtotalVar, 2) }}</td>
                 <td class="text-end">{{ number_format($subtotalRate, 2) }}</td>
                 <td class="text-end">{{ number_format($subtotalAmount, 0) }}</td>
+                <td></td>
               </tr>
             </tbody>
 
@@ -250,7 +251,7 @@
             @if($is_multi_transporter)
             @if($loop->last)
             <tr class="small">
-              <td colspan="6" class="text-end">Total</td>
+              <td colspan="5" class="text-end">Total</td>
               <td class="text-end">{{ number_format($totalQuantity, 0) }}</td>
               <td></td>
               <td class="text-end">{{ number_format($totalStdWeight, 2) }}</td>
@@ -258,6 +259,7 @@
               <td class="text-end">{{ number_format($totalVar, 2) }}</td>
               <td class="text-end">{{ number_format($totalRate, 2) }}</td>
               <td class="text-end">{{ number_format($totalAmount, 0) }}</td>
+              <td></td>
             </tr>
             @endif
             @endif
@@ -316,28 +318,18 @@
       allowClear: true,
       multiple: true
     });
-    $('#btn-download-pdf').on('click', function() {
-      $('#export').val('PDF')
-      addUrlParamsToForm('#filter');
-      $('#filter').submit()
-    });
-    $('#btn-download-csv').on('click', function() {
-      $('#export').val('CSV')
-      addUrlParamsToForm('#filter');
-      $('#filter').submit()
+    $(".export-btn").on("click", function () {
+        let exportType = $(this).data("type"); // export (PDF/CSV)
+        let currentUrl = new URL(window.location.href);
+
+        currentUrl.searchParams.set("export", exportType);
+
+        window.location.href = currentUrl.toString();
     });
     $('#btn-filter').on('click', function() {
       $('#export').val(null)
       $('#filter').submit()
     })
-    function addUrlParamsToForm(formSelector) {
-        var urlParams = new URLSearchParams(window.location.search);
-        urlParams.forEach(function(value, key) {
-            if (!$(formSelector).find('input[name="' + key + '"]').length) {
-                $(formSelector).append('<input type="hidden" name="' + key + '" value="' + value + '">');
-            }
-        });
-    }
     $('#btn-add').on('click', function() {
       // Get the value from the input field
       const doNumber = $('input[name="do_number_string"]').val();

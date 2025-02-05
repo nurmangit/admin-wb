@@ -144,7 +144,6 @@
                 <th class="small border" style="width: 70px;">Plate NO</th>
                 <th class="small border" style="width: 70px;">Vehicle Group</th>
                 <th class="small border" style="width: 90px;">Area</th>
-                <th class="small border" style="width: 90px;">Kwitansi NO</th>
                 <th class="small border" style="width: 70px;">Quantity</th>
                 <th class="small border" style="width: 70px;">WB.Doc</th>
                 <th class="small border" style="width: 70px;">STD Weight (Kg)</th>
@@ -152,6 +151,7 @@
                 <th class="small border" style="width: 70px;">Var (Kg)</th>
                 <th class="small border" style="width: 70px;">Rate</th>
                 <th class="small border" style="width: 100px;">Amount (Rp)</th>
+                <th class="small border" style="width: 90px;">Kwitansi NO</th>
             </tr>
 
             <!-- Body Section -->
@@ -190,7 +190,6 @@
                     <td>{{ empty($data->PlateNo) ? 'N/A' : $data->PlateNo }}</td>
                     <td>{{ empty($data->VehicleGroup) ? 'N/A' : $data->VehicleGroup }}</td>
                     <td>{{ empty($data->Area) ? 'N/A' : $data->Area }}</td>
-                    <td>{{ empty($data->Kwitansi_NO) ? 'N/A' : $data->Kwitansi_NO }}</td>
                     <td>{{ number_format($data->Quantity ?? 0, 0) }}</td>
                     <td>{{ empty($data->WbDoc) ? 'N/A' : $data->WbDoc }}</td>
                     <td>{{ number_format($data->StdWeight ?? 0, 2) }}</td>
@@ -198,12 +197,13 @@
                     <td>{{ number_format($data->VarKg ?? 0, 2) }}</td>
                     <td>{{ number_format($data->Rate ?? 0, 2) }}</td>
                     <td>{{ number_format($data->Amount ?? 0, 2) }}</td>
+                    <td>{{ empty($data->Kwitansi_NO) ? 'N/A' : $data->Kwitansi_NO }}</td>
                 </tr>
                 @endforeach
                 <!-- Subtotal Row -->
 
                 <tr class="table-secondary fw-bold small" style="background: #f4f4f4;">
-                    <td colspan="6" class="text-end">@if($is_multi_transporter)Sub @endif Total</td>
+                    <td colspan="5" class="text-end">@if($is_multi_transporter)Sub @endif Total</td>
                     <td class="text-start">{{ number_format($subtotalQuantity, 0) }}</td>
                     <td></td>
                     <td class="text-start">{{ number_format($subtotalStdWeight, 2) }}</td>
@@ -211,13 +211,14 @@
                     <td class="text-start">{{ number_format($subtotalVar, 2) }}</td>
                     <td class="text-start">{{ number_format($subtotalRate, 2) }}</td>
                     <td class="text-start">{{ number_format($subtotalAmount, 0) }}</td>
+                    <td></td>
                 </tr>
             </tbody>
             <!-- Footer Totals -->
             @if($is_multi_transporter)
             @if($loop->last)
             <tr class="table-dark fw-bold small" style="background: #f4f4f4;">
-                <td colspan="6" class="text-end">Total</td>
+                <td colspan="5" class="text-end">Total</td>
                 <td class="text-start">{{ number_format($totalQuantity, 0) }}</td>
                 <td></td>
                 <td class="text-start">{{ number_format($totalStdWeight, 2) }}</td>
@@ -225,6 +226,7 @@
                 <td class="text-start">{{ number_format($totalVar, 2) }}</td>
                 <td class="text-start">{{ number_format($totalRate, 2) }}</td>
                 <td class="text-start">{{ number_format($totalAmount, 0) }}</td>
+                <td></td>
             </tr>
             @endif
             @endif

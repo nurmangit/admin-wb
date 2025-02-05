@@ -674,7 +674,6 @@ class WeightBridgeController extends Controller
                       'Plate NO',
                       'Vehicle Group',
                       'Area',
-                      'Kwitansi NO',
                       'Quantity',
                       'WB.Doc',
                       'STD Weight (Kg)',
@@ -682,6 +681,7 @@ class WeightBridgeController extends Controller
                       'Var (Kg)',
                       'Rate',
                       'Amount (Rp)',
+                      'Kwitansi NO',
                   ]);
 
                   // Write data rows
@@ -700,7 +700,6 @@ class WeightBridgeController extends Controller
                           empty($row->PlateNo) ? 'N/A' : $row->PlateNo,
                           empty($row->VehicleGroup) ? 'N/A' : $row->VehicleGroup,
                           !empty($row->Area) ? $row->Area : 'N/A',
-                          empty($row->Kwitansi_NO) ? 'N/A' : $row->Kwitansi_NO,
                           number_format($row->Quantity, 0),
                           empty($row->WbDoc) ? 'N/A' : $row->WbDoc,
                           number_format($row->StdWeight ?? 0, 2),
@@ -708,13 +707,13 @@ class WeightBridgeController extends Controller
                           number_format($row->VarKg ?? 0, 2),
                           number_format($row->Rate ?? 0, 2),
                           number_format($row->Amount, 0),
+                          empty($row->Kwitansi_NO) ? 'N/A' : $row->Kwitansi_NO,
                       ]);
                   }
 
                   // Write subtotals for the group
                   // fputcsv($file, []);
                   fputcsv($file, [
-                      '',
                       '',
                       '',
                       '',
@@ -727,6 +726,7 @@ class WeightBridgeController extends Controller
                       number_format($subTotalVar, 2),
                       number_format($subTotalRate, 2),
                       number_format($subTotalAmount, 0),
+                      '',
                   ]);
 
                   // Update grand totals
@@ -749,7 +749,6 @@ class WeightBridgeController extends Controller
                       '',
                       '',
                       '',
-                      '',
                       'Total:',
                       number_format($grandTotalQuantity, 0),
                       '',
@@ -758,6 +757,7 @@ class WeightBridgeController extends Controller
                       number_format($grandTotalVar, 2),
                       number_format($grandTotalRate, 2),
                       number_format($grandTotalAmount, 0),
+                      '',
                   ]);
               }
 
