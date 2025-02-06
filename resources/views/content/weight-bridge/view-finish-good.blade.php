@@ -74,13 +74,13 @@
               <!-- Weight Netto -->
               <div class="mb-3">
                 <label class="form-label" for="weight-netto">Weight Netto</label>
-                <input disabled type="text" class="form-control" id="weight-netto" value="{{number_format($weight_bridge->weight_netto, 2)}}" placeholder="Enter weight netto" disabled />
+                <input type="text" class="form-control" id="weight-netto" value="{{number_format($weight_bridge->weight_netto, 2)}}" placeholder="Enter weight netto" disabled />
               </div>
 
               <!-- Weight Standart -->
               <div class="mb-3">
                 <label class="form-label" for="weight-standart">Weight Standart</label>
-                <input disabled type="number" class="form-control" id="weight-standart" value="{{ number_format($weight_bridge->weight_standart, 2) }}" placeholder="Enter weight standart" disabled />
+                <input disabled type="text" class="form-control" id="weight-standart" value="{{ number_format($weight_bridge->weight_standart, 2) }}" placeholder="Enter weight standart" disabled />
               </div>
               <!-- Remark -->
               <div class="mb-3">
