@@ -468,6 +468,7 @@ class WeightBridgeController extends Controller
                   Ice.UD103A T8 ON T1.WBArea_c = T8.Character01
               LEFT JOIN
                   Ice.UD102A T9 ON T8.Key1 = T9.Key2 AND T9.ChildKey1 = T6.Key1
+                  AND (CAST(T9.Date01 AS DATE) <= CAST(T1.ShipDate AS DATE) AND CAST(T9.Date02 AS DATE) >= CAST(T1.ShipDate AS DATE))
               LEFT JOIN (
                   SELECT
                       T1.Company,
