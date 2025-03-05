@@ -25,8 +25,8 @@ class TransporterRateStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
-            'area_uuid' => 'required|uuid',
-            'vehicle_type_uuid' => 'required|uuid',
+            'area_uuid' => 'required|uuid|unique:sqlsrv.Ice.UD102A,Key2',
+            'vehicle_type_uuid' => 'required|uuid|unique:sqlsrv.Ice.UD102A,ChildKey1',
             'charge' => 'nullable|numeric|min:0',
             'start_date' => 'required|date_format:Y-m-d',
             'end_date' => 'required|date_format:Y-m-d|after:start_date'
