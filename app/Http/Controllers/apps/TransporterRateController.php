@@ -4,6 +4,7 @@ namespace App\Http\Controllers\apps;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TransporterRateStoreRequest;
+use App\Http\Requests\TransporterRateUpdateRequest;
 use App\Models\Area;
 use App\Models\TransporterRate;
 use App\Models\VehicleType;
@@ -65,10 +66,14 @@ class TransporterRateController extends Controller
     );
   }
 
-  public function update(TransporterRateStoreRequest $request, $uuid)
+  public function update(TransporterRateUpdateRequest $request, $uuid)
   {
     $transporterRate = TransporterRate::findOrFail($uuid);
     $validated = $request->validated();
+    $checkExisting = TransporterRate::where('key1', $validated['area_uuid'])->where('ChildKey1', $validated['vehicle_type_uuid'])->exists();
+    if ($checkExisting) {
+      return redirect()->route('master-data.transporter-rate.edit', ['uuid' => $uuid])->with('error', 'Transporter Rate already exists.');
+    }
     $transporterRate->update($validated);
     return redirect()->route(
       'master-data.transporter-rate.edit',
