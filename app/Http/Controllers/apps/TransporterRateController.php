@@ -92,6 +92,10 @@ class TransporterRateController extends Controller
   public function store(TransporterRateStoreRequest $request)
   {
     $validated = $request->validated();
+    $checkExisting = TransporterRate::where('Key2', $validated['area_uuid'])->where('ChildKey1', $validated['vehicle_type_uuid'])->exists();
+    if ($checkExisting) {
+      return redirect()->route('master-data.transporter-rate.create')->with('error', 'Transporter Rate already exists.');
+    }
     TransporterRate::create($validated);
     return redirect()->route('master-data.transporter-rate.list')->with('success', 'TransporterRate created successfully');
   }
