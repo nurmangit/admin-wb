@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\apps;
 
+use DateTime;
+use Carbon\Carbon;
+use App\Models\Area;
+use App\Models\VehicleType;
+use Illuminate\Http\Request;
+use App\Models\TransporterRate;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TransporterRateStoreRequest;
 use App\Http\Requests\TransporterRateUpdateRequest;
-use App\Models\Area;
-use App\Models\TransporterRate;
-use App\Models\VehicleType;
-use Carbon\Carbon;
-use DateTime;
-use Illuminate\Http\Request;
 
 class TransporterRateController extends Controller
 {
@@ -84,6 +85,20 @@ class TransporterRateController extends Controller
   public function delete($uuid)
   {
     $transporterRate = TransporterRate::findOrFail($uuid);
+
+    $query = "SELECT WBArea_c, VehicleType_c FROM ShipHead
+    WHERE WBArea_c <> '' AND VehicleType_c <> ''
+    GROUP BY WBArea_c, VehicleType_c
+    ORDER BY WBArea_c";
+
+    $items = DB::select($query);
+
+    foreach ($items as $item) {
+      if ($item->WBArea_c === $transporterRate->area->name && $item->VehicleType_c === $transporterRate->vehicle_type->name) {
+        return redirect()->route('master-data.transporter-rate.list')->with('error', 'Transporter Rate cannot be deleted because it is being used in a shipment.');
+      }
+    }
+
     $transporterRate->delete();
 
     return redirect()->route('master-data.transporter-rate.list')->with('success', 'TransporterRate deleted successfully.');

@@ -483,7 +483,7 @@ class WeightBridgeController extends Controller
                   GROUP BY
                       T1.Company,
                       NoDokumen_c
-              ) T10 ON T1.Company = T10.Company AND T1.NoDokumen_c = T10.NoDokumen_c
+              ) T10 ON T1.Company = T4.Company AND T1.NoDokumen_c = T10.NoDokumen_c
               WHERE
                   T1.ReadyToInvoice = 1
                   AND T1.Company = 'KMP'
