@@ -71,10 +71,15 @@ class TransporterRateController extends Controller
   {
     $transporterRate = TransporterRate::findOrFail($uuid);
     $validated = $request->validated();
-    $checkExisting = TransporterRate::where('Key2', $validated['area_uuid'])->where('ChildKey1', $validated['vehicle_type_uuid'])->exists();
+    $checkExisting = TransporterRate::where('Key2', $validated['area_uuid'])
+        ->where('ChildKey1', $validated['vehicle_type_uuid'])
+        ->where('Key1', '!=', $uuid)
+        ->exists();
+
     if ($checkExisting) {
-      return redirect()->route('master-data.transporter-rate.edit', ['uuid' => $uuid])->with('error', 'Transporter Rate already exists.');
+        return redirect()->route('master-data.transporter-rate.edit', ['uuid' => $uuid])->with('error', 'Transporter Rate already exists.');
     }
+
     $transporterRate->update($validated);
     return redirect()->route(
       'master-data.transporter-rate.edit',
