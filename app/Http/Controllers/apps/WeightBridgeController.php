@@ -428,7 +428,7 @@ class WeightBridgeController extends Controller
         $query = "
           SELECT
               TransporterCode, KodeSPB, DoNo, date, WbDoc, PlateNo, VehicleGroup, TransporterName, Area, Product,
-              SUM(Quantity) Quantity, SUM(StdWeight) StdWeight, SUM(Netto) Weight, SUM(VarKg) VarKg, Rate, SUM(Amount) Amount, Kwitansi_NO
+              SUM(Quantity) Quantity, SUM(StdWeight) StdWeight, SUM(newNetto) Weight, SUM(VarKg) VarKg, Rate, SUM(newNetto)*Rate Amount, Kwitansi_NO
           FROM (
               SELECT DISTINCT
                   T7.ShortChar01 AS TransporterCode,
@@ -445,13 +445,20 @@ class WeightBridgeController extends Controller
                       WHEN T1.TranDocTypeID LIKE 'LG.%' THEN 'GRACEWOOD'
                       ELSE 'Other Product'
                   END AS Product,
+                  CASE
+                    WHEN T1.tanggalsuratkembali_c IS NULL THEN T9.Number02
+                    WHEN T1.tanggalsuratkembali_c IS NOT NULL THEN T1.QtyColly_c
+                    ELSE T9.Number02
+                  END Rate,
                   SUM(T2.OurInventoryShipQty) AS Quantity,
                   SUM(T2.TotalNetWeight) AS StdWeight,
-                  (T1.VolumeDimensi_c / NULLIF(T10.beratStandart, 0.000)) * T2.TotalNetWeight AS Netto,
+                  (NULLIF(T1.VolumeDimensi_c, 0.000)/ NULLIF(T10.beratStandart, 0.000)) * NULLIF(T2.TotalNetWeight, 0.000) newNetto,
                   ((T1.VolumeDimensi_c / NULLIF(T10.beratStandart, 0.000)) * T2.TotalNetWeight - T2.TotalNetWeight) AS VarKg,
-                  T9.Number02 AS Rate,
+                  -- T9.Number02 AS Rate,
                   ((T1.VolumeDimensi_c / NULLIF(T10.beratStandart, 0.000)) * T2.TotalNetWeight * T9.Number02) AS Amount,
-                  T1.KwitnsiNo_c AS Kwitansi_NO
+                  T1.KwitnsiNo_c AS Kwitansi_NO,
+                  T9.Number02 AS RateMasterWB,
+                  T1.tanggalsuratkembali_c
               FROM
                   ShipHead T1
               INNER JOIN
@@ -598,10 +605,12 @@ class WeightBridgeController extends Controller
                   T1.KwitnsiNo_c,
                   T10.beratStandart,
                   T1.VolumeDimensi_c,
-                  T2.TotalNetWeight
+                  T2.TotalNetWeight,
+                  T1.tanggalsuratkembali_c,
+                  T1.QtyColly_c
           ) T1
           GROUP BY
-              TransporterCode, KodeSPB, DoNo, date, WbDoc, PlateNo, VehicleGroup, TransporterName, Area, Product, Rate, Kwitansi_NO";
+              TransporterCode, KodeSPB, DoNo, date, WbDoc, PlateNo, VehicleGroup, TransporterName, Area, Product, Rate, Kwitansi_NO, tanggalsuratkembali_c";
 
         $query .= " ORDER BY TransporterName ASC, date DESC";
 
